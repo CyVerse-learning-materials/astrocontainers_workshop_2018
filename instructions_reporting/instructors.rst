@@ -10,7 +10,7 @@ You could/should also mention it on Slack in the "cc-leads" channel.
 
 **Technical info re adding content to the Web site**
 
-All the Container Camp workshop tutorials are stored on `GitHub <https://github.com/CyVerse-learning-materials/container_camp_workshop_2018>`_.
+All the Container Camp workshop tutorials are stored on `GitHub <https://github.com/CyVerse-learning-materials/astrocontainers_workshop_2018>`_.
 
 We will use `GitHub Flow <https://guides.github.com/introduction/flow/>`_ for updates: from the command line,
 
@@ -36,7 +36,7 @@ Briefly,
 
 - clone the repo:
 
-  ``git clone https://github.com/CyVerse-learning-materials/container_camp_workshop_2018.git``
+  ``git clone https://github.com/CyVerse-learning-materials/astrocontainers_workshop_2018.git``
 
 - set up a virtualenv with python2 or python3:
 

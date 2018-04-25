@@ -53,7 +53,7 @@ Couldn't find what you were looking for?
 
 - Chat with us and our community on Slack.
 
-- Post an issue on the documentation `issue tracker <https://github.com/CyVerse-learning-materials/container_camp_workshop_2018/issues>`_ on GitHub
+- Post an issue on the documentation `issue tracker <https://github.com/CyVerse-learning-materials/astrocontainers_workshop_2018/issues>`_ on GitHub
 
 .. |CyVerse logo| image:: ../img/cyverse_rgb.png
   :width: 500
