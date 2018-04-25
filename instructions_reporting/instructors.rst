@@ -17,7 +17,7 @@ We will use `GitHub Flow <https://guides.github.com/introduction/flow/>`_ for up
 	- fork astrocontainers repository;
 	- edit, change, add, etc;
 	- submit a PR;
-	- when ready to review & merge say 'ready for review & merge @cc2018'.
+	- when ready to review & merge say 'ready for review & merge @ac2018'.
 
 It's important that all updates go through code review by
 someone. Anyone with push access to the repo can review and merge!
