@@ -271,7 +271,7 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 
 - For now select your GitHub account from the User/Organizations list on the left. The list of repositories change.
 
-- Pick the project to build. In this case ``flask-app``. Type in "Conainer Camp flask-app" in the Short Description box.
+- Pick the project to build. In this case ``flask-app``. Type in "AstroContainers flask-app" in the Short Description box.
 
 - If you have a long list of repos, use the filter box above the list to restrict the list. After you select the project, the system displays the Create Automated Build dialog.
 
@@ -816,7 +816,7 @@ And that’s it! You should be able to see the Flask application running on ``ht
 Exercise 2 (10 mins)
 ~~~~~~~~~~~~~~~~~~~~
 
-- Change the greeting in ``app.py`` and save it. For example, change the ``This Compose/Flask demo has been viewed`` message to ``This Container Camp Workshop demo has been viewed``
+- Change the greeting in ``app.py`` and save it. For example, change the ``This Compose/Flask demo has been viewed`` message to ``This AstroContainers Workshop demo has been viewed``
 - Refresh the `app` in your browser. What do you see now?
 - Create a automatic build for ``compose-flask`` project directory
 - Share your Dockerhub link url on Slack

@@ -1,7 +1,7 @@
 **Pre-Workshop Setup**
 ======================
 
-Please complete the minimum Setup Instructions to prepare for the Container Camp workshop at CyVerse, The University of Arizona, which will run from March 7th to 9th, 2018.
+Please complete the minimum Setup Instructions to prepare for the CyVerse AstroContainers Workshop at the University of Arizona, which will run on May 7th and 8th, 2018.
 
 .. list-table::
     :header-rows: 1

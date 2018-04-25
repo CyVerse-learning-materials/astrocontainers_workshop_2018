@@ -3,7 +3,7 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
-   :caption: Container Camp Workshop
+   :caption: AstroContainers Workshop
 
    getting_started/main
    getting_started/installation

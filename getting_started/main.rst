@@ -14,7 +14,7 @@ for more information on codes of conduct.
 
 **FAIR principles**
 
-Container Camp supports FAIR data principles by providing services that help make data 
+AstroContainers supports FAIR data principles by providing services that help make data 
 Findable, Accessible, Interoperable, and Reusable. Participants will get an introduction 
 to containers and learn how to create and manage containers.
 

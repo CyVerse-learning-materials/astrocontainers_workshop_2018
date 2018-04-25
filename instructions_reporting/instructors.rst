@@ -10,11 +10,11 @@ You could/should also mention it on Slack in the "cc-leads" channel.
 
 **Technical info re adding content to the Web site**
 
-All the Container Camp workshop tutorials are stored on `GitHub <https://github.com/CyVerse-learning-materials/astrocontainers_workshop_2018>`_.
+All the AstroContainers Workshop tutorials are stored on `GitHub <https://github.com/CyVerse-learning-materials/astrocontainers_workshop_2018>`_.
 
 We will use `GitHub Flow <https://guides.github.com/introduction/flow/>`_ for updates: from the command line,
 
-	- fork container camp repository;
+	- fork astrocontainers repository;
 	- edit, change, add, etc;
 	- submit a PR;
 	- when ready to review & merge say 'ready for review & merge @cc2018'.

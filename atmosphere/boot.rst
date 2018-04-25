@@ -30,7 +30,7 @@ and then enter the password (which is your CyVerse password).
 
 |atmo_cp0|
 
-- Enter the name "CCW2018" into the Project Name, and something simple like "Container Camp Workshop 2018" into the description. Then click 'create'.
+- Enter the name "AC2018" into the Project Name, and something simple like "AstroContainers Workshop 2018" into the description. Then click 'create'.
 
 |atmo_cp|
 
