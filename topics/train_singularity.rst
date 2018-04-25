@@ -1,7 +1,7 @@
 **Training session in Singularity**
 ===================================
 
-**Trainers (Tyson Swetnam and John Fonner)**    
+**Trainers (Tyson Swetnam and Chris Reidy)**    
 
 In this session we will show you how to containerize your software/applications using Singularity, push them to Singularityhub and deploy them on cloud and HPC.
 
@@ -9,6 +9,6 @@ In this session we will show you how to containerize your software/applications 
 
 This would be the introductory session for concept of Singularity. The topics include installation Singularity on various platforms, running prebuilt singularity containers, building singularity containers locally etc.
 
-- `Advanced Singularity (John Fonner) <../singularity/singularityadvanced.html>`_
+- `Advanced Singularity (Chris Reidy) <../singularity/singularityadvanced.html>`_
 
 This is the advanced session for the concept of Singularity. The topics include pushing and pulling Singularity images to and from Singularity hub, converting Docker containers to Singularity containers, mounting data on to Singularity containers etc.
