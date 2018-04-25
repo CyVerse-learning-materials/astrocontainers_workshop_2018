@@ -19,6 +19,12 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Atmosphere
+
+   atmosphere/boot
+
+.. toctree::
+   :maxdepth: 1
    :caption: Docker
 
    docker/dockerintro
