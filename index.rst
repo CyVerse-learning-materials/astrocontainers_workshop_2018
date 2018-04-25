@@ -50,3 +50,10 @@ Table of Contents
    useful_resources/usefulresources_docker
    useful_resources/usefulresources_singularity
    useful_resources/usefulresources_other
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Instructions and Reporting
+
+   instructions_reporting/instructors
+   instructions_reporting/problems
