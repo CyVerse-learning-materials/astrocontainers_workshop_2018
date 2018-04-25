@@ -3,6 +3,15 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Container Camp Workshop
+
+   getting_started/main
+   getting_started/installation
+   getting_started/agenda
+   getting_started/about_cyverse
+
+.. toctree::
+   :maxdepth: 1
    :caption: Docker
 
    docker/dockerintro
