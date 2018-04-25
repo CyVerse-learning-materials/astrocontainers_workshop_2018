@@ -39,6 +39,12 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Deploying
+
+   deploying_apps/de_docker
+
+.. toctree::
+   :maxdepth: 1
    :caption: Useful Resources
 
    useful_resources/usefulresources_docker
