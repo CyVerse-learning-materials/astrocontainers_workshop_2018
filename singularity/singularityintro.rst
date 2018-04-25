@@ -480,7 +480,7 @@ When I try to install software to the image without `sudo` it is denied, because
 
  
 Exercise 3: Creating the Singularity file (30 minutes)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Recipes <http://singularity.lbl.gov/docs-recipes>`_ can use any number of container registries for bootstrapping a container. 
 

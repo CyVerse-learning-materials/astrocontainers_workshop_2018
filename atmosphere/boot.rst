@@ -54,15 +54,13 @@ and then enter the password (which is your CyVerse password).
 
 - Wait for it to become active
 
-- It will now be booting up! This will take 2-10 minutes, depending.
-Just wait! Don't reload or anything.
+- It will now be booting up! This will take 2-10 minutes, depending. Just wait! Don't reload or anything.
 
 |atmo-6|
 
 - Click on your new instance to get more information!
 
-- Now, you can either click "Open Web Shell", *or*, if you know how to use ssh,
-you can ssh in with your CyVerse username on the IP address of the machine 
+- Now, you can either click "Open Web Shell", *or*, if you know how to use ssh, you can ssh in with your CyVerse username on the IP address of the machine 
 
 |atmo-7|
 

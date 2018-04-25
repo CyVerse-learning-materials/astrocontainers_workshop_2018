@@ -271,7 +271,7 @@ If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open 
 
 .. Note::
 
-	``-P` `will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``. For example::
+	``-P` `will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``. For example:
 
 .. code-block:: bash
 

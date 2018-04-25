@@ -544,7 +544,7 @@ After running either of these examples, run the following commands to clean up t
 
 Use `docker inspect devtest` to verify that the bind mount was created correctly. Look for the "Mounts" section
 
-.. code-block::
+.. code-block:: bash
 
 	$ docker inspect devtest
 
@@ -592,6 +592,7 @@ Use ``docker inspect devtest`` to verify that the bind mount was created correct
                 "Propagation": "rprivate"
             }
         ],
+
 Stop the container:
 
 .. code-block:: bash
