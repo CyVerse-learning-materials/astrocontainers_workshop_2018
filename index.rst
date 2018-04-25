@@ -12,6 +12,13 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Workshop Topics
+
+   topics/train_docker
+   topics/train_singularity
+
+.. toctree::
+   :maxdepth: 1
    :caption: Docker
 
    docker/dockerintro
