@@ -14,11 +14,11 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       - Notes/Links
     * - 05/07/18 (Monday)
       - 09:00am-09:30am
-      - General introduction to CyVerse and workshop logistics (Nirav Merchant & Upendra Devisetty)
+      - Introduction to CyVerse and workshop logistics (Nirav Merchant & Upendra Devisetty)
       - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
     * -
       - 09:30am-10:00am
-      - General overview of container technology landscape (Nirav Merchant)
+      - Overview of container technology landscape (Nirav Merchant)
       - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
     * -
       - 10:00am-10:15am
