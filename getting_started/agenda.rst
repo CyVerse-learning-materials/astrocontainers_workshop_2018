@@ -13,12 +13,12 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       - Topic/Activity
       - Notes/Links
     * - 05/07/18 (Monday)
-      - 09:00am-09:30am
-      - Introduction to CyVerse and workshop logistics (Nirav Merchant & Upendra Devisetty)
+      - 09:00am-09:15am
+      - Introduction to CyVerse and Data7 (Nirav Merchant)
       - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
     * -
-      - 09:30am-10:00am
-      - Overview of container technology landscape (Nirav Merchant)
+      - 09:15am-10:00am
+      - Container landscape and computation resources (Nirav Merchant)
       - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
     * -
       - 10:00am-10:15am
@@ -56,7 +56,7 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       - `Singularity Overview Slides <https://docs.google.com/presentation/d/175QD_mm9aKbV-8WW7hKR04naR08UjTRcGc4CIhMMKKk/edit?usp=sharing>`_
     * -
       - 9:30am-10:00am
-      - Singularity setup (CK Chan)
+      - Singularity setup (Tyson Swetnam)
       - `Singularity Introduction <../singularity/singularityintro.html>`_
     * -
       - 10:00am-10:15am
