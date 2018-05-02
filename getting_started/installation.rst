@@ -21,14 +21,17 @@ Please complete the minimum Setup Instructions to prepare for the CyVerse AstroC
         by completing the verification steps in the email you got when you registered.
       - Register for your cyverse account at `http://user.cyverse.org/`_. You can **test your account** by logging into `http://user.cyverse.org/ <http://user.cyverse.org/>`_.
     * - Atmosphere Cloud
-      - Please also request access to the CyVerse Atmosphere Cloud.
-      - Atmosphere Cloud should be listed in `https://user.cyverse.org/services/available <https://user.cyverse.org/services/available>`_ once you log in to CyVerse.
+      - Please ensure that you have access to CyVerse Atmosphere Cloud.
+      - Atmosphere Cloud should be listed in `this webapge <https://user.cyverse.org/services/available>`_ once you log in to CyVerse.
     * - Github Account
-      - Please ensure that you have a Github account if you don't have one already
+      - Please ensure that you have a Github account
       - Register for your Github account at `https://github.com/ <https://github.com/>`_.
     * - Dockerhub Account
-      - Please ensure that you have a Dockerhub account if you don't have one already
+      - Please ensure that you have a Dockerhub account
       - Register for your Dockerhub account at `https://hub.docker.com/ <https://hub.docker.com/>`_.
+    * - UA HPC Account
+      - Please ensure that you have a UA HPC account. Faculty and Principal Investigators (PI) can request and authorize their own HPC accounts. Students and Staff requesting HPC Account must be authorized/sponsored by a Faculty member or a PI.
+      - Please follow `the instruction here <https://docs.hpc.arizona.edu/display/UAHPC/Account+Creation>`_.
     * - Text Editor
       - Please ensure that you have a Text editor of your choice. Any decent text editor would be sufficient and
         recommended ones include Sublime2 and Atom
