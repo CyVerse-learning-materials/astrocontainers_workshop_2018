@@ -19,23 +19,16 @@ Please complete the minimum Setup Instructions to prepare for the CyVerse AstroC
     * - CyVerse Account
       - Please ensure that you have a CyVerse account and have **verfied** your account
         by completing the verification steps in the email you got when you registered.
-      - Register for your cyverse account at `http://user.cyverse.org/`_. You can **test your account** by logging into `http://user.cyverse.org/ <http://  user.cyverse.org/>`_.
+      - Register for your cyverse account at `http://user.cyverse.org/`_. You can **test your account** by logging into `http://user.cyverse.org/ <http://user.cyverse.org/>`_.
+    * - Atmosphere Cloud
+      - Please also request access to the CyVerse Atmosphere Cloud.
+      - Atmosphere Cloud should be listed in `https://user.cyverse.org/services/available <https://user.cyverse.org/services/available>`_ once you log in to CyVerse.
     * - Github Account
       - Please ensure that you have a Github account if you don't have one already
       - Register for your Github account at `https://github.com/ <https://github.com/>`_.
     * - Dockerhub Account
       - Please ensure that you have a Dockerhub account if you don't have one already
       - Register for your Dockerhub account at `https://hub.docker.com/ <https://hub.docker.com/>`_.
-    * - Quay.io Account
-      - This is completely optional but recommended and can use github to log-in to quay.io account
-      - Register for your Quay.io account at `https://quay.io/ <https://quay.io/>`_.    
-    * - XSEDE Account
-      - Please ensure that you have a XSEDE account by registering at XSEDE portal to access Jetstream cloud 
-        computing
-      - Register for your XSEDE account at `https://portal.xsede.org/ <https://portal.xsede.org/>`_.
-    * - TACC Account
-      - Please ensure that you have a TACC account to access Stampede2 HPC computer at TACC
-      - Register for your TACC account at `https://portal.tacc.utexas.edu/ <https://portal.tacc.utexas.edu/>`_.
     * - Text Editor
       - Please ensure that you have a Text editor of your choice. Any decent text editor would be sufficient and
         recommended ones include Sublime2 and Atom
