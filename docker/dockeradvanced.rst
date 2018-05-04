@@ -381,16 +381,7 @@ Head over to ``http://localhost:8888`` and your app should be live.
 
 Hit the Refresh button in the web browser to see a few more cat images.
 
-1.3 Exercise (5-10 mins): Deploy a custom Docker image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Download the sample code from https://github.com/Azure-Samples/docker-django-webapp-linux.git
-- Build the image using the Dockerfile in that repo using ``docker build`` command
-- Run an instance from that image
-- Verify the web app and container are functioning correctly
-- Share your (non-localhost) url on Slack
-
-1.4. Dockerfile commands summary
+1.3. Dockerfile commands summary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here's a quick summary of the few basic commands we used in our Dockerfile.
@@ -421,6 +412,15 @@ Here's a quick summary of the few basic commands we used in our Dockerfile.
 
 	If you want to learn more about Dockerfiles, check out `Best practices for writing Dockerfiles <https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/>`_.
 
+Exercise 1 (5-10 mins): Deploy a custom Docker image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Download the sample code from https://github.com/Azure-Samples/docker-django-webapp-linux.git
+- Build the image using the Dockerfile in that repo using ``docker build`` command
+- Run an instance from that image
+- Verify the web app and container are functioning correctly
+- Share your (non-localhost) url on Slack
+	
 2. Docker registries
 ====================
 
@@ -755,7 +755,7 @@ You may have to manually refresh the page and your build may take several minute
 
 |auto_build-7|
 
-Exercise 1 (5-10 mins): Updating and automated building
+Exercise 2 (5-10 mins): Updating and automated building
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Add some more cat pics to the `app.py` file
@@ -928,8 +928,8 @@ And that’s it! You should be able to see the Flask application running on ``ht
 
 |docker-compose|
 
-Exercise 2 (10 mins)
-~~~~~~~~~~~~~~~~~~~~
+Exercise 3 (10 mins) Compose for multi container apps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Change the greeting in ``app.py`` and save it. For example, change the ``This Compose/Flask demo has been viewed`` message to ``This AstroContainers Workshop demo has been viewed``
 - Refresh the `app` in your browser. What do you see now?
