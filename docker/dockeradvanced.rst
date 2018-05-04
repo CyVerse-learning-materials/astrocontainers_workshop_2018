@@ -3,7 +3,425 @@
 
 Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as porting the Docker image to repositories (public and private), managing data in containers and finally deploy containers into cloud and other infrastructures etc.,
 
-1. Docker registries
+1. Deploying dynamic website with Docker
+========================================
+
+One area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
+
+In this section, let's dive deeper into what Docker images are. Later on we will build our own image and use that image to run an application locally (deploy a dynamic website).
+
+1.1 Docker images
+~~~~~~~~~~~~~~~~~
+
+Docker images are the basis of containers. In the previous example, you pulled the ``dockersamples/static-site`` image from the registry and asked the Docker client to run a container based on that image. To see the list of images that are available locally on your system, run the ``docker images`` command.
+
+.. code-block:: bash
+
+	$ docker images
+	REPOSITORY             		TAG                 IMAGE ID            CREATED             SIZE
+	dockersamples/static-site   latest              92a386b6e686        2 hours ago        190.5 MB
+	nginx                  		latest              af4b3d7d5401        3 hours ago        190.5 MB
+	hello-world             	latest              690ed74de00f        5 months ago       960 B
+	.........
+
+Above is a list of images that I've pulled from the registry and those I've created myself (we'll shortly see how). You will have a different list of images on your machine. The **TAG** refers to a particular snapshot of the image and the **ID** is the corresponding unique identifier for that image.
+
+For simplicity, you can think of an image akin to a git repository - images can be committed with changes and have multiple versions. When you do not provide a specific version number, the client defaults to latest.
+
+For example you could pull a specific version of ubuntu image as follows:
+
+.. code-block:: bash
+
+	$ docker pull ubuntu:16.04
+
+If you do not specify the version number of the image, as mentioned, the Docker client will default to a version named ``latest``.
+
+So for example, the ``docker pull`` command given below will pull an image named ``ubuntu:latest``
+
+.. code-block:: bash
+
+	$ docker pull ubuntu
+
+To get a new Docker image you can either get it from a registry (such as the Docker hub) or create your own. There are hundreds of thousands of images available on Docker hub. You can also search for images directly from the command line using ``docker search``.
+
+.. code-block:: bash
+
+	$ docker search ubuntu
+	  NAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+	  ubuntu                                                 Ubuntu is a Debian-based Linux operating sys…   7310                [OK]                
+	  dorowu/ubuntu-desktop-lxde-vnc                         Ubuntu with openssh-server and NoVNC            163                                     [OK]
+	  rastasheep/ubuntu-sshd                                 Dockerized SSH service, built on top of offi…   131                                     [OK]
+	  ansible/ubuntu14.04-ansible                            Ubuntu 14.04 LTS with ansible                   90                                      [OK]
+	  ubuntu-upstart                                         Upstart is an event-based replacement for th…   81                  [OK]                
+	  neurodebian                                            NeuroDebian provides neuroscience research s…   43                  [OK]                
+	  ubuntu-debootstrap                                     debootstrap --variant=minbase --components=m…   35                  [OK]                
+	  1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5   ubuntu-16-nginx-php-phpmyadmin-mysql-5          26                                      [OK]
+	  nuagebec/ubuntu                                        Simple always updated Ubuntu docker images w…   22                                      [OK]
+	  tutum/ubuntu                                           Simple Ubuntu docker images with SSH access     18                                      
+	  ppc64le/ubuntu                                         Ubuntu is a Debian-based Linux operating sys…   11                                      
+	  i386/ubuntu                                            Ubuntu is a Debian-based Linux operating sys…   9                                       
+	  1and1internet/ubuntu-16-apache-php-7.0                 ubuntu-16-apache-php-7.0                        7                                       [OK]
+	  eclipse/ubuntu_jdk8                                    Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   5                                       [OK]
+	  darksheer/ubuntu                                       Base Ubuntu Image -- Updated hourly             3                                       [OK]
+	  codenvy/ubuntu_jdk8                                    Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   3                                       [OK]
+	  1and1internet/ubuntu-16-nginx-php-5.6-wordpress-4      ubuntu-16-nginx-php-5.6-wordpress-4             2                                       [OK]
+	  1and1internet/ubuntu-16-nginx                          ubuntu-16-nginx                                 2                                       [OK]
+	  pivotaldata/ubuntu                                     A quick freshening-up of the base Ubuntu doc…   1                                       
+	  smartentry/ubuntu                                      ubuntu with smartentry                          0                                       [OK]
+	  pivotaldata/ubuntu-gpdb-dev                            Ubuntu images for GPDB development              0                                       
+	  1and1internet/ubuntu-16-healthcheck                    ubuntu-16-healthcheck                           0                                       [OK]
+	  thatsamguy/ubuntu-build-image                          Docker webapp build images based on Ubuntu      0                                       
+	  ossobv/ubuntu                                          Custom ubuntu image from scratch (based on o…   0                                       
+	  1and1internet/ubuntu-16-sshd                           ubuntu-16-sshd                                  0                                       [OK]
+
+An important distinction with regard to images is between base images and child images and official images and user images (Both of which can be base images or child images.).
+
+.. important::
+	**Base images** are images that have no parent images, usually images with an OS like ubuntu, alpine or debian.
+
+	**Child images** are images that build on base images and add additional functionality.
+
+	**Official images** are Docker sanctioned images. Docker, Inc. sponsors a dedicated team that is responsible for reviewing and publishing all Official Repositories content. This team works in collaboration with upstream software maintainers, security experts, and the broader Docker community. These are not prefixed by an organization or user name. In the list of images above, the python, node, alpine and nginx images are official (base) images. To find out more about them, check out the Official Images Documentation.
+
+	**User images** are images created and shared by users like you. They build on base images and add additional functionality. Typically these are formatted as ``user/image-name``. The user value in the image name is your Dockerhub user or organization name.
+
+1.2 Meet our Flask app
+~~~~~~~~~~~~~~~~~~~~~~
+
+Now that you have a better understanding of images, it's time to create an image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it. 
+
+- `Create a Python Flask app that displays random cat`_
+- `Build the image`_
+- `Run your image`_
+
+.. Note::
+
+	I have already written the Flask app for you, so you should start by cloning the git repository at https://github.com/upendrak/flask-app. You can do this with ``git clone`` if you have git installed, or by clicking the “Download ZIP” button on GitHub
+
+.. _Create a Python Flask app that displays random cat:
+
+1. Create a Python Flask app that displays random cat
+
+For the purposes of this workshop, we've created a fun little Python Flask app that displays a random cat .gif every time it is loaded - because, you know, who doesn't like cats?
+
+Start by creating a directory called ``flask-app`` where we'll create the following files:
+
+- `app.py`_
+- `requirements.txt`_
+- `templates/index.html`_
+- `Dockerfile`_
+
+.. code-block:: bash
+
+	$ mkdir flask-app && cd flask-app
+
+.. _app.py:
+
+1.1 **app.py**
+
+Create the ``app.py`` file with the following content. You can use any of favorite text editor to create this file.
+
+.. code-block:: bash
+
+	from flask import Flask, render_template
+	import random
+
+	app = Flask(__name__)
+
+	# list of cat images
+	images = [
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26388-1381844103-11.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr01/15/9/anigif_enhanced-buzz-31540-1381844535-8.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26390-1381844163-18.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-1376-1381846217-0.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3391-1381844336-26.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-29111-1381845968-0.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3409-1381844582-13.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr02/15/9/anigif_enhanced-buzz-19667-1381844937-10.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26358-1381845043-13.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-18774-1381844645-6.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-25158-1381844793-0.gif",
+	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/10/anigif_enhanced-buzz-11980-1381846269-1.gif"
+	]
+
+	@app.route('/')
+	def index():
+	    url = random.choice(images)
+	    return render_template('index.html', url=url)
+
+	if __name__ == "__main__":
+	    app.run(host="0.0.0.0")
+
+.. _requirements.txt:
+
+1.2. **requirements.txt**
+
+In order to install the Python modules required for our app, we need to create a file called ``requirements.txt`` and add the following line to that file:
+
+.. code-block:: bash
+
+	Flask==0.10.1
+
+.. _templates/index.html:
+
+1.3. **templates/index.html**
+
+Create a directory called `templates` and create an ``index.html`` file in that directory with the following content in it:
+
+.. code-block:: bash
+
+	$ mkdir templates && cd templates
+
+.. code-block:: bash
+
+	<html>
+	  <head>
+	    <style type="text/css">
+	      body {
+	        background: black;
+	        color: white;
+	      }
+	      div.container {
+	        max-width: 500px;
+	        margin: 100px auto;
+	        border: 20px solid white;
+	        padding: 10px;
+	        text-align: center;
+	      }
+	      h4 {
+	        text-transform: uppercase;
+	      }
+	    </style>
+	  </head>
+	  <body>
+	    <div class="container">
+	      <h4>Cat Gif of the day</h4>
+	      <img src="{{url}}" />
+	      <p><small>Courtesy: <a href="http://www.buzzfeed.com/copyranter/the-best-cat-gif-post-in-the-history-of-cat-gifs">Buzzfeed</a></small></p>
+	    </div>
+	  </body>
+	</html>
+
+.. Note::
+
+	If you want, you can run this app through your laptop’s native Python installation first just to see what it looks like. Run ``sudo pip install -r requirements.txt`` and then run ``python app.py``.
+
+	You should then be able to open a web browser, go to http://localhost:5000, and see the message "Hello! I am a Flask application".
+
+	This is totally optional - but some people like to see what the app’s supposed to do before they try to Dockerize it.
+
+.. _Dockerfile:
+
+1.4. **Dockerfile**
+
+A **Dockerfile** is a text file that contains a list of commands that the Docker daemon calls while creating an image. The Dockerfile contains all the information that Docker needs to know to run the app — a base Docker image to run from, location of your project code, any dependencies it has, and what commands to run at start-up. It is a simple way to automate the image creation process. The best part is that the commands you write in a Dockerfile are almost identical to their equivalent Linux commands. This means you don't really have to learn new syntax to create your own Dockerfiles.
+
+We want to create a Docker image with this web app. As mentioned above, all user images are based on a base image. Since our application is written in Python, we will build our own Python image based on ``Alpine``. We'll do that using a Dockerfile.
+
+Create a file called Dockerfile in the ``flask`` directory, and add content to it as described below. Since you are currently in ``templates`` directory, you need to go up one directory up before you can create your Dockerfile 
+
+.. code-block:: bash
+
+	cd ..
+
+.. code-block:: bash
+
+	# our base image
+	FROM alpine:3.5
+
+	# install python and pip
+	RUN apk add --update py2-pip
+
+	# install Python modules needed by the Python app
+	COPY requirements.txt /usr/src/app/
+	RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+
+	# copy files required for the app to run
+	COPY app.py /usr/src/app/
+	COPY templates/index.html /usr/src/app/templates/
+
+	# tell the port number the container should expose
+	EXPOSE 5000
+
+	# run the application
+	CMD ["python", "/usr/src/app/app.py"]
+
+Now let's see what each of those lines mean..
+
+1.4.1 We'll start by specifying our base image, using the FROM keyword:
+
+.. code-block:: bash
+
+	FROM alpine:3.5
+
+1.4.2. The next step usually is to write the commands of copying the files and installing the dependencies. But first we will install the Python pip package to the alpine linux distribution. This will not just install the pip package but any other dependencies too, which includes the python interpreter. Add the following ``RUN`` command next:
+
+.. code-block:: bash
+
+	RUN apk add --update py2-pip
+
+1.4.3. Let's add the files that make up the Flask Application. Install all Python requirements for our app to run. This will be accomplished by adding the lines:
+
+.. code-block:: bash
+
+	COPY requirements.txt /usr/src/app/
+	RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+
+1.4.4. Copy the files you have created earlier into our image by using ``COPY`` command.
+
+.. code-block:: bash
+
+	COPY app.py /usr/src/app/
+	COPY templates/index.html /usr/src/app/templates/
+
+1.4.5. Specify the port number which needs to be exposed. Since our flask app is running on 5000 that's what we'll expose.
+
+.. code-block:: bash
+
+	EXPOSE 5000
+
+1.4.6. The last step is the command for running the application which is simply - ``python ./app.py``. Use the ``CMD`` command to do that:
+
+.. code-block:: bash
+
+	CMD ["python", "/usr/src/app/app.py"]
+
+The primary purpose of ``CMD`` is to tell the container which command it should run by default when it is started.
+
+.. _Build the image:
+
+2. Build the image
+
+Now that you have your Dockerfile, you can build your image. The ``docker build`` command does the heavy-lifting of creating a docker image from a Dockerfile.
+
+The ``docker build command`` is quite simple - it takes an optional tag name with the ``-t`` flag, and the location of the directory containing the Dockerfile - the ``.`` indicates the current directory:
+
+.. Note::
+
+	When you run the ``docker build`` command given below, make sure to replace ``<YOUR_DOCKERHUB_USERNAME>`` with your username. This username should be the same one you created when registering on Docker hub. If you haven't done that yet, please go ahead and create an account in `Dockerhub <https://hub.docker.com>`_.
+
+.. code-block:: bash
+
+	YOUR_DOCKERHUB_USERNAME=<YOUR_DOCKERHUB_USERNAME>
+
+For example this is how I assign my dockerhub username
+
+.. code-block:: bash
+
+	YOUR_DOCKERHUB_USERNAME=upendradevisetty
+
+Now build the image using the following command:
+
+.. code-block:: bash
+
+	$ docker build -t $YOUR_DOCKERHUB_USERNAME/myfirstapp .
+	Sending build context to Docker daemon   7.68kB
+	Step 1/8 : FROM alpine:3.5
+	 ---> 88e169ea8f46
+	Step 2/8 : RUN apk add --update py2-pip
+	 ---> Using cache
+	 ---> 8b1f026c3899
+	Step 3/8 : COPY requirements.txt /usr/src/app/
+	 ---> Using cache
+	 ---> 6923f451ee09
+	Step 4/8 : RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+	 ---> Running in fb6b7b8beb3c
+	Collecting Flask==0.10.1 (from -r /usr/src/app/requirements.txt (line 1))
+	  Downloading Flask-0.10.1.tar.gz (544kB)
+	Collecting Werkzeug>=0.7 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
+	  Downloading Werkzeug-0.14.1-py2.py3-none-any.whl (322kB)
+	Collecting Jinja2>=2.4 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
+	  Downloading Jinja2-2.10-py2.py3-none-any.whl (126kB)
+	Collecting itsdangerous>=0.21 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
+	  Downloading itsdangerous-0.24.tar.gz (46kB)
+	Collecting MarkupSafe>=0.23 (from Jinja2>=2.4->Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
+	  Downloading MarkupSafe-1.0.tar.gz
+	Installing collected packages: Werkzeug, MarkupSafe, Jinja2, itsdangerous, Flask
+	  Running setup.py install for MarkupSafe: started
+	    Running setup.py install for MarkupSafe: finished with status 'done'
+	  Running setup.py install for itsdangerous: started
+	    Running setup.py install for itsdangerous: finished with status 'done'
+	  Running setup.py install for Flask: started
+	    Running setup.py install for Flask: finished with status 'done'
+	Successfully installed Flask-0.10.1 Jinja2-2.10 MarkupSafe-1.0 Werkzeug-0.14.1 itsdangerous-0.24
+	You are using pip version 9.0.0, however version 9.0.1 is available.
+	You should consider upgrading via the 'pip install --upgrade pip' command.
+	 ---> 16d47a8073fd
+	Removing intermediate container fb6b7b8beb3c
+	Step 5/8 : COPY app.py /usr/src/app/
+	 ---> 338019e5711f
+	Step 6/8 : COPY templates/index.html /usr/src/app/templates/
+	 ---> b65ed769c446
+	Step 7/8 : EXPOSE 5000
+	 ---> Running in b95001d36e4d
+	 ---> 0deaa29ca54a
+	Removing intermediate container b95001d36e4d
+	Step 8/8 : CMD python /usr/src/app/app.py
+	 ---> Running in 4a8e82f87e2f
+	 ---> 40a121fff878
+	Removing intermediate container 4a8e82f87e2f
+	Successfully built 40a121fff878
+	Successfully tagged upendradevisetty/myfirstapp:latest
+
+If you don't have the ``alpine:3.5 image``, the client will first pull the image and then create your image. Therefore, your output on running the command will look different from mine. If everything went well, your image should be ready! Run ``docker images`` and see if your image ``$YOUR_DOCKERHUB_USERNAME/myfirstapp`` shows.
+
+.. _Run your image:
+
+3. Run your image
+
+When Docker can successfully build your Dockerfile, test it by starting a new container from your new image using the docker run command. Don’t forget to include the port forwarding options you learned about before.
+
+.. code-block:: bash
+
+	$ docker run -d -p 8888:5000 --name myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp
+
+Head over to ``http://localhost:8888`` and your app should be live. 
+
+|catpic|
+
+Hit the Refresh button in the web browser to see a few more cat images.
+
+1.3 Exercise (5-10 mins): Deploy a custom Docker image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Download the sample code from https://github.com/Azure-Samples/docker-django-webapp-linux.git
+- Build the image using the Dockerfile in that repo using ``docker build`` command
+- Run an instance from that image
+- Verify the web app and container are functioning correctly
+- Share your (non-localhost) url on Slack
+
+1.4. Dockerfile commands summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here's a quick summary of the few basic commands we used in our Dockerfile.
+
+- **FROM** starts the Dockerfile. It is a requirement that the Dockerfile must start with the FROM command. Images are created in layers, which means you can use another image as the base image for your own. The FROM command defines your base layer. As arguments, it takes the name of the image. Optionally, you can add the Dockerhub username of the maintainer and image version, in the format username/imagename:version.
+
+- **RUN** is used to build up the Image you're creating. For each RUN command, Docker will run the command then create a new layer of the image. This way you can roll back your image to previous states easily. The syntax for a RUN instruction is to place the full text of the shell command after the RUN (e.g., RUN mkdir /user/local/foo). This will automatically run in a /bin/sh shell. You can define a different shell like this: RUN /bin/bash -c 'mkdir /user/local/foo'
+
+- **COPY** copies local files into the container.
+
+- **CMD** defines the commands that will run on the Image at start-up. Unlike a RUN, this does not create a new layer for the Image, but simply runs the command. There can only be one CMD per a Dockerfile/Image. If you need to run multiple commands, the best way to do that is to have the CMD run a script. CMD requires that you tell it where to run the command, unlike RUN. So example CMD commands would be:
+
+.. code-block:: bash
+
+	CMD ["python", "./app.py"]
+
+	CMD ["/bin/bash", "echo", "Hello World"]
+
+- EXPOSE creates a hint for users of an image which ports provide services. It is included in the information which can be retrieved via ``$ docker inspect <container-id>``.
+
+.. Note::
+
+	The EXPOSE command does not actually make any ports accessible to the host! Instead, this requires publishing ports by means of the ``-p`` flag when using ``docker run``.
+
+- PUSH pushes your image to Docker Cloud, or alternately to a private registry
+
+.. Note::
+
+	If you want to learn more about Dockerfiles, check out `Best practices for writing Dockerfiles <https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/>`_.
+
+2. Docker registries
 ====================
 
 To demonstrate the portability of what we just created, let’s upload our built Docker image and run it somewhere else (Atmosphere cloud). After all, you’ll need to learn how to push to registries when you want to deploy containers to production.
@@ -21,12 +439,12 @@ There are several things you can do with Docker registries:
 - Pulling images
 - Sharing images
 
-1.1 Public repositories 
+2.1 Public repositories 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Some example of public registries include `Docker cloud <https://cloud.docker.com/>`_, `Docker hub <https://hub.docker.com/>`_ and `quay.io <https://quay.io/>`_.
 
-1.1.1 Log in with your Docker ID
+2.1.1 Log in with your Docker ID
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now that you've created and tested your image, you can push it to Docker cloud or Docker hub.
@@ -46,7 +464,7 @@ First you have to login to your Docker hub account. To do that:
 
 Enter Username and Password when prompted.
 
-1.1.2 Tag the image
+2.1.2 Tag the image
 ^^^^^^^^^^^^^^^^^^^
 
 The notation for associating a local image with a repository on a registry is ``username/repository:tag``. The tag is optional, but recommended, since it is the mechanism that registries use to give Docker images a version. Give the repository and tag meaningful names for the context, such as ``get-started:part2``. This will put the image in the ``get-started`` repository and tag it as ``part2``.
@@ -61,7 +479,7 @@ Now, put it all together to tag the image. Run docker tag image with your userna
 
 	$ docker tag $YOUR_DOCKERHUB_USERNAME/myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0
 
-1.1.3 Publish the image
+2.1.3 Publish the image
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Upload your tagged image to the Dockerhub repository
@@ -76,7 +494,7 @@ Once complete, the results of this upload are publicly available. If you log in 
 
 Congrats! You just made your first Docker image and shared it with the world!
 
-1.1.4 Pull and run the image from the remote repository
+2.1.4 Pull and run the image from the remote repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's try to run the image from the remote repository on Cloud server by logging into CyVerse Atmosphere, `launching an instance <../atmosphere/boot.html>`_
@@ -99,12 +517,12 @@ Now run the following command to run the docker image from Dockerhub
 
 Head over to ``http://<ipaddress>:8888`` and your app should be live. 
 
-1.2 Private repositories
+2.2 Private repositories
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 In an earlier part, we had looked at the Docker Hub, which is a public registry that is hosted by Docker. While the Dockerhub plays an important role in giving public visibility to your Docker images and for you to utilize quality Docker images put up by others, there is a clear need to setup your own private registry too for your team/organization. For example, CyVerse has it own private registry which will be used to push the Docker images.
 
-1.2.1 Pull down the Registry Image
+2.2.1 Pull down the Registry Image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You might have guessed by now that the registry must be available as a Docker image from the Docker Hub and it should be as simple as pulling the image down and running that. You are correct!
@@ -127,7 +545,7 @@ Run ``docker ps -l`` to check the recent container from this Docker image
 	CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
 	6e44a0459373        registry:2          "/entrypoint.sh /e..."   11 seconds ago      Up 10 seconds       0.0.0.0:5000->5000/tcp   registry
 
-1.2.2 Tag the image that you want to push
+2.2.2 Tag the image that you want to push
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Next step is to tag your image under the registry namespace and push it there
@@ -138,7 +556,7 @@ Next step is to tag your image under the registry namespace and push it there
 
 	$ docker tag $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0 $REGISTRY/$(whoami)/myfirstapp:1.0
 
-1.2.2 Publish the image into the local registry
+2.2.2 Publish the image into the local registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Finally push the image to the local registry
@@ -155,7 +573,7 @@ Finally push the image to the local registry
 	60ab55d3379d: Pushed 
 	1.0: digest: sha256:5095dea8b2cf308c5866ef646a0e84d494a00ff0e9b2c8e8313a176424a230ce size: 1572
 
-1.2.3 Pull and run the image from the local repository
+2.2.3 Pull and run the image from the local repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can also pull the image from the local repository similar to how you pull it from Dockerhub and run a container from it
@@ -164,7 +582,7 @@ You can also pull the image from the local repository similar to how you pull it
 
 	$ docker run -d -P --name=myfirstapplocal $REGISTRY/$(whoami)/myfirstapp:1.0
 
-2. Automated Docker image building from github
+3. Automated Docker image building from github
 ==============================================
 
 An automated build is a Docker image build that is triggered by a code change in a GitHub or Bitbucket repository. By linking a remote code repository to a Dockerhub automated build repository, you can build a new Docker image every time a code change is pushed to your code repository.
@@ -178,7 +596,7 @@ Automated Builds have several advantages:
 - Your repository is kept up-to-date with code changes automatically.
 - Automated Builds are supported for both public and private repositories on both GitHub and Bitbucket.
 
-2.1 Prerequisites
+3.1 Prerequisites
 ~~~~~~~~~~~~~~~~~
 
 To use automated builds, you first must have an account on `Docker Hub <https://hub.docker.com>`_ and on the hosted repository provider (`GitHub <https://github.com/>`_ or `Bitbucket <https://bitbucket.org/>`_). While Dockerhub supports linking both GitHub and Bitbucket repositories, here we will use a GitHub repository. If you don't already have one, make sure you have a GitHub account. A basic account is free
@@ -189,7 +607,7 @@ To use automated builds, you first must have an account on `Docker Hub <https://
 
 	- Building Windows containers is not supported.
 
-2.2 Link your Docker Hub account to GitHub
+3.2 Link your Docker Hub account to GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1.	Log into Docker Hub.
@@ -206,7 +624,7 @@ After you grant access to your code repository, the system returns you to Docker
 
 |auto_build-1|
 
-2.3 Create a new automated build
+3.3 Create a new automated build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Automated build repositories rely on the integration with your github code repository to build. 
@@ -345,309 +763,6 @@ Exercise 1 (5-10 mins): Updating and automated building
 - Trigger automatic build with a new tag (2.0) on Dockerhub
 - Run an instance to make sure the new pics show up
 - Share your Dockerhub link url on Slack
-
-3. Managing data in Docker
-==========================
-
-It is possible to store data within the writable layer of a container, but there are some limitations:
-
-- The data doesn’t persist when that container is no longer running, and it can be difficult to get the data out of the container if another process needs it.
-
-- A container’s writable layer is tightly coupled to the host machine where the container is running. You can’t easily move the data somewhere else.
-
-Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. When in doubt, volumes are almost always the right choice.
-
-3.1 Volumes 
-~~~~~~~~~~~
-
-**Volumes** are created and managed by Docker. You can create a volume explicitly using the ``docker volume create`` command, or Docker can create a volume during container creation. When you create a volume, it is stored within a directory on the Docker host (``/var/lib/docker/`` on Linux and check for the location on mac in here https://timonweb.com/posts/getting-path-and-accessing-persistent-volumes-in-docker-for-mac/). When you mount the volume into a container, this directory is what is mounted into the container. A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using ``docker volume prune`` command. 
-
-|volumes|
-
-Volumes are often a better choice than persisting data in a container’s writable layer, because using a volume does not increase the size of containers using it, and the volume’s contents exist outside the lifecycle of a given container. While bind mounts (which we will see later) are dependent on the directory structure of the host machine, volumes are completely managed by Docker. Volumes have several advantages over bind mounts:
-
-- Volumes are easier to back up or migrate than bind mounts.
-- You can manage volumes using Docker CLI commands or the Docker API.
-- Volumes work on both Linux and Windows containers.
-- Volumes can be more safely shared among multiple containers.
-- A new volume’s contents can be pre-populated by a container.
-
-.. Note::
-
-	If your container generates non-persistent state data, consider using a ``tmpfs`` mount to avoid storing the data anywhere permanently, and to increase the container’s performance by avoiding writing into the container’s writable layer.
-
-3.1.1 Choose the -v or –mount flag for mounting volumes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Originally, the ``-v`` or ``--volume`` flag was used for standalone containers and the ``--mount`` flag was used for swarm services. However, starting with Docker 17.06, you can also use ``--mount`` with standalone containers. In general, ``--mount`` is more explicit and verbose. The biggest difference is that the ``-v`` syntax combines all the options together in one field, while the ``--mount`` syntax separates them. Here is a comparison of the syntax for each flag.
-
-.. Tip::
-
- 	New users should use the ``--mount`` syntax. Experienced users may be more familiar with the ``-v`` or ``--volume`` syntax, but are encouraged to use ``--mount``, because research has shown it to be easier to use.
-
-``-v`` or ``--volume``: Consists of three fields, separated by colon characters (:). The fields must be in the correct order, and the meaning of each field is not immediately obvious.
-- In the case of named volumes, the first field is the name of the volume, and is unique on a given host machine.
-- The second field is the path where the file or directory are mounted in the container.
-- The third field is optional, and is a comma-separated list of options, such as ``ro``.
-
-``--mount``: Consists of multiple key-value pairs, separated by commas and each consisting of a ``<key>=<value>`` tuple. The ``--mount`` syntax is more verbose than ``-v`` or ``--volume``, but the order of the keys is not significant, and the value of the flag is easier to understand.
-- The type of the mount, which can be **bind**, **volume**, or **tmpfs**.
-- The source of the mount. For named volumes, this is the name of the volume. For anonymous volumes, this field is omitted. May be specified as **source** or **src**.
-- The destination takes as its value the path where the file or directory is mounted in the container. May be specified as **destination**, **dst**, or **target**.
-- The readonly option, if present, causes the bind mount to be mounted into the container as read-only.
-
-.. Note::
-
-	The ``--mount`` and ``-v`` examples have the same end result.
-
-3.1.2. Create and manage volumes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Unlike a bind mount, you can create and manage volumes outside the scope of any container.
-
-Let's create a volume
-
-.. code-block:: bash
-
-	$ docker volume create my-vol
-
-List volumes:
-
-.. code-block:: bash
-
-	$ docker volume ls
-
-	local               my-vol
-
-Inspect a volume by looking at the Mount section in the `docker volume inspect`
-
-.. code-block:: bash
-
-	$ docker volume inspect my-vol
-	[
-	    {
-	        "Driver": "local",
-	        "Labels": {},
-	        "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
-	        "Name": "my-vol",
-	        "Options": {},
-	        "Scope": "local"
-	    }
-	]
-
-Remove a volume
-
-.. code-block:: bash
-
-	$ docker volume rm my-vol
-
-3.1.3 Populate a volume using a container
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This example starts an ``nginx`` container and populates the new volume ``nginx-vol`` with the contents of the container’s ``/var/log/nginx`` directory, which is where Nginx stores its log files.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name=nginxtest --mount source=nginx-vol,target=/var/log/nginx nginx:latest
-
-So, we now have a copy of Nginx running inside a Docker container on our machine, and our host machine's port 5000 maps directly to that copy of Nginx's port 80. Let's use curl to do a quick test request:
-
-.. code-block:: bash
-
-	$ curl localhost:8891
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<title>Welcome to nginx!</title>
-	<style>
-	    body {
-	        width: 35em;
-	        margin: 0 auto;
-	        font-family: Tahoma, Verdana, Arial, sans-serif;
-	    }
-	</style>
-	</head>
-	<body>
-	<h1>Welcome to nginx!</h1>
-	<p>If you see this page, the nginx web server is successfully installed and
-	working. Further configuration is required.</p>
-
-	<p>For online documentation and support please refer to
-	<a href="http://nginx.org/">nginx.org</a>.<br/>
-	Commercial support is available at
-	<a href="http://nginx.com/">nginx.com</a>.</p>
-
-	<p><em>Thank you for using nginx.</em></p>
-	</body>
-	</html>
-
-You'll get a screenful of HTML back from Nginx showing that Nginx is up and running. But more interestingly, if you look in the ``nginx-vol`` volume on the host machine and take a look at the ``access.log`` file you'll see a log message from Nginx showing our request.
-
-.. code-block:: bash
-	
-	cat nginx-vol/_data/access.log
-
-Use ``docker inspect nginx-vol`` to verify that the volume was created and mounted correctly. Look for the Mounts section:
-
-.. code-block:: bash
-
-	"Mounts": [
-	            {
-	                "Type": "volume",
-	                "Name": "nginx-vol",
-	                "Source": "/var/lib/docker/volumes/nginx-vol/_data",
-	                "Destination": "/var/log/nginx",
-	                "Driver": "local",
-	                "Mode": "z",
-	                "RW": true,
-	                "Propagation": ""
-	            }
-	        ],
-
-This shows that the mount is a volume, it shows the correct source and destination, and that the mount is read-write.
-
-After running either of these examples, run the following commands to clean up the containers and volumes.
-
-.. code-block:: bash
-
-	$ docker stop nginxtest
-
-	$ docker rm nginxtest
-
-	$ docker volume rm nginx-vol
-
-3.2 Bind mounts
-~~~~~~~~~~~~~~~
-
-**Bind mounts:** When you use a bind mount, a file or directory on the host machine is mounted into a container. 
-
-.. tip::
-
-	If you are developing new Docker applications, consider using named **volumes** instead. You can’t use Docker CLI commands to directly manage bind mounts.
-
-|bind_mount|
-
-.. Warning:: 
-
-	One side effect of using bind mounts, for better or for worse, is that you can change the host filesystem via processes running in a container, including creating, modifying, or deleting important system files or directories. This is a powerful ability which can have security implications, including impacting non-Docker processes on the host system.
-
-	If you use ``--mount`` to bind-mount a file or directory that does not yet exist on the Docker host, Docker does not automatically create it for you, but generates an error.
-
-3.2.1 Start a container with a bind mount
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: bash
-
-	$ mkdir data
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=bind,source="$(pwd)"/data,target=/var/log/nginx nginx:latest
-
-Use `docker inspect devtest` to verify that the bind mount was created correctly. Look for the "Mounts" section
-
-.. code-block:: bash
-
-	$ docker inspect devtest
-
-	"Mounts": [
-	            {
-	                "Type": "bind",
-	                "Source": "/Users/upendra_35/Documents/git.repos/flask-app/data",
-	                "Destination": "/var/log/nginx",
-	                "Mode": "",
-	                "RW": true,
-	                "Propagation": "rprivate"
-	            }
-	        ],
-
-This shows that the mount is a bind mount, it shows the correct source and target, it shows that the mount is read-write, and that the propagation is set to rprivate.
-
-Stop the container:
-
-.. code-block:: bash
-
-	$ docker rm -f devtest
-
-3.2.2 Use a read-only bind mount
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For some development applications, the container needs to write into the bind mount, so changes are propagated back to the Docker host. At other times, the container only needs read access.
-
-This example modifies the one above but mounts the directory as a read-only bind mount, by adding ``ro`` to the (empty by default) list of options, after the mount point within the container. Where multiple options are present, separate them by commas.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=bind,source="$(pwd)"/data,target=/var/log/nginx,readonly nginx:latest
-
-Use ``docker inspect devtest`` to verify that the bind mount was created correctly. Look for the Mounts section:
-
-.. code-block:: bash
-
-	"Mounts": [
-            {
-                "Type": "bind",
-                "Source": "/Users/upendra_35/Documents/git.repos/flask-app/data",
-                "Destination": "/var/log/nginx",
-                "Mode": "",
-                "RW": false,
-                "Propagation": "rprivate"
-            }
-        ],
-
-Stop the container:
-
-.. code-block:: bash
-
-	$ docker rm -f devtest
-
-Remove the volume:
-
-.. code-block:: bash
-
-	$ docker volume rm devtest
-
-3.3 tmpfs
-~~~~~~~~~
-
-**tmpfs mounts:** A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service’s containers.
-
-|tmpfs|
-
-**Volumes** and **bind mounts** are mounted into the container’s filesystem by default, and their contents are stored on the host machine. There may be cases where you do not want to store a container’s data on the host machine, but you also don’t want to write the data into the container’s writable layer, for performance or security reasons, or if the data relates to non-persistent application state. An example might be a temporary one-time password that the container’s application creates and uses as-needed. To give the container access to the data without writing it anywhere permanently, you can use a tmpfs mount, which is only stored in the host machine’s memory (or swap, if memory is low). When the container stops, the tmpfs mount is removed. If a container is committed, the tmpfs mount is not saved.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=tmpfs,target=/var/log/nginx nginx:latest
-
-Use `docker inspect devtest` to verify that the bind mount was created correctly. Look for the Mounts section:
-
-.. code-block:: bash
-
-	$ docker inspect devtest
-
-	"Mounts": [
-	            {
-	                "Type": "tmpfs",
-	                "Source": "",
-	                "Destination": "/var/log/nginx",
-	                "Mode": "",
-	                "RW": true,
-	                "Propagation": ""
-	            }
-	        ],
-
-You can see from the above output that the ``Source`` filed is empty which indicates that the contents are not avaible on Docker host or host file system. 
-
-Stop the container:
-
-.. code-block:: bash
-
-	$ docker rm -f devtest
-
-Remove the volume:
-
-.. code-block:: bash
-
-	$ docker volume rm devtest
 
 4. Docker Compose for multi container apps
 ==========================================
