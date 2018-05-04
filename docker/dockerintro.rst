@@ -687,8 +687,8 @@ Hit the Refresh button in the web browser to see a few more cat images.
 - Verify the web app and container are functioning correctly
 - Share your (non-localhost) url on Slack
 
-6. Dockerfile commands summary
-==============================
+5.4. Dockerfile commands summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here's a quick summary of the few basic commands we used in our Dockerfile.
 
