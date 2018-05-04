@@ -38,9 +38,6 @@ The getting started guide on Docker has detailed instructions for setting up Doc
 
 	Log out and log back in so that your group membership is re-evaluated
 
-2.1 Testing Docker installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Once you are done installing Docker, test your Docker installation by running the following command to make sure you are using version 1.13 or higher:
 
 .. code-block:: bash
@@ -72,8 +69,8 @@ When run without ``--version`` you should see a whole bunch of lines showing the
 	    to your terminal.
 	.......
 
-3. Running Docker containers from prebuilt images
-=================================================
+3. Running Docker containers
+============================
 
 Now that you have everything setup, it's time to get our hands dirty. In this section, you are going to run a container from `Alpine Linux <http://www.alpinelinux.org/>`_ (a lightweight linux distribution) image on your system and get a taste of the ``docker run`` command.
 
@@ -491,8 +488,13 @@ Use case 1: Processing VLBI data with Docker
 
 TODO: use HOPS to fringe fit VLBI data.
 
-5. Improving your data science workflow using Docker containers (Containerized Data Science)
-============================================================================================
+5. Expose container ports
+=========================
+
+TODO: exposing ports
+
+Use case 2: Improving your data science workflow using Docker containers (Containerized Data Science)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a data scientist, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
 
