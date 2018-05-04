@@ -3,7 +3,6 @@
 
 |singularity|
 
-
 1. Using HPC Environments
 =========================
 
@@ -73,20 +72,20 @@ Because you may have to build your own MPI enabled Singularity images (to get th
 .. code-block:: bash
 
   # Copyright (c) 2015-2016, Gregory M. Kurtzer. All rights reserved.
-  # 
+  #
   # "Singularity" Copyright (c) 2016, The Regents of the University of     California,
   # through Lawrence Berkeley National Laboratory (subject to receipt of any
   # required approvals from the U.S. Dept. of Energy).  All rights reserved.
-  
+
   BootStrap: debootstrap
   OSVersion: xenial
   MirrorURL: http://us.archive.ubuntu.com/ubuntu/
-  
-  
+
+
   %runscript
       echo "This is what happens when you run the container..."
-  
-  
+
+
   %post
       echo "Hello from inside the container"
       sed -i 's/$/ universe/' /etc/apt/sources.list
@@ -132,7 +131,7 @@ Since Singularity supported docker containers, it has been fairly simple to util
   module load tacc-singularity
   # Pull your image
   singularity pull docker://nvidia/caffe:latest
-  
+
   singularity exec --nv caffe-latest.img caffe device_query -gpu 0
 
 Please note that the --nv flag specifically passes the GPU drivers into the container. If you leave it out, the GPU will not be detected.
@@ -184,10 +183,6 @@ You can use a Singularity file or a Dockerfile to help you.  For reference, you 
 
 - `http://singularity.lbl.gov/docs-build-container <http://singularity.lbl.gov/docs-build-container>`_
 - `https://docs.docker.com/engine/reference/builder/ <https://docs.docker.com/engine/reference/builder/>`_
-
-
-
-
 
 .. |singularity| image:: ../img/singularity.png
   :height: 200

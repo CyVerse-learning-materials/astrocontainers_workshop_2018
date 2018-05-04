@@ -1,5 +1,6 @@
 **Other resources**
 -------------------
+
 **University of Arizona Campus Resources**
 
 * `UA Campus Accessibility <http://www.arizona.edu/campus-accessibility>`_

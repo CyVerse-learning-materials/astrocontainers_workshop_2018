@@ -15,23 +15,23 @@ Getting all the tooling setup on your computer can be a daunting task, but not w
 
 The getting started guide on Docker has detailed instructions for setting up Docker on `Mac <https://docs.docker.com/docker-for-mac/install/>`_/`Windows <https://docs.docker.com/docker-for-windows/install/>`_/`Linux <https://docs.docker.com/install/linux/docker-ce/ubuntu/>`_.
 
-.. Note:: 
+.. Note::
 
-	If you're using Docker for Windows make sure you have `shared your drive <https://docs.docker.com/docker-for-windows/#shared-drives>`_. 
-	
-	If you're using an older version of Windows or MacOS you may need to use `Docker Machine <https://docs.docker.com/machine/overview/>`_ instead. 
-	
+	If you're using Docker for Windows make sure you have `shared your drive <https://docs.docker.com/docker-for-windows/#shared-drives>`_.
+
+	If you're using an older version of Windows or MacOS you may need to use `Docker Machine <https://docs.docker.com/machine/overview/>`_ instead.
+
 	All commands work in either bash or Powershell on Windows.
 
 .. Note::
 
-	Depending on how you've installed Docker on your system, you might see a ``permission denied`` error after running the above command. If you're on Linux, you may need to prefix your Docker commands with sudo. Alternatively to run docker command without sudo, you need to add your user (who has root privileges) to docker group. 
-	For this run: 
+	Depending on how you've installed Docker on your system, you might see a ``permission denied`` error after running the above command. If you're on Linux, you may need to prefix your Docker commands with sudo. Alternatively to run docker command without sudo, you need to add your user (who has root privileges) to docker group.
+	For this run:
 
 	Create the docker group::
 
 		$ sudo groupadd docker
-	
+
 	Add your user to the docker group::
 
 		$ sudo usermod -aG docker $USER
@@ -79,7 +79,7 @@ Now that you have everything setup, it's time to get our hands dirty. In this se
 
 But wait, what exactly is a container and image?
 
-**Containers** - Running instances of Docker images — containers run the actual applications. A container includes an application and all of its dependencies. It shares the kernel with other containers, and runs as an isolated process in user space on the host OS. 
+**Containers** - Running instances of Docker images — containers run the actual applications. A container includes an application and all of its dependencies. It shares the kernel with other containers, and runs as an isolated process in user space on the host OS.
 
 **Images** - The file system and configuration of our application which are used to create containers. To find out more about a Docker image, run ``docker inspect hello-world``. In the demo above, you could have used the ``docker pull`` command to download the ``hello-world`` image. However when you executed the command ``docker run hello-world``, it also did a ``docker pull`` behind the scenes to download the ``hello-world`` image with ``latest`` tag (we will learn more about tags little later).
 
@@ -97,7 +97,7 @@ Now that we know what a container and image is, let's run the following command 
 	drwxr-xr-x    5 root     root          4096 Dec 26  2016 media
 	........
 
-Similar to ``docker run hello-world`` command in the demo above, ``docker run alpine ls -l`` command fetches the ``alpine:latest`` image from the Docker registry first, saves it in our system and then runs a container from that saved image. 
+Similar to ``docker run hello-world`` command in the demo above, ``docker run alpine ls -l`` command fetches the ``alpine:latest`` image from the Docker registry first, saves it in our system and then runs a container from that saved image.
 
 When you run ``docker run alpine``, you provided a command ``ls -l``, so Docker started the command specified and you saw the listing
 
@@ -125,7 +125,7 @@ Try another command.
 
 	$ docker run alpine sh
 
-Wait, nothing happened! Is that a bug? Well, no. These interactive shells will exit after running any scripted commands such as ``sh``, unless they are run in an interactive terminal - so for this example to not exit, you need to ``docker run -it alpine sh``. You are now inside the container shell and you can try out a few commands like ``ls -l``, ``uname -a`` and others. 
+Wait, nothing happened! Is that a bug? Well, no. These interactive shells will exit after running any scripted commands such as ``sh``, unless they are run in an interactive terminal - so for this example to not exit, you need to ``docker run -it alpine sh``. You are now inside the container shell and you can try out a few commands like ``ls -l``, ``uname -a`` and others.
 
 Before doing that, now it's time to see the ``docker ps`` command which shows you all containers that are currently running.
 
@@ -145,7 +145,7 @@ Since no containers are running, you see a blank line. Let's try a more useful v
 	ff0a5c3750b9        alpine             "ls -l"                   8 minutes ago       Exited (0) 8 minutes ago                        elated_ramanujan
 	c317d0a9e3d2        hello-world         "/hello"                 34 seconds ago      Exited (0) 12 minutes ago                       stupefied_mcclintock
 
-What you see above is a list of all containers that you ran. Notice that the STATUS column shows that these containers exited a few minutes ago. 
+What you see above is a list of all containers that you ran. Notice that the STATUS column shows that these containers exited a few minutes ago.
 
 If you want to run scripted commands such as ``sh``, they should be run in an interactive terminal. In addition, interactive terminal allows you to run more than one command in a container. Let's try that now:
 
@@ -194,10 +194,10 @@ It is possible to store data within the writable layer of a container, but there
 
 Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. When in doubt, volumes are almost always the right choice.
 
-4.1 Volumes 
+4.1 Volumes
 ~~~~~~~~~~~
 
-**Volumes** are created and managed by Docker. You can create a volume explicitly using the ``docker volume create`` command, or Docker can create a volume during container creation. When you create a volume, it is stored within a directory on the Docker host (``/var/lib/docker/`` on Linux and check for the location on mac in here https://timonweb.com/posts/getting-path-and-accessing-persistent-volumes-in-docker-for-mac/). When you mount the volume into a container, this directory is what is mounted into the container. A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using ``docker volume prune`` command. 
+**Volumes** are created and managed by Docker. You can create a volume explicitly using the ``docker volume create`` command, or Docker can create a volume during container creation. When you create a volume, it is stored within a directory on the Docker host (``/var/lib/docker/`` on Linux and check for the location on mac in here https://timonweb.com/posts/getting-path-and-accessing-persistent-volumes-in-docker-for-mac/). When you mount the volume into a container, this directory is what is mounted into the container. A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using ``docker volume prune`` command.
 
 |volumes|
 
@@ -321,7 +321,7 @@ So, we now have a copy of Nginx running inside a Docker container on our machine
 You'll get a screenful of HTML back from Nginx showing that Nginx is up and running. But more interestingly, if you look in the ``nginx-vol`` volume on the host machine and take a look at the ``access.log`` file you'll see a log message from Nginx showing our request.
 
 .. code-block:: bash
-	
+
 	cat nginx-vol/_data/access.log
 
 Use ``docker inspect nginx-vol`` to verify that the volume was created and mounted correctly. Look for the Mounts section:
@@ -356,7 +356,7 @@ After running either of these examples, run the following commands to clean up t
 4.2 Bind mounts
 ~~~~~~~~~~~~~~~
 
-**Bind mounts:** When you use a bind mount, a file or directory on the host machine is mounted into a container. 
+**Bind mounts:** When you use a bind mount, a file or directory on the host machine is mounted into a container.
 
 .. tip::
 
@@ -364,7 +364,7 @@ After running either of these examples, run the following commands to clean up t
 
 |bind_mount|
 
-.. Warning:: 
+.. Warning::
 
 	One side effect of using bind mounts, for better or for worse, is that you can change the host filesystem via processes running in a container, including creating, modifying, or deleting important system files or directories. This is a powerful ability which can have security implications, including impacting non-Docker processes on the host system.
 
@@ -472,7 +472,7 @@ Use `docker inspect devtest` to verify that the bind mount was created correctly
 	            }
 	        ],
 
-You can see from the above output that the ``Source`` filed is empty which indicates that the contents are not avaible on Docker host or host file system. 
+You can see from the above output that the ``Source`` filed is empty which indicates that the contents are not avaible on Docker host or host file system.
 
 Stop the container:
 
@@ -494,7 +494,7 @@ Great! so you have now looked at ``docker run``, played with a Docker containers
 Let's start by taking baby-steps. First, we'll use Docker to run a static website in a container. The website is based on an existing image and in the next section we will see how to build a new image and run a website in that container. We'll pull a Docker image from Dockerhub, run the container, and see how easy it is to set up a web server.
 
 .. Note::
-	
+
 	Code for this section is in this repo in the `static-site directory <https://github.com/docker/labs/tree/master/beginner/static-site>`_
 
 The image that you are going to use is a single-page website that was already created for this demo and is available on the Dockerhub as `dockersamples/static-site <https:/hub.docker.com/community/images/dockersamples/static-site>`_. You can pull and run the image directly in one go using ``docker run`` as follows.
@@ -503,9 +503,9 @@ The image that you are going to use is a single-page website that was already cr
 
 	$ docker run -d dockersamples/static-site
 
-.. Note:: 
+.. Note::
 
-	The ``-d`` flag enables detached mode, which detaches the running container from the terminal/shell and returns your prompt after the container starts. 
+	The ``-d`` flag enables detached mode, which detaches the running container from the terminal/shell and returns your prompt after the container starts.
 
 So, what happens when you run this command?
 
@@ -559,7 +559,7 @@ Now you can see the ports by running the ``docker port`` command.
 	443/tcp -> 0.0.0.0:32770
 	80/tcp -> 0.0.0.0:32773
 
-If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open a web browser and go to port 80 on your host. The exact address will depend on how you're running Docker 
+If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open a web browser and go to port 80 on your host. The exact address will depend on how you're running Docker
 
 - Laptop or Native linux: ``http://localhost:[YOUR_PORT_FOR 80/tcp]``. On my system this is ``http://localhost:32773``.
 
@@ -602,4 +602,3 @@ Run ``docker ps`` to make sure the containers are gone.
 
 	$ docker ps
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-

@@ -1,7 +1,7 @@
 **Training session in Docker**
 ==============================
 
-**Trainers (CK Chan and Upendra Devisetty)**    
+**Trainers (CK Chan and Upendra Devisetty)**
 
 In this session we will explain the various aspects of the Docker. Starting with the basics of Docker which focus on the installation and configuration of Docker and managing data using volumes, the session will gradually move to advanced topics such as pushing and pulling containers from registries. Overall this session covers the development aspects of Docker and how you can get up and running on the development environments using Docker containers.
 

@@ -41,16 +41,16 @@ Briefly,
 - set up a virtualenv with python2 or python3:
 
   ``python -m virtualenv buildenv -p python3.5; . ~/buildenv/bin/activate``
-  
+
 - install the prerequisites:
 
   ``pip install -r requirements.txt``
-  
-- build site: 
-  
+
+- build site:
+
   ``make html``
 
-- open / click on 
+- open / click on
 
   ``_build/html/index.html``
 
@@ -59,7 +59,7 @@ Briefly,
 Everything can/should be in
 `Restructured text <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet!>`_
 If you're not super familiar with Restructured text, you can use
-`online restructured text editor </http://rst.ninjs.org/>`_ to write your tutorials. 
+`online restructured text editor </http://rst.ninjs.org/>`_ to write your tutorials.
 
 (Note that you can go visit the github repo and it will helpfully render
 `.rst` files for you if you click on them! They just won't have the full
@@ -70,7 +70,7 @@ served up through the web site can be put in the `_static`
 directory; their URL will then be
 
     https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/_static/filename
-    
+
 **Images**
 
 Image formatting in Restructured text is pretty straightforward. Here is an example

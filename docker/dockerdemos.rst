@@ -25,8 +25,8 @@ Use the following Docker commands to deploy Portainer. Now the second line of co
 
 - If you are running Docker on Atmosphere/Jetstream or on any other cloud, you can open ``ipaddress:9000``. For my case this is ``http://128.196.142.26:9000``
 
-.. Note:: 
-	
+.. Note::
+
 	The `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in mac/linux environments only.
 
 |portainer_demo|
@@ -69,4 +69,4 @@ You don't have to install anything to use PWD. Just open ``https://labs.play-wit
 
 .. |catpic| image:: ../img/catpic-1.png
   :width: 750
-  :height: 700  
+  :height: 700

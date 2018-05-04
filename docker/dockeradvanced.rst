@@ -48,30 +48,30 @@ To get a new Docker image you can either get it from a registry (such as the Doc
 
 	$ docker search ubuntu
 	  NAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
-	  ubuntu                                                 Ubuntu is a Debian-based Linux operating sys…   7310                [OK]                
+	  ubuntu                                                 Ubuntu is a Debian-based Linux operating sys…   7310                [OK]
 	  dorowu/ubuntu-desktop-lxde-vnc                         Ubuntu with openssh-server and NoVNC            163                                     [OK]
 	  rastasheep/ubuntu-sshd                                 Dockerized SSH service, built on top of offi…   131                                     [OK]
 	  ansible/ubuntu14.04-ansible                            Ubuntu 14.04 LTS with ansible                   90                                      [OK]
-	  ubuntu-upstart                                         Upstart is an event-based replacement for th…   81                  [OK]                
-	  neurodebian                                            NeuroDebian provides neuroscience research s…   43                  [OK]                
-	  ubuntu-debootstrap                                     debootstrap --variant=minbase --components=m…   35                  [OK]                
+	  ubuntu-upstart                                         Upstart is an event-based replacement for th…   81                  [OK]
+	  neurodebian                                            NeuroDebian provides neuroscience research s…   43                  [OK]
+	  ubuntu-debootstrap                                     debootstrap --variant=minbase --components=m…   35                  [OK]
 	  1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5   ubuntu-16-nginx-php-phpmyadmin-mysql-5          26                                      [OK]
 	  nuagebec/ubuntu                                        Simple always updated Ubuntu docker images w…   22                                      [OK]
-	  tutum/ubuntu                                           Simple Ubuntu docker images with SSH access     18                                      
-	  ppc64le/ubuntu                                         Ubuntu is a Debian-based Linux operating sys…   11                                      
-	  i386/ubuntu                                            Ubuntu is a Debian-based Linux operating sys…   9                                       
+	  tutum/ubuntu                                           Simple Ubuntu docker images with SSH access     18
+	  ppc64le/ubuntu                                         Ubuntu is a Debian-based Linux operating sys…   11
+	  i386/ubuntu                                            Ubuntu is a Debian-based Linux operating sys…   9
 	  1and1internet/ubuntu-16-apache-php-7.0                 ubuntu-16-apache-php-7.0                        7                                       [OK]
 	  eclipse/ubuntu_jdk8                                    Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   5                                       [OK]
 	  darksheer/ubuntu                                       Base Ubuntu Image -- Updated hourly             3                                       [OK]
 	  codenvy/ubuntu_jdk8                                    Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   3                                       [OK]
 	  1and1internet/ubuntu-16-nginx-php-5.6-wordpress-4      ubuntu-16-nginx-php-5.6-wordpress-4             2                                       [OK]
 	  1and1internet/ubuntu-16-nginx                          ubuntu-16-nginx                                 2                                       [OK]
-	  pivotaldata/ubuntu                                     A quick freshening-up of the base Ubuntu doc…   1                                       
+	  pivotaldata/ubuntu                                     A quick freshening-up of the base Ubuntu doc…   1
 	  smartentry/ubuntu                                      ubuntu with smartentry                          0                                       [OK]
-	  pivotaldata/ubuntu-gpdb-dev                            Ubuntu images for GPDB development              0                                       
+	  pivotaldata/ubuntu-gpdb-dev                            Ubuntu images for GPDB development              0
 	  1and1internet/ubuntu-16-healthcheck                    ubuntu-16-healthcheck                           0                                       [OK]
-	  thatsamguy/ubuntu-build-image                          Docker webapp build images based on Ubuntu      0                                       
-	  ossobv/ubuntu                                          Custom ubuntu image from scratch (based on o…   0                                       
+	  thatsamguy/ubuntu-build-image                          Docker webapp build images based on Ubuntu      0
+	  ossobv/ubuntu                                          Custom ubuntu image from scratch (based on o…   0
 	  1and1internet/ubuntu-16-sshd                           ubuntu-16-sshd                                  0                                       [OK]
 
 An important distinction with regard to images is between base images and child images and official images and user images (Both of which can be base images or child images.).
@@ -88,7 +88,7 @@ An important distinction with regard to images is between base images and child 
 1.2 Meet our Flask app
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Now that you have a better understanding of images, it's time to create an image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it. 
+Now that you have a better understanding of images, it's time to create an image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it.
 
 - `Create a Python Flask app that displays random cat`_
 - `Build the image`_
@@ -218,7 +218,7 @@ A **Dockerfile** is a text file that contains a list of commands that the Docker
 
 We want to create a Docker image with this web app. As mentioned above, all user images are based on a base image. Since our application is written in Python, we will build our own Python image based on ``Alpine``. We'll do that using a Dockerfile.
 
-Create a file called Dockerfile in the ``flask`` directory, and add content to it as described below. Since you are currently in ``templates`` directory, you need to go up one directory up before you can create your Dockerfile 
+Create a file called Dockerfile in the ``flask`` directory, and add content to it as described below. Since you are currently in ``templates`` directory, you need to go up one directory up before you can create your Dockerfile
 
 .. code-block:: bash
 
@@ -375,7 +375,7 @@ When Docker can successfully build your Dockerfile, test it by starting a new co
 
 	$ docker run -d -p 8888:5000 --name myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp
 
-Head over to ``http://localhost:8888`` and your app should be live. 
+Head over to ``http://localhost:8888`` and your app should be live.
 
 |catpic|
 
@@ -420,7 +420,7 @@ Exercise 1 (5-10 mins): Deploy a custom Docker image
 - Run an instance from that image
 - Verify the web app and container are functioning correctly
 - Share your (non-localhost) url on Slack
-	
+
 2. Docker registries
 ====================
 
@@ -434,12 +434,12 @@ To demonstrate the portability of what we just created, let’s upload our built
 
 There are several things you can do with Docker registries:
 
-- Pushing images 
+- Pushing images
 - Finding images
 - Pulling images
 - Sharing images
 
-2.1 Public repositories 
+2.1 Public repositories
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Some example of public registries include `Docker cloud <https://cloud.docker.com/>`_, `Docker hub <https://hub.docker.com/>`_ and `quay.io <https://quay.io/>`_.
@@ -459,7 +459,7 @@ First you have to login to your Docker hub account. To do that:
 
 	$ docker login
 	Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-	Username (upendradevisetty):                 
+	Username (upendradevisetty):
 	Password:
 
 Enter Username and Password when prompted.
@@ -486,7 +486,7 @@ Upload your tagged image to the Dockerhub repository
 
 .. code-block:: bash
 
-	$ docker push $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0	
+	$ docker push $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0
 
 Once complete, the results of this upload are publicly available. If you log in to Docker Hub, you will see the new image there, with its pull command.
 
@@ -515,7 +515,7 @@ Now run the following command to run the docker image from Dockerhub
 
 	You don't have to run ``docker pull`` since if the image isn’t available locally on the machine, Docker will pull it from the repository.
 
-Head over to ``http://<ipaddress>:8888`` and your app should be live. 
+Head over to ``http://<ipaddress>:8888`` and your app should be live.
 
 2.2 Private repositories
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -565,12 +565,12 @@ Finally push the image to the local registry
 
 	$ docker push $REGISTRY/$(whoami)/myfirstapp:1.0
 	The push refers to a repository [localhost:5000/upendra_35/myfirstapp]
-	64436820c85c: Pushed 
-	831cff83ec9e: Pushed 
-	c3497b2669a8: Pushed 
-	1c5b16094682: Pushed 
-	c52044a91867: Pushed 
-	60ab55d3379d: Pushed 
+	64436820c85c: Pushed
+	831cff83ec9e: Pushed
+	c3497b2669a8: Pushed
+	1c5b16094682: Pushed
+	c52044a91867: Pushed
+	60ab55d3379d: Pushed
 	1.0: digest: sha256:5095dea8b2cf308c5866ef646a0e84d494a00ff0e9b2c8e8313a176424a230ce size: 1572
 
 2.2.3 Pull and run the image from the local repository
@@ -627,7 +627,7 @@ After you grant access to your code repository, the system returns you to Docker
 3.3 Create a new automated build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Automated build repositories rely on the integration with your github code repository to build. 
+Automated build repositories rely on the integration with your github code repository to build.
 
 Let's create an automatic build for our ``flask-app`` using the instructions below:
 
@@ -637,7 +637,7 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 
 	$ git init
 	Initialized empty Git repository in /Users/upendra_35/Documents/git.repos/flask-app/.git/
-	
+
 	$ git status
 	On branch master
 
@@ -651,7 +651,7 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 		requirements.txt
 		templates/
 
-	nothing added to commit but untracked files present (use "git add" to track) 
+	nothing added to commit but untracked files present (use "git add" to track)
 
 	$ git add * && git commit -m"Add files and folders"
 	[master (root-commit) cfdf021] Add files and folders
@@ -685,7 +685,7 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 
 4.	Select ``Create`` > ``Create Automated Build`` from Docker Hub.
 
-- The system prompts you with a list of User/Organizations and code repositories. 
+- The system prompts you with a list of User/Organizations and code repositories.
 
 - For now select your GitHub account from the User/Organizations list on the left. The list of repositories change.
 
@@ -721,7 +721,7 @@ Specify which code branches or tags to build from. You can build by a code branc
 
 	The build process looks for a README.md in the same directory as your Dockerfile. If you have a README.md file in your repository, it is used in the repository as the full description. If you change the full description after a build, it’s overwritten the next time the Automated Build runs. To make changes, modify the README.md in your Git repository.
 
-.. warning:: 
+.. warning::
 
 	You can only trigger one build at a time and no more than one every five minutes. If you already have a build pending, or if you recently submitted a build request, Docker ignores new requests.
 
@@ -767,7 +767,7 @@ Exercise 2 (5-10 mins): Updating and automated building
 4. Docker Compose for multi container apps
 ==========================================
 
-**Docker Compose** is a tool for defining and running your multi-container Docker applications. 
+**Docker Compose** is a tool for defining and running your multi-container Docker applications.
 
 Main advantages of Docker compose include:
 
@@ -856,7 +856,7 @@ A brief explanation of ``docker-compose.yml`` is as below:
 	Docker for Mac and Docker Toolbox already include Compose along with other Docker apps, so Mac users do not need to install Compose separately.
 	Docker for Windows and Docker Toolbox already include Compose along with other Docker apps, so most Windows users do not need to install Compose separately.
 
-	For Linux users 
+	For Linux users
 
 	.. code-block:: bash
 
@@ -943,7 +943,7 @@ For a data scientist, running a container that is already equipped with the libr
 
 But why Set Up a Data Science Environment in a Container?
 
-- One reason is speed. We want data scientists using our platform to launch a Jupyter or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines). 
+- One reason is speed. We want data scientists using our platform to launch a Jupyter or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
 
 - Containerization benefits both data science and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don’t have to configure anything at all. We provide plenty of standard environment templates to choose from.)
 
@@ -983,7 +983,7 @@ Docker allows us to run a ‘ready to go’ Jupyter data science stack in what�
 	$ mkdir jn && cd jn
 
 .. code-block:: bash
-	
+
 	version: '2'
 
 	services:
@@ -1006,7 +1006,7 @@ Docker allows us to run a ‘ready to go’ Jupyter data science stack in what�
 .. code-block:: bash
 
 	$ docker-compose up
-	Creating datascience-notebook-container ... 
+	Creating datascience-notebook-container ...
 	Creating datascience-notebook-container ... done
 	Attaching to datascience-notebook-container
 	datascience-notebook-container | Execute the command: jupyter notebook
@@ -1017,11 +1017,11 @@ Docker allows us to run a ‘ready to go’ Jupyter data science stack in what�
 	datascience-notebook-container | Known labextensions:
 	datascience-notebook-container | [I 08:44:31.373 NotebookApp] Running the core application with no additional extensions or settings
 	datascience-notebook-container | [I 08:44:31.379 NotebookApp] Serving notebooks from local directory: /home/jovyan
-	datascience-notebook-container | [I 08:44:31.379 NotebookApp] 0 active kernels 
+	datascience-notebook-container | [I 08:44:31.379 NotebookApp] 0 active kernels
 	datascience-notebook-container | [I 08:44:31.379 NotebookApp] The Jupyter Notebook is running at: http://[all ip addresses on your 	system]:8888/?token=dfb50de6c1da091fd62336ac52cdb88de5fe339eb0faf478
 	datascience-notebook-container | [I 08:44:31.379 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-	datascience-notebook-container | [C 08:44:31.380 NotebookApp] 
-	datascience-notebook-container |     
+	datascience-notebook-container | [C 08:44:31.380 NotebookApp]
+	datascience-notebook-container |
 	datascience-notebook-container |     Copy/paste this URL into your browser when you connect for the first time,
 	datascience-notebook-container |     to login with a token:
 	datascience-notebook-container |         http://localhost:8888/?token=dfb50de6c1da091fd62336ac52cdb88de5fe339eb0faf478
@@ -1040,7 +1040,7 @@ Once you’ve done that you should be greeted by your very own containerised Jup
 
 |jn_login|
 
-To create your first notebook, drill into the work directory and then click on the ‘New’ button on the right hand side and choose ‘Python 3’ to create a new Python 3 based Notebook. 
+To create your first notebook, drill into the work directory and then click on the ‘New’ button on the right hand side and choose ‘Python 3’ to create a new Python 3 based Notebook.
 
 |jn_login2|
 
@@ -1062,11 +1062,11 @@ Next, we will see a Docker image from Rocker which will allow us to run RStudio 
 
 	$ docker run --rm -d -p 8787:8787 rocker/rstudio:3.4.3
 
-.. Note:: 
-	
-	 ``–rm`` ensures that when we quit the container, the container is deleted. If we did not do this, everytime we run a container, a version of it will be saved to our local computer. This can lead to the eventual wastage of a lot of disk space until we manually remove these containers. 
+.. Note::
 
-The command above will lead RStudio-Server to launch invisibly. To connect to it, open a browser and enter http://localhost:8787, or <ipaddress>:8787 on cloud 
+	 ``–rm`` ensures that when we quit the container, the container is deleted. If we did not do this, everytime we run a container, a version of it will be saved to our local computer. This can lead to the eventual wastage of a lot of disk space until we manually remove these containers.
+
+The command above will lead RStudio-Server to launch invisibly. To connect to it, open a browser and enter http://localhost:8787, or <ipaddress>:8787 on cloud
 
 |rstudio_login2|
 
@@ -1078,7 +1078,7 @@ Enter ``rstudio`` as username and password. Finally Rstudio shows up and you can
 
 In this simple example we’ll take a sample dataset of fruits metrics (like size, weight, texture) labelled apples and oranges. Then we can predict the fruit given a new set of fruit metrics using scikit-learn’s decision tree
 
-You can find the above code in this `github repo <https://github.com/upendrak/scikit_tree_docker>`_ 
+You can find the above code in this `github repo <https://github.com/upendrak/scikit_tree_docker>`_
 
 1. Create a directory that consists of all the files
 
@@ -1159,7 +1159,7 @@ You can find the above code in this `github repo <https://github.com/upendrak/sc
 
 .. code-block:: bash
 
-	$ docker-compose up 
+	$ docker-compose up
 	Building datasci
 	Step 1/8 : FROM python:3.6-slim
 	 ---> dc41c0491c65
@@ -1199,7 +1199,7 @@ You can find the above code in this `github repo <https://github.com/upendrak/sc
 	Successfully built 36bb4c3d9183
 	Successfully tagged scikitdocker_datasci:latest
 	WARNING: Image for service datasci was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
-	Creating scikitdocker_datasci_1 ... 
+	Creating scikitdocker_datasci_1 ...
 	Creating scikitdocker_datasci_1 ... done
 	Attaching to scikitdocker_datasci_1
 	scikitdocker_datasci_1 exited with code 0
@@ -1208,7 +1208,7 @@ Use ``docker-compose rm`` to remove the container after docker-compose finish ru
 
 .. code-block:: bash
 
-	docker-compose rm 
+	docker-compose rm
 	Going to remove scikitdocker_datasci_1
 	Are you sure? [yN] y
 	Removing scikitdocker_datasci_1 ... done
@@ -1217,105 +1217,105 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
 
 .. code-block:: bash
 
-	$ cat output.txt 
+	$ cat output.txt
 	Prediction of DecisionTreeClassifier:['apple' 'orange' 'apple']
 
 .. |docker_image| image:: ../img/docker_image.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |private_registry| image:: ../img/private_registry.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |create_repo| image:: ../img/create_repo.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |create_repo2| image:: ../img/create_repo2.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-1| image:: ../img/auto_build-1.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-2| image:: ../img/auto_build-2.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-2.1| image:: ../img/auto_build-2.1.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-3| image:: ../img/auto_build-3.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-4| image:: ../img/auto_build-4.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-5| image:: ../img/auto_build-5.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-6| image:: ../img/auto_build-6.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |auto_build-7| image:: ../img/auto_build-7.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |volumes| image:: ../img/volumes.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |bind_mount| image:: ../img/bind_mount.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |tmpfs| image:: ../img/tmpfs.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |docker-compose| image:: ../img/dc-1.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_ss| image:: ../img/jn_ss.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_login| image:: ../img/jn_login.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_login2| image:: ../img/jn_login2.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_login3.5| image:: ../img/jn_login3.5.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_login3| image:: ../img/jn_login3.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |jn_login4| image:: ../img/jn_login4.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |rstudio_ss| image:: ../img/rstudio_ss.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |rstudio_login2| image:: ../img/rstudio_login2.png
   :width: 750
-  :height: 700 
+  :height: 700
 
 .. |rstudio_login| image:: ../img/rstudio_login.png
   :width: 750
-  :height: 700 
+  :height: 700

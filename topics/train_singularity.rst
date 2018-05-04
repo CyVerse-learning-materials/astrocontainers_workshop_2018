@@ -1,7 +1,7 @@
 **Training session in Singularity**
 ===================================
 
-**Trainers (Tyson Swetnam and Chris Reidy)**    
+**Trainers (Tyson Swetnam and Chris Reidy)**
 
 In this session we will show you how to containerize your software/applications using Singularity, push them to Singularityhub and deploy them on cloud and HPC.
 

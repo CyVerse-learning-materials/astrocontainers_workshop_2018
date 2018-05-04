@@ -19,7 +19,7 @@ Fill in the username, which is your CyVerse username,
 and then enter the password (which is your CyVerse password).
 
 |atmo-1|
-           
+
 2. Select Projects and "Create New Project"
 
 - Now, this is something you only need to do once.
@@ -37,7 +37,7 @@ and then enter the password (which is your CyVerse password).
 3. Select the newly created project
 
 - Click on your newly created project!
-           
+
 - Now, click 'New' and then "Instance" from the dropdown menu to start up a new virtual machine.
 
 |atmo_launch0|
@@ -60,19 +60,19 @@ and then enter the password (which is your CyVerse password).
 
 - Click on your new instance to get more information!
 
-- Now, you can either click "Open Web Shell", *or*, if you know how to use ssh, you can ssh in with your CyVerse username on the IP address of the machine 
+- Now, you can either click "Open Web Shell", *or*, if you know how to use ssh, you can ssh in with your CyVerse username on the IP address of the machine
 
 |atmo-7|
 
 **Deleting your instance**
 
-- To completely remove your instance, you can select the "delete" buttom from the instance details page. 
+- To completely remove your instance, you can select the "delete" buttom from the instance details page.
 
 - This will open up a dialogue window. Select the "Yes, delete this instance" button.
 
 |atmo-8|
 
-- It may take Atmosphere a few minutes to process your request. The instance should disappear from the project when it has been successfully deleted. 
+- It may take Atmosphere a few minutes to process your request. The instance should disappear from the project when it has been successfully deleted.
 
 |atmo-9|
 

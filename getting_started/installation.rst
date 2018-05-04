@@ -12,7 +12,7 @@ Please complete the minimum Setup Instructions to prepare for the CyVerse AstroC
     * - Wi-Fi-enabled laptop
       - You should be able to use any laptop using Windows/MacOS/Linux.
         We **strongly recommend** Firefox or Chrome browser; **We do not recommend**
-        **Microsoft Edge Browser**. It is recommended that you have administrative/install 
+        **Microsoft Edge Browser**. It is recommended that you have administrative/install
         permissions on your laptop.
       - - `Download FireFox <https://www.mozilla.org/en-US/firefox/new/?scene=2>`_
         - `Download Chrome <https://www.google.com/chrome/browser/>`_
@@ -54,12 +54,12 @@ provide some options for functionalities we will cover.
       - Link
     * - SSH Clients (Windows)
       - PuTTY allows SSH connection to a remote machine, and is designed for
-        Windows users who do not have a Mac/Linux terminal. MobaXterm is a single 
-        Windows application that provides a ton of functions for programmers, webmasters, 
+        Windows users who do not have a Mac/Linux terminal. MobaXterm is a single
+        Windows application that provides a ton of functions for programmers, webmasters,
         IT administrators, and anybody is looking to manage system remotely
       - - `Download PuTTY <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_
         - `Download mobaXterm <https://mobaxterm.mobatek.net>`_
-        - `Update Windows 10 to use Linux Bash <https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/>`_ 
+        - `Update Windows 10 to use Linux Bash <https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/>`_
     * - Cyberduck
       - Cyberduck is a third-party tool for uploading/downloading data to CyVerse Data Store.
         Currently, this tool is available for Windows/MacOS only. You will need
