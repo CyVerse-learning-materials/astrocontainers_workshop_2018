@@ -483,13 +483,13 @@ Remove the volume:
 
 	$ docker volume rm devtest
 
-Use case 1: Processing VLBI data with Docker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use case 1: Processing VLBI data with HOPS in Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TODO: use HOPS to fringe fit VLBI data.
 
-5. Expose container ports
-=========================
+5. Exposing container ports
+===========================
 
 Great! so you have now looked at ``docker run``, played with a Docker containers and also got the hang of some terminology. Armed with all this knowledge, you are now ready to get to the real stuff — deploying web applications with Docker.
 
@@ -605,8 +605,8 @@ Run ``docker ps`` to make sure the containers are gone.
 	$ docker ps
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
-Use case 2: Improving your data science workflow using Docker containers (Containerized Data Science)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use case 2: Processing Galaxy Simulation with Jupyter in Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a data scientist, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
 

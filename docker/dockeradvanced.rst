@@ -3,8 +3,8 @@
 
 Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as porting the Docker image to repositories (public and private), managing data in containers and finally deploy containers into cloud and other infrastructures etc.,
 
-1. Deploying dynamic website with Docker
-========================================
+1. Building Docker containers
+=============================
 
 One area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
 
@@ -928,8 +928,8 @@ And that’s it! You should be able to see the Flask application running on ``ht
 
 |docker-compose|
 
-Exercise 3 (10 mins) Compose for multi container apps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exercise 3 (~10 mins): Compose for multi container apps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Change the greeting in ``app.py`` and save it. For example, change the ``This Compose/Flask demo has been viewed`` message to ``This AstroContainers Workshop demo has been viewed``
 - Refresh the `app` in your browser. What do you see now?

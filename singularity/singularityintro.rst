@@ -29,7 +29,7 @@ Singularity uses a 'flow' whereby you can (1) create and modify images on your d
 
 |singularityflow|
 
-2. Singularity Installation
+2. Singularity installation
 ===========================
 
 Singularity homepage: `http://singularity.lbl.gov/ <http://singularity.lbl.gov/>`_
@@ -212,8 +212,8 @@ After your image has finished downloading it should be in the present working di
 	BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
 	Singularity ubuntu_test.simg:~>
 
-Exercise 2.2: Pulling container from Docker Hub
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3.2: Pulling container from Docker Hub
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example pulls a container from DockerHub
 
@@ -359,8 +359,8 @@ As an example, using Singularity we can run a UI program that was built from Doc
 
 `"An Introduction to Rocker: Docker Containers for R by Carl Boettiger, Dirk Eddelbuettel" <https://journal.r-project.org/archive/2017/RJ-2017-065/RJ-2017-065.pdf>`_
 
-4. Building Singularity containers locally
-==========================================
+4. Building Singularity containers
+==================================
 
 Like Docker which uses a `dockerfile` to build its containers, Singularity uses a file called `Singularity`
 
@@ -479,7 +479,7 @@ When I try to install software to the image without `sudo` it is denied, because
     To install a container with Ubuntu from the ubuntu.com reposutiry you need to use `debootstrap`
 
 
-Exercise 3: Creating the Singularity file (30 minutes)
+Exercise 3 (30 minutes): Creating the Singularity file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Recipes <http://singularity.lbl.gov/docs-recipes>`_ can use any number of container registries for bootstrapping a container.
@@ -652,7 +652,7 @@ Run the container:
 
 If you build a `squashfs` container, it is immutable (you cannot `--writable` edit it)
 
-5. Running Singularity Containers
+5. Running Singularity containers
 =================================
 
 Commands:
