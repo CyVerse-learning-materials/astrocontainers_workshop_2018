@@ -183,13 +183,10 @@ Exit out of the container by giving the ``exit`` command.
 
 		$ docker attach 0db38ea51a48
 
-4. Deploying web applications with Docker 
-=========================================
+4. Deploying static website with Docker
+=======================================
 
 Great! so you have now looked at ``docker run``, played with a Docker containers and also got the hang of some terminology. Armed with all this knowledge, you are now ready to get to the real stuff — deploying web applications with Docker.
-
-4.1 Deploying static website
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let's start by taking baby-steps. First, we'll use Docker to run a static website in a container. The website is based on an existing image and in the next section we will see how to build a new image and run a website in that container. We'll pull a Docker image from Dockerhub, run the container, and see how easy it is to set up a web server.
 
@@ -303,15 +300,15 @@ Run ``docker ps`` to make sure the containers are gone.
 	$ docker ps
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
-4.2 Deploying dynamic website
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5. Deploying dynamic website with Docker
+========================================
 
 One area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
 
 In this section, let's dive deeper into what Docker images are. Later on we will build our own image and use that image to run an application locally (deploy a dynamic website).
 
-4.2.1 Docker images
-^^^^^^^^^^^^^^^^^^^
+5.1 Docker images
+~~~~~~~~~~~~~~~~~
 
 Docker images are the basis of containers. In the previous example, you pulled the ``dockersamples/static-site`` image from the registry and asked the Docker client to run a container based on that image. To see the list of images that are available locally on your system, run the ``docker images`` command.
 
@@ -385,8 +382,8 @@ An important distinction with regard to images is between base images and child 
 
 	**User images** are images created and shared by users like you. They build on base images and add additional functionality. Typically these are formatted as ``user/image-name``. The user value in the image name is your Dockerhub user or organization name.
 
-4.2.2 Meet our Flask app
-^^^^^^^^^^^^^^^^^^^^^^^^
+5.2 Meet our Flask app
+~~~~~~~~~~~~~~~~~~~~~~
 
 Now that you have a better understanding of images, it's time to create an image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it. 
 
@@ -681,8 +678,8 @@ Head over to ``http://localhost:8888`` and your app should be live.
 
 Hit the Refresh button in the web browser to see a few more cat images.
 
-Exercise (5-10 mins): Deploy a custom Docker image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.3 Exercise (5-10 mins): Deploy a custom Docker image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Download the sample code from https://github.com/Azure-Samples/docker-django-webapp-linux.git
 - Build the image using the Dockerfile in that repo using ``docker build`` command
@@ -690,7 +687,7 @@ Exercise (5-10 mins): Deploy a custom Docker image
 - Verify the web app and container are functioning correctly
 - Share your (non-localhost) url on Slack
 
-5. Dockerfile commands summary
+6. Dockerfile commands summary
 ==============================
 
 Here's a quick summary of the few basic commands we used in our Dockerfile.
@@ -721,10 +718,10 @@ Here's a quick summary of the few basic commands we used in our Dockerfile.
 
 	If you want to learn more about Dockerfiles, check out `Best practices for writing Dockerfiles <https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/>`_.
 
-6. Demo's
+7. Demo's
 =========
 
-6.1 Portainer
+7.1 Portainer
 ~~~~~~~~~~~~~
 
 `Portainer <https://portainer.io/>`_ is an open-source lightweight managment UI which allows you to easily manage your Docker hosts or Swarm cluster.
@@ -733,7 +730,7 @@ Here's a quick summary of the few basic commands we used in our Dockerfile.
 
 - Made for Docker: Portainer is meant to be plugged on top of the Docker API. It has support for the latest versions of Docker, Docker Swarm and Swarm mode.
 
-6.1.1 Installation
+7.1.1 Installation
 ^^^^^^^^^^^^^^^^^^
 
 Use the following Docker commands to deploy Portainer. Now the second line of command should be familiar to you by now. We will talk about first line of command in the Advanced Docker session.
@@ -754,12 +751,12 @@ Use the following Docker commands to deploy Portainer. Now the second line of co
 
 |portainer_demo|
 
-6.2 Play-with-docker (PWD)
+7.2 Play-with-docker (PWD)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `PWD <http://www.play-with-docker.com/>`_ is a Docker playground which allows users to run Docker commands in a matter of seconds. It gives the experience of having a free Alpine Linux Virtual Machine in browser, where you can build and run Docker containers and even create clusters in `Docker Swarm Mode <https://docs.docker.com/engine/swarm/>`_. Under the hood, Docker-in-Docker (DinD) is used to give the effect of multiple VMs/PCs. In addition to the playground, PWD also includes a training site composed of a large set of Docker labs and quizzes from beginner to advanced level available at `training.play-with-docker.com <http://training.play-with-docker.com/>`_.
 
-6.2.1 Installation
+7.2.1 Installation
 ^^^^^^^^^^^^^^^^^^
 
 You don't have to install anything to use PWD. Just open ``https://labs.play-with-docker.com/`` and start using PWD
