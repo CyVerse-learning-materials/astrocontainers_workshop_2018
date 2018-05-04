@@ -486,6 +486,11 @@ Remove the volume:
 
 	$ docker volume rm devtest
 
+Use case 1: Processing VLBI data with Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO: use HOPS to fringe fit VLBI data.
+
 5. Deploying static website with Docker
 =======================================
 
