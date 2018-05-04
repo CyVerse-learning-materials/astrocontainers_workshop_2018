@@ -29,6 +29,7 @@ Table of Contents
 
    docker/dockerintro
    docker/dockeradvanced
+   docker/dockerdemos
 
 .. toctree::
    :maxdepth: 1
