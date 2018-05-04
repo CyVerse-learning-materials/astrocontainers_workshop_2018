@@ -1220,11 +1220,19 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
 	$ cat output.txt
 	Prediction of DecisionTreeClassifier:['apple' 'orange' 'apple']
 
+.. |catpic| image:: ../img/catpic-1.png
+  :width: 750
+  :height: 700
+
 .. |docker_image| image:: ../img/docker_image.png
   :width: 750
   :height: 700
 
 .. |private_registry| image:: ../img/private_registry.png
+  :width: 750
+  :height: 700
+
+.. |auto_build-1| image:: ../img/auto_build-1.png
   :width: 750
   :height: 700
 
@@ -1236,23 +1244,11 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
   :width: 750
   :height: 700
 
-.. |auto_build-1| image:: ../img/auto_build-1.png
-  :width: 750
-  :height: 700
-
 .. |auto_build-2| image:: ../img/auto_build-2.png
   :width: 750
   :height: 700
 
 .. |auto_build-2.1| image:: ../img/auto_build-2.1.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-3| image:: ../img/auto_build-3.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-4| image:: ../img/auto_build-4.png
   :width: 750
   :height: 700
 
@@ -1265,18 +1261,6 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
   :height: 700
 
 .. |auto_build-7| image:: ../img/auto_build-7.png
-  :width: 750
-  :height: 700
-
-.. |volumes| image:: ../img/volumes.png
-  :width: 750
-  :height: 700
-
-.. |bind_mount| image:: ../img/bind_mount.png
-  :width: 750
-  :height: 700
-
-.. |tmpfs| image:: ../img/tmpfs.png
   :width: 750
   :height: 700
 
@@ -1296,15 +1280,11 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
   :width: 750
   :height: 700
 
-.. |jn_login3.5| image:: ../img/jn_login3.5.png
-  :width: 750
-  :height: 700
-
 .. |jn_login3| image:: ../img/jn_login3.png
   :width: 750
   :height: 700
 
-.. |jn_login4| image:: ../img/jn_login4.png
+.. |jn_login3.5| image:: ../img/jn_login3.5.png
   :width: 750
   :height: 700
 

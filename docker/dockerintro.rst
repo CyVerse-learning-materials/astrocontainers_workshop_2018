@@ -602,3 +602,27 @@ Run ``docker ps`` to make sure the containers are gone.
 
 	$ docker ps
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+.. |docker| image:: ../img/docker.png
+  :width: 750
+  :height: 700
+
+.. |volumes| image:: ../img/volumes.png
+  :width: 750
+  :height: 700
+
+.. |bind_mount| image:: ../img/bind_mount.png
+  :width: 750
+  :height: 700
+
+.. |tmpfs| image:: ../img/tmpfs.png
+  :width: 750
+  :height: 700
+
+.. |static_site_docker| image:: ../img/static_site_docker.png
+  :width: 750
+  :height: 700
+
+.. |static_site_docker1| image:: ../img/static_site_docker1.png
+  :width: 750
+  :height: 700
