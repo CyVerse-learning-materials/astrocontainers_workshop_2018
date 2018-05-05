@@ -20,20 +20,21 @@ On an HPC system, your job submission script would look something like:
 
 .. code-block:: bash
 
-  #!/bin/bash
-  #
-  #SBATCH -J myjob                      # Job name
-  #SBATCH -o output.%j                  # Name of stdout output file (%j expands to jobId)
-  #SBATCH -p development                # Queue name
-  #SBATCH -N 1                          # Total number of nodes requested (68 cores/node)
-  #SBATCH -n 17                         # Total number of mpi tasks requested
-  #SBATCH -t 02:00:00                   # Run time (hh:mm:ss) - 4 hours
-
-  module load tacc-singularity
-  singularity exec docker://python:latest /usr/local/bin/python
-
-This example is for the Slurm scheduler, a popular one used by all TACC systems.  Each of the #SBATCH lines looks like a comment to the bash kernel, but the scheduler reads all those lines to know what resources to reserve for you.
-
+ ###========================================
+#!/bin/bash
+#BSUB -n 1
+#BSUB -q "windfall"
+#BSUB -R "span[ptile=1]"
+#BSUB -o lsf_tf.out
+#BSUB -e lsf_tf.err
+#BSUB -J testtensorflow
+#---------------------------------------------------------------------
+ 
+module load singularity
+cd /extra/netid/data
+singularity exec dockerTF.img python /extra/chrisreidy/singularity/TFlow_example.py
+ 
+ 
 It is usually possible to get an interactive session as well.  At TACC, the command "idev" is used to get an interactive development session.  For example:
 
 .. code-block:: bash
