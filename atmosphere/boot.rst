@@ -20,7 +20,7 @@ and then enter the password (which is your CyVerse password).
 
 |atmo-1|
 
-2. Select Projects and "Create New Project"
+2. Select "Projects" and "CREATE NEW PROJECT"
 
 - Now, this is something you only need to do once.
 
@@ -30,7 +30,7 @@ and then enter the password (which is your CyVerse password).
 
 |atmo_cp0|
 
-- Enter the name "AC2018" into the Project Name, and something simple like "AstroContainers Workshop 2018" into the description. Then click 'create'.
+- Enter the name "Astrocontainers" into the Project Name, and something simple like "CyVerse AstroContainers Workshop, May 2018" into the description. Then click 'CREATE.
 
 |atmo_cp|
 
@@ -38,15 +38,15 @@ and then enter the password (which is your CyVerse password).
 
 - Click on your newly created project!
 
-- Now, click 'New' and then "Instance" from the dropdown menu to start up a new virtual machine.
+- Now, click "NEW" and then "Instance" from the dropdown menu to start up a new virtual machine.
 
 |atmo_launch0|
 
-- Find the "Ubuntu 16.04" image, click on it
+- Search for "docker" in the "Show All" tap; click the "Ubuntu 14_04 w Docker CE" image.
 
 |atmo_launch1|
 
-- Name it something simple such as "workshop tutorial" and select 'tiny1 (CPU: 1, Mem: 4GB, Disk: 30GB)'.
+- Name it something simple such as "tutorial" and select an appropriate instance size, such as "medium3 (CPU: 4, Mem: 32GB, Disk: 240GB)".
 
 - Leave rest of the fields as default.
 
@@ -54,7 +54,7 @@ and then enter the password (which is your CyVerse password).
 
 - Wait for it to become active
 
-- It will now be booting up! This will take 2-10 minutes, depending. Just wait! Don't reload or anything.
+- It will now be booting up! This will take 2-10 minutes. Just wait! Don't reload or anything.
 
 |atmo-6|
 
@@ -82,40 +82,40 @@ and then enter the password (which is your CyVerse password).
 
 .. |atmo-1| image:: ../img/atmo-1.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo_cp0| image:: ../img/atmo_cp0.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo_cp| image:: ../img/atmo_cp.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo_launch0| image:: ../img/atmo_launch0.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo_launch1| image:: ../img/atmo_launch1.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo_launch| image:: ../img/atmo_launch.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo-6| image:: ../img/atmo-6.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo-7| image:: ../img/atmo-7.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo-8| image:: ../img/atmo-8.png
   :width: 750
-  :height: 700
+  :height: 648
 
 .. |atmo-9| image:: ../img/atmo-9.png
   :width: 750
-  :height: 700
+  :height: 648
