@@ -51,11 +51,11 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       -
 
     * - 05/08/18 (Tuesday)
-      - 09:00am-9:30am
+      - 09:00am-9:15am
       - General overview of Singularity (Tyson Swetnam)
       - `Singularity Overview Slides <https://docs.google.com/presentation/d/175QD_mm9aKbV-8WW7hKR04naR08UjTRcGc4CIhMMKKk/edit?usp=sharing>`_
     * -
-      - 9:30am-10:00am
+      - 9:15am-10:00am
       - Singularity setup (Tyson Swetnam)
       - `Singularity Introduction <../singularity/singularityintro.html>`_
     * -
