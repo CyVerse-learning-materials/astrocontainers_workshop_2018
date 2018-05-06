@@ -32,9 +32,9 @@ Singularity uses a 'flow' whereby you can (1) create and modify images on your d
 2. Singularity installation
 ===========================
 
-Singularity homepage: `http://singularity.lbl.gov/ <http://singularity.lbl.gov/>`_
+Local installations of Singularity are useful for testing out new containers, before pushing them to Singularity-Hub. 
 
-While Singularity is more likely to be used on a remote system, e.g. HPC or cloud, you may want to develop your own containers first on a local machine or dev system.
+If you plan to use Singularity on HPC, you will need a local installation of Singularity to build your own containers. HPC admins are *very* unlikely to grant you ``sudo`` privileges needed to build your own containers there.
 
 Exercise 1 (15-20 mins)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,16 +42,20 @@ Exercise 1 (15-20 mins)
 2.1 Setting up your Laptop
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To Install Singularity on your laptop or desktop PC follow the instructions from Singularity: (`Mac <http://singularity.lbl.gov/install-mac>`_, `Windows <http://singularity.lbl.gov/install-windows>`_, `Linux <http://singularity.lbl.gov/install-linux>`_)
+To Install Singularity on your laptop or desktop PC follow the instructions from Singularity: 
 
-  * running a VM is required on Mac OS X, Singularityware `VagrantBox <https://app.vagrantup.com/singularityware/boxes/singularity-2.4/versions/2.4>`_
+	* `Windows <http://singularity.lbl.gov/install-windows>`_ 
+	* `Linux <http://singularity.lbl.gov/install-linux>`_
+	* `Mac <http://singularity.lbl.gov/install-mac>`_ 
+
+.. Note::
+
+	on Mac OS X the dependency `VagrantBox <https://app.vagrantup.com/singularityware/boxes/singularity-2.4/versions/2.4>`_ is required to run Singularity
 
 2.2 HPC
 ~~~~~~~
 
-Load the Singularity module on a HPC
-
-If you are interested in working on HPC, you may need to contact your systems administrator and request they install `Singularity  <http://singularity.lbl.gov/install-request>`_.
+If you are interested in working on the UA HPC, you can load the ``singularity module``
 
 Most HPC systems are running Environment Modules with the simple command `module`. You can check to see what is available:
 
@@ -64,6 +68,9 @@ If Singularity is installed:
 .. code-block:: bash
 
 	$ module load singularity
+	
+	
+If you want to run Singularity on another remote HPC system, you may need to contact the systems administrator and request that they install the latest version of `Singularity  <http://singularity.lbl.gov/install-request>`_.	
 
 2.3 XSEDE Jetstream / CyVerse Atmosphere Clouds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,7 +153,6 @@ View the Singularity help:
 	For any additional help or support visit the Singularity
 	website: http://singularity.lbl.gov/
 
-
 3. Downloading Singularity containers
 =====================================
 
@@ -212,8 +218,8 @@ After your image has finished downloading it should be in the present working di
 	BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
 	Singularity ubuntu_test.simg:~>
 
-3.2: Pulling container from Docker Hub
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3.2: Pulling containers from Docker Hub
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example pulls a container from DockerHub
 
@@ -260,7 +266,7 @@ The example below does the same as above, but renames the image.
 	Cleaning up...
 	Done. Container is at: ./ubuntu_docker.simg
 
-When we run this particular Docker container without any runtime arguments, it does not return any notifications, and the Bash prompt does not change the prompt.
+When we run this particular Docker container, without any runtime arguments notice that it does not return any notifications, and the Bash prompt does not change the prompt.
 
 .. code-block:: bash
 
@@ -282,9 +288,7 @@ When we run this particular Docker container without any runtime arguments, it d
 	VERSION_CODENAME=xenial
 	UBUNTU_CODENAME=xenial
 
-Whoa, we're inside a container!?!
-
-This is the OS on the VM I tested this on:
+Whoa, we're inside the container!?! This is the OS on the VM I tested this on:
 
 .. code-block:: bash
 
@@ -307,7 +311,7 @@ This is the OS on the VM I tested this on:
 	VERSION_CODENAME=xenial
 	UBUNTU_CODENAME=xenial
 
-Here we are back in the container:
+By exiting, I can check the OS again to make sure that everything is back. Here we are back in the container using teh ``shell`` invocation:
 
 .. code-block:: bash
 
@@ -332,9 +336,15 @@ Here we are back in the container:
 	UBUNTU_CODENAME=xenial
 	Singularity ubuntu_docker.simg:~>
 
-When invoking a container, make sure it executes and exits, or notifies you it is running.
+When starting a container, make sure that it notifies you it is running. This is typically achieved by the basic ``$`` prompt providing some metadata:
+
+.. code-block:: bash
+	
+	Singularity ubuntu_docker.simg:~>
 
 Keeping track of downloaded images may be necessary if space is a concern.
+
+**Keeping track of downloaded containers**
 
 By default, Singularity uses a temporary cache to hold Docker tarballs:
 
@@ -362,7 +372,7 @@ As an example, using Singularity we can run a UI program that was built from Doc
 4. Building Singularity containers
 ==================================
 
-Like Docker which uses a `dockerfile` to build its containers, Singularity uses a file called `Singularity`
+Like Docker, which uses a `dockerfile` to build its containers, Singularity uses a file called `Singularity`
 
 When you are building locally, you can name this file whatever you wish, but a better practice is to put it in a directory and name it `Singularity` - as this will help later on when developing on Singularity-Hub and Github.
 
@@ -478,6 +488,9 @@ When I try to install software to the image without `sudo` it is denied, because
 
     To install a container with Ubuntu from the ubuntu.com reposutiry you need to use `debootstrap`
 
+**Docker2Singularity &OR Singularity2Docker**
+
+One of the other features of Singularity is the ability to convert `Docker containers to Singularity Containers <https://github.com/singularityware/docker2singularity>`_, and `Singularity containers to Docker containers <https://github.com/vsoch/singularity2docker>`_
 
 Exercise 3 (30 minutes): Creating the Singularity file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
