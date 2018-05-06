@@ -3,15 +3,15 @@
 
 **Trainers (CK Chan and Upendra Devisetty)**
 
-In this session we will explain the various aspects of the Docker. Starting with the basics of Docker which focus on the installation and configuration of Docker and managing data using volumes, the session will gradually move to advanced topics such as pushing and pulling containers from registries. Overall this session covers the development aspects of Docker and how you can get up and running on the development environments using Docker containers.
+In these two sessions, we will explain the various aspects of Docker. Starting with the basics such as starting containers and managing data using volumes. We will then gradually move to advanced topics such as creating your own images, pushing and pulling them from registries.
 
 - `Docker basics/Introduction (CK) <../docker/dockerintro.html>`_
 
-This is the introductory session for the concept of Docker. The topics include Docker installation, running prebuilt Docker containers, deploying web applications with Docker, building and running your own Docker containers, etc.
+This is the introductory session of Docker. The topics include Docker installation, running prebuilt Docker containers, managing data in Docker, and exposing container ports. This session gets you ready to run most of the existing containers.
 
 - `Advanced Docker (Upendra) <../docker/dockeradvanced.html>`_
 
-This is the advanced session for the concept of Docker. The topics include pushing and pulling Docker containers to public and private registries, automated Docker image building from github/bitbucket repositories, managing data in Docker containers, Docker compose for building multiple Docker containers, improving your data science workflows using Docker containers, etc.
+This is the advanced session of Docker. The topics include building your own Docker images, pushing and pulling Docker them to public and private registries, automated Docker image building from github/bitbucket repositories, Docker compose for building multiple Docker containers, etc.
 
 - `Additional Docker Demo's <../docker/dockerdemos.html>`_
 
