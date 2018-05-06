@@ -1,27 +1,28 @@
 **Advanced Docker**
 -------------------
 
-Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as porting the Docker image to repositories (public and private), managing data in containers and finally deploy containers into cloud and other infrastructures etc.,
+Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as building your own Docker image, porting the Docker image to repositories (public and private), and finally deploy containers into cloud and other infrastructures, etc.
 
 1. Building Docker containers
 =============================
 
-One area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
+As our HOPS example showed in the last session, one area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
 
-In this section, let's dive deeper into what Docker images are. Later on we will build our own image and use that image to run an application locally (deploy a dynamic website).
+In this session, let's dive deeper into what Docker images are. Later on we will build our own image and use that image to run an application locally.
 
 1.1 Docker images
 ~~~~~~~~~~~~~~~~~
 
-Docker images are the basis of containers. In the previous example, you pulled the ``dockersamples/static-site`` image from the registry and asked the Docker client to run a container based on that image. To see the list of images that are available locally on your system, run the ``docker images`` command.
+Docker images are the basis of containers. In the previous example, you pulled the ``hello-world`` image from the registry and asked the Docker client to run a container based on that image. To see the list of images that are available locally on your system, run the ``docker images`` command.
 
 .. code-block:: bash
 
 	$ docker images
-	REPOSITORY             		TAG                 IMAGE ID            CREATED             SIZE
-	dockersamples/static-site   latest              92a386b6e686        2 hours ago        190.5 MB
-	nginx                  		latest              af4b3d7d5401        3 hours ago        190.5 MB
-	hello-world             	latest              690ed74de00f        5 months ago       960 B
+	REPOSITORY     TAG       IMAGE ID        CREATED           SIZE
+	astroml        latest    8054c898a213    27 seconds ago    934MB
+	debian         stretch   8626492fecd3    7 days ago        101MB
+	hello-world    latest    690ed74de00f    5 months ago      960 B
+	alpine         latest    3fd9065eaf02    3 months ago      4.15MB
 	.........
 
 Above is a list of images that I've pulled from the registry and those I've created myself (we'll shortly see how). You will have a different list of images on your machine. The **TAG** refers to a particular snapshot of the image and the **ID** is the corresponding unique identifier for that image.
@@ -88,7 +89,7 @@ An important distinction with regard to images is between base images and child 
 1.2 Meet our Flask app
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Now that you have a better understanding of images, it's time to create an image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it.
+Now that you have a better understanding of Docker images, it's time to create your own! Unfortunately, astronomical data analysis packages can be very big. To make sure that we won't take download our wifi, we will create a simple image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it.
 
 - `Create a Python Flask app that displays random cat`_
 - `Build the image`_
