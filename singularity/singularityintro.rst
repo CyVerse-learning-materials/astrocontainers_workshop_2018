@@ -12,7 +12,7 @@ There are no specific skills needed for this tutorial beyond a basic comfort wit
 
       *Important*: Docker and Singularity are `friends <http://singularity.lbl.gov/docs-docker>`_ but they have distinct differences.
 
-     `Singularity Related Resources <https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/useful_resources/usefulresources_singularity.html>`_
+     For more information see: `Singularity Related Resources <https://cyverse-container-camp-workshop-2018.readthedocs-hosted.com/en/latest/useful_resources/usefulresources_singularity.html>`_
 
       **Docker**:
 
