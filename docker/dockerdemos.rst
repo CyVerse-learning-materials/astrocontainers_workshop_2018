@@ -4,7 +4,7 @@
 1. Portainer
 ============
 
-`Portainer <https://portainer.io/>`_ is an open-source lightweight managment UI which allows you to easily manage your Docker hosts or Swarm cluster.
+`Portainer <https://portainer.io/>`_ is an open-source lightweight management UI which allows you to easily manage your Docker hosts or Swarm cluster.
 
 - Simple to use: It has never been so easy to manage Docker. Portainer provides a detailed overview of Docker and allows you to manage containers, images, networks and volumes. It is also really easy to deploy, you are just one Docker command away from running Portainer anywhere.
 

@@ -4,7 +4,7 @@
 ============================
 
 All attendees, speakers, sponsors and volunteers at our workshop are required
-to follow this code of conduct. Organisers will enforce this code
+to follow this code of conduct. Organizers will enforce this code
 throughout the event. We expect cooperation from all participants to
 help ensure a safe environment for everyone.
 
@@ -39,7 +39,7 @@ types (genomics, image data, from animals, plants, etc.).
 This workshop is focused on beginner-level users with little to no previous container
 experience.
 
-Intermeidate and advanced users who attend will gain a better understanding of and ability with container capabilities
+Intermediate and advanced users who attend will gain a better understanding of and ability with container capabilities
 and resources, including deploying their own tools and extending these analyses
 into Cloud and HPC.
 

@@ -66,7 +66,7 @@ and then enter the password (which is your CyVerse password).
 
 **Deleting your instance**
 
-- To completely remove your instance, you can select the "delete" buttom from the instance details page.
+- To completely remove your instance, you can select the "delete" button from the instance details page.
 
 - This will open up a dialogue window. Select the "Yes, delete this instance" button.
 
