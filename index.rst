@@ -19,12 +19,6 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
-   :caption: Atmosphere
-
-   atmosphere/boot
-
-.. toctree::
-   :maxdepth: 1
    :caption: Docker
 
    docker/dockerintro
@@ -42,6 +36,7 @@ Table of Contents
    :maxdepth: 1
    :caption: Useful Resources
 
+   atmosphere/boot
    useful_resources/usefulresources_docker
    useful_resources/usefulresources_singularity
    useful_resources/usefulresources_other
