@@ -21,8 +21,8 @@ Please complete the minimum Setup Instructions to prepare for the CyVerse AstroC
         by completing the verification steps in the email you got when you registered.
       - Register for your cyverse account at `http://user.cyverse.org/`_. You can **test your account** by logging into `http://user.cyverse.org/ <http://user.cyverse.org/>`_.
     * - Atmosphere Cloud
-      - Please ensure that you have access to CyVerse Atmosphere Cloud.
-      - Atmosphere Cloud should be listed in `this webapge <https://user.cyverse.org/services/available>`_ once you log in to CyVerse.
+      - The Atmosphere Cloud service is part of CyVerse but it requires explicit activation.  Please ensure that you have access to CyVerse Atmosphere Cloud.
+      - The Atmosphere Cloud service should be listed in `this webapge <https://user.cyverse.org/services/available>`_ once you log in to CyVerse.
     * - Github Account
       - Please ensure that you have a Github account
       - Register for your Github account at `https://github.com/ <https://github.com/>`_.
