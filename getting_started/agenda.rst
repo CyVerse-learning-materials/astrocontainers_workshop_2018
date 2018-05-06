@@ -31,7 +31,7 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
     * -
       - 11:00am-12:00pm
       - Introductory Docker (CK Chan)
-      - - `Docker intro slides <https://docs.google.com/presentation/d/1OqEiVZRq9ibmVk8A0YyeXoNBXfm5JQAXWhow-P6_Iho/edit?usp=sharing>`_
+      - - `Docker intro slides <https://docs.google.com/presentation/d/1VDbIdD0bB68wqrDo593wxnUAf1uHVwJtxFpTuxtFrsk/edit?usp=sharing>`_
         - `Docker intro demo <../docker/dockerintro.html>`_
     * -
       - 12:00pm-01:00pm
