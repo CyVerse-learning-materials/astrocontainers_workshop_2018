@@ -341,7 +341,8 @@ When starting a container, make sure that it notifies you it is running. This is
 
 Keeping track of downloaded images may be necessary if space is a concern.
 
-**Keeping track of downloaded containers**
+3.3: Keeping track of downloaded containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, Singularity uses a temporary cache to hold Docker tarballs:
 
@@ -485,13 +486,13 @@ When I try to install software to the image without `sudo` it is denied, because
 
     To install a container with Ubuntu from the ubuntu.com reposutiry you need to use `debootstrap`
 
-Docker2Singularity &OR Singularity2Docker
+4.1: Docker2Singularity & Singularity2Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One of the other features of Singularity is the ability to convert `Docker containers to Singularity Containers <https://github.com/singularityware/docker2singularity>`_, and `Singularity containers to Docker containers <https://github.com/vsoch/singularity2docker>`_
 
-Exercise 3 (30 minutes): Creating the Singularity file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4.2: Exercise 3 (30 minutes): Create the Singularity file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Recipes <http://singularity.lbl.gov/docs-recipes>`_ can use any number of container registries for bootstrapping a container.
 
