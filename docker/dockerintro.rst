@@ -193,172 +193,9 @@ From the above examples, we learned that a running Docker container is an isolat
 
 - A container's writable layer is tightly coupled to the host machine where the container is running. You can't easily move the data somewhere else.
 
-Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. When in doubt, volumes are almost always the right choice.
+Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. For simplicity, we will only discuss bind mounts here, even though volumes is the more powerful and usable option for most of the time.
 
-4.1 Volumes
-~~~~~~~~~~~
-
-**Volumes** are created and managed by Docker. You can create a volume explicitly using the ``docker volume create`` command, or Docker can create a volume during container creation. When you create a volume, it is stored within a directory on the Docker host (``/var/lib/docker/`` on Linux and check for the location on mac in here https://timonweb.com/posts/getting-path-and-accessing-persistent-volumes-in-docker-for-mac/). When you mount the volume into a container, this directory is what is mounted into the container. A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using ``docker volume prune`` command.
-
-.. image:: ../img/volumes.png
-  :width: 500
-  :align: center
-  :height: 450
-  :scale: 100 %
-
-Volumes are often a better choice than persisting data in a container's writable layer, because using a volume does not increase the size of containers using it, and the volume's contents exist outside the lifecycle of a given container. While bind mounts (which we will see later) are dependent on the directory structure of the host machine, volumes are completely managed by Docker. Volumes have several advantages over bind mounts:
-
-- Volumes are easier to back up or migrate than bind mounts.
-- You can manage volumes using Docker CLI commands or the Docker API.
-- Volumes work on both Linux and Windows containers.
-- Volumes can be more safely shared among multiple containers.
-- A new volume's contents can be pre-populated by a container.
-
-.. Note::
-
-	If your container generates non-persistent state data, consider using a ``tmpfs`` mount to avoid storing the data anywhere permanently, and to increase the container's performance by avoiding writing into the container's writable layer.
-
-4.1.1 Choose the -v or --mount flag for mounting volumes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Originally, the ``-v`` or ``--volume`` flag was used for standalone containers and the ``--mount`` flag was used for swarm services. However, starting with Docker 17.06, you can also use ``--mount`` with standalone containers. In general, ``--mount`` is more explicit and verbose. The biggest difference is that the ``-v`` syntax combines all the options together in one field, while the ``--mount`` syntax separates them. Here is a comparison of the syntax for each flag.
-
-.. Tip::
-
- 	New users should use the ``--mount`` syntax. Experienced users may be more familiar with the ``-v`` or ``--volume`` syntax, but are encouraged to use ``--mount``, because research has shown it to be easier to use.
-
-``-v`` or ``--volume``: Consists of three fields, separated by colon characters (:). The fields must be in the correct order, and the meaning of each field is not immediately obvious.
-- In the case of named volumes, the first field is the name of the volume, and is unique on a given host machine.
-- The second field is the path where the file or directory are mounted in the container.
-- The third field is optional, and is a comma-separated list of options, such as ``ro``.
-
-``--mount``: Consists of multiple key-value pairs, separated by commas and each consisting of a ``<key>=<value>`` tuple. The ``--mount`` syntax is more verbose than ``-v`` or ``--volume``, but the order of the keys is not significant, and the value of the flag is easier to understand.
-- The type of the mount, which can be **bind**, **volume**, or **tmpfs**.
-- The source of the mount. For named volumes, this is the name of the volume. For anonymous volumes, this field is omitted. May be specified as **source** or **src**.
-- The destination takes as its value the path where the file or directory is mounted in the container. May be specified as **destination**, **dst**, or **target**.
-- The readonly option, if present, causes the bind mount to be mounted into the container as read-only.
-
-.. Note::
-
-	The ``--mount`` and ``-v`` examples have the same end result.
-
-4.1.2. Create and manage volumes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Unlike a bind mount, you can create and manage volumes outside the scope of any container.
-
-Let's create a volume
-
-.. code-block:: bash
-
-	$ docker volume create my-vol
-
-List volumes:
-
-.. code-block:: bash
-
-	$ docker volume ls
-
-	local               my-vol
-
-Inspect a volume by looking at the Mount section in the `docker volume inspect`
-
-.. code-block:: bash
-
-	$ docker volume inspect my-vol
-	[
-	    {
-	        "Driver": "local",
-	        "Labels": {},
-	        "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
-	        "Name": "my-vol",
-	        "Options": {},
-	        "Scope": "local"
-	    }
-	]
-
-Remove a volume
-
-.. code-block:: bash
-
-	$ docker volume rm my-vol
-
-4.1.3 Populate a volume using a container
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This example starts an ``nginx`` container and populates the new volume ``nginx-vol`` with the contents of the container's ``/var/log/nginx`` directory, which is where Nginx stores its log files.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name=nginxtest --mount source=nginx-vol,target=/var/log/nginx nginx:latest
-
-So, we now have a copy of Nginx running inside a Docker container on our machine, and our host machine's port 5000 maps directly to that copy of Nginx's port 80. Let's use curl to do a quick test request:
-
-.. code-block:: bash
-
-	$ curl localhost:8891
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<title>Welcome to nginx!</title>
-	<style>
-	    body {
-	        width: 35em;
-	        margin: 0 auto;
-	        font-family: Tahoma, Verdana, Arial, sans-serif;
-	    }
-	</style>
-	</head>
-	<body>
-	<h1>Welcome to nginx!</h1>
-	<p>If you see this page, the nginx web server is successfully installed and
-	working. Further configuration is required.</p>
-
-	<p>For online documentation and support please refer to
-	<a href="http://nginx.org/">nginx.org</a>.<br/>
-	Commercial support is available at
-	<a href="http://nginx.com/">nginx.com</a>.</p>
-
-	<p><em>Thank you for using nginx.</em></p>
-	</body>
-	</html>
-
-You'll get a screenful of HTML back from Nginx showing that Nginx is up and running. But more interestingly, if you look in the ``nginx-vol`` volume on the host machine and take a look at the ``access.log`` file you'll see a log message from Nginx showing our request.
-
-.. code-block:: bash
-
-	cat nginx-vol/_data/access.log
-
-Use ``docker inspect nginx-vol`` to verify that the volume was created and mounted correctly. Look for the Mounts section:
-
-.. code-block:: bash
-
-	"Mounts": [
-	            {
-	                "Type": "volume",
-	                "Name": "nginx-vol",
-	                "Source": "/var/lib/docker/volumes/nginx-vol/_data",
-	                "Destination": "/var/log/nginx",
-	                "Driver": "local",
-	                "Mode": "z",
-	                "RW": true,
-	                "Propagation": ""
-	            }
-	        ],
-
-This shows that the mount is a volume, it shows the correct source and destination, and that the mount is read-write.
-
-After running either of these examples, run the following commands to clean up the containers and volumes.
-
-.. code-block:: bash
-
-	$ docker stop nginxtest
-
-	$ docker rm nginxtest
-
-	$ docker volume rm nginx-vol
-
-4.2 Bind mounts
+4.1 Bind mounts
 ~~~~~~~~~~~~~~~
 
 **Bind mounts:** When you use a bind mount, a file or directory on the host machine is mounted into a container.
@@ -379,7 +216,7 @@ After running either of these examples, run the following commands to clean up t
 
 	If you use ``--mount`` to bind-mount a file or directory that does not yet exist on the Docker host, Docker does not automatically create it for you, but generates an error.
 
-4.2.1 Start a container with a bind mount
+4.1.1 Start a container with a bind mount
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
@@ -413,7 +250,7 @@ Stop the container:
 
 	$ docker rm -f devtest
 
-4.2.2 Use a read-only bind mount
+4.1.2 Use a read-only bind mount
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For some development applications, the container needs to write into the bind mount, so changes are propagated back to the Docker host. At other times, the container only needs read access.
@@ -438,54 +275,6 @@ Use ``docker inspect devtest`` to verify that the bind mount was created correct
                 "Propagation": "rprivate"
             }
         ],
-
-Stop the container:
-
-.. code-block:: bash
-
-	$ docker rm -f devtest
-
-Remove the volume:
-
-.. code-block:: bash
-
-	$ docker volume rm devtest
-
-4.3 tmpfs
-~~~~~~~~~
-
-**tmpfs mounts:** A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service's containers.
-
-.. image:: ../img/tmpfs.png
-  :width: 500
-  :height: 450
-  :scale: 100%
-  :align: center
-
-**Volumes** and **bind mounts** are mounted into the container's filesystem by default, and their contents are stored on the host machine. There may be cases where you do not want to store a container's data on the host machine, but you also don't want to write the data into the container's writable layer, for performance or security reasons, or if the data relates to non-persistent application state. An example might be a temporary one-time password that the container's application creates and uses as-needed. To give the container access to the data without writing it anywhere permanently, you can use a tmpfs mount, which is only stored in the host machine's memory (or swap, if memory is low). When the container stops, the tmpfs mount is removed. If a container is committed, the tmpfs mount is not saved.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=tmpfs,target=/var/log/nginx nginx:latest
-
-Use `docker inspect devtest` to verify that the bind mount was created correctly. Look for the Mounts section:
-
-.. code-block:: bash
-
-	$ docker inspect devtest
-
-	"Mounts": [
-	            {
-	                "Type": "tmpfs",
-	                "Source": "",
-	                "Destination": "/var/log/nginx",
-	                "Mode": "",
-	                "RW": true,
-	                "Propagation": ""
-	            }
-	        ],
-
-You can see from the above output that the ``Source`` filed is empty which indicates that the contents are not avaible on Docker host or host file system.
 
 Stop the container:
 
