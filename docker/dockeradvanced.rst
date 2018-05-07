@@ -1,10 +1,10 @@
 **Advanced Docker**
 -------------------
 
-Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as building your own Docker image, porting the Docker image to repositories (public and private), and finally deploy containers into cloud and other infrastructures, etc.
+Now that we are relatively comfortable with Docker basics, lets look at some of the advanced Docker topics such as building your own Docker image (manul and automatic) using Dockerfile, porting the Docker image to repositories (public and private), and finally deploy containers into cloud and other infrastructures, etc.
 
-1. Building Docker containers
-=============================
+1. Building Docker images
+=========================
 
 As our HOPS example showed in the last session, one area where Docker shines is when you need to use a command line utility that has a large number of dependencies.
 
@@ -86,346 +86,267 @@ An important distinction with regard to images is between base images and child 
 
 	**User images** are images created and shared by users like you. They build on base images and add additional functionality. Typically these are formatted as ``user/image-name``. The user value in the image name is your Dockerhub user or organization name.
 
-1.2 Meet our Flask app
-~~~~~~~~~~~~~~~~~~~~~~
+1.2 Building custom Docker images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now that you have a better understanding of Docker images, it's time to create your own! Unfortunately, astronomical data analysis packages can be very big. To make sure that we won't take download our wifi, we will create a simple image that sandboxes a small `Flask <http://flask.pocoo.org/>`_ application. Flask is a lightweight Python web framework. We'll do this by first pulling together the components for a random cat picture generator built with Python Flask, then dockerizing it by writing a Dockerfile and finally we'll build the image and run it.
+1.2.1 Using docker commit (not recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- `Create a Python Flask app that displays random cat`_
-- `Build the image`_
-- `Run your image`_
+As we saw in the Docker introduction, the general Docker workflow is:
 
-.. Note::
+- start a container based on an image in a known state
+- add things to the filesystem, such as packages, codebases, libraries, files, or anything else
+- commit the changes as layers to make a new image
 
-	I have already written the Flask app for you, so you should start by cloning the git repository at https://github.com/upendrak/flask-app. You can do this with ``git clone`` if you have git installed, or by clicking the “Download ZIP” button on GitHub
+Let's follow this workflow to built a custom image. Instead of `alpine` this time we will use `ubuntu` linux image to install some interesting packages
 
-.. _Create a Python Flask app that displays random cat:
+As before first either pull the `ubuntu` docker image or you can just `docker run -it ubuntu` to pull and run the container interactively
 
-1. Create a Python Flask app that displays random cat
+.. code-block :: bash
 
-For the purposes of this workshop, we've created a fun little Python Flask app that displays a random cat .gif every time it is loaded - because, you know, who doesn't like cats?
+	$ docker run -it ubuntu:16.04
+	Unable to find image 'ubuntu:16.04' locally
+	16.04: Pulling from library/ubuntu
+	Digest: sha256:9ee3b83bcaa383e5e3b657f042f4034c92cdd50c03f73166c145c9ceaea9ba7c
+	Status: Downloaded newer image for ubuntu:16.04
+	root@7f989e4174aa:/#
 
-Start by creating a directory called ``flask-app`` where we'll create the following files:
+Let's install two packages `fortune`, `cowsay`, `lolcat` inside the container. But before that it's alway good idea to update the packages that are already existing in the ubuntu.
 
-- `app.py`_
-- `requirements.txt`_
-- `templates/index.html`_
-- `Dockerfile`_
+.. code-block :: bash
 
-.. code-block:: bash
+	root@7f989e4174aa:/# apt-get update
+	root@7f989e4174aa:/# apt-get install -y fortune cowsay lolcat
 
-	$ mkdir flask-app && cd flask-app
+Now exit the container and run `docker ps -a` to check to see if the status of the container (which is exit in this case)
 
-.. _app.py:
+.. code-block :: bash
 
-1.1 **app.py**
+	 root@7f989e4174aa:/# exit
 
-Create the ``app.py`` file with the following content. You can use any of favorite text editor to create this file.
+Go ahead and commit the changes and create a new image.
 
-.. code-block:: bash
+.. code-block :: bash
 
-	from flask import Flask, render_template
-	import random
+	docker commit -m "Installed fortune cowsay lolcat" $(docker ps -lq) ubuntu/fortunecowsaylolcat
+	sha256:77ae42b823e60c2a350228d892aacda337e1e01c19c3ae72da104f7f4a77f83f
 
-	app = Flask(__name__)
+Congratulatios. You created your fist Docker image. Check to see your docker image in the list of images using `docker images`. Let's run a container using that newly created docker image
 
-	# list of cat images
-	images = [
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26388-1381844103-11.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr01/15/9/anigif_enhanced-buzz-31540-1381844535-8.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26390-1381844163-18.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-1376-1381846217-0.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3391-1381844336-26.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-29111-1381845968-0.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3409-1381844582-13.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr02/15/9/anigif_enhanced-buzz-19667-1381844937-10.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26358-1381845043-13.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-18774-1381844645-6.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-25158-1381844793-0.gif",
-	    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/10/anigif_enhanced-buzz-11980-1381846269-1.gif"
-	]
+.. code-block :: bash
 
-	@app.route('/')
-	def index():
-	    url = random.choice(images)
-	    return render_template('index.html', url=url)
+	$ docker run ubuntu/fortunecowsaylolcat /usr/games/cowsay "Hi"
+	 ____
+	< Hi >
+	 ----
+	        \   ^__^
+	         \  (oo)\_______
+	            (__)\       )\/\
+	                ||----w |
+	                ||     ||
 
-	if __name__ == "__main__":
-	    app.run(host="0.0.0.0")
+and another one
 
-.. _requirements.txt:
+.. code-block :: bash
 
-1.2. **requirements.txt**
+	$ docker run ubuntu/fortunecowsay /usr/games/fortune
+	It's all in the mind, ya know.
 
-In order to install the Python modules required for our app, we need to create a file called ``requirements.txt`` and add the following line to that file:
+Pretty cool isn't it.. 
 
-.. code-block:: bash
+**Exercise**: Can you figure out a way to combine these two commands in this order `fortune`, `cowsay` and `lolcat` to print what cowsay of the fortune output?
 
-	Flask==0.10.1
+**Hint**: Use pipe and use interactive terminal
 
-.. _templates/index.html:
+1.2.2 Using Dockerfile (recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.3. **templates/index.html**
+As you noticed by now that this method of making images is not reproducible. For example if you shae this image with someone (we will see how it is done later), then they wouldn't know what is installed in this image. Ofcourse you can provide them with your notes but still it's not reproducible. Rather than just running commands and installing commands using `apt-get install`, we'll put our instructions in a special file called the Dockerfile
 
-Create a directory called `templates` and create an ``index.html`` file in that directory with the following content in it:
+What exactly is a Dockerfile? 
 
-.. code-block:: bash
+A `Dockerfile <https://docs.docker.com/engine/reference/builder/>`_ is a text document that contains all the commands a user could call on the command line to assemble an image. Using `docker build` users can create an automated build that executes several command-line instructions in succession. Let's create a Dockerfile for the above image
 
-	$ mkdir templates && cd templates
+Open up a text editor of your choice and type in the following commands and save it as `Dockerfile` 
 
-.. code-block:: bash
+.. Tip ::
 
-	<html>
-	  <head>
-	    <style type="text/css">
-	      body {
-	        background: black;
-	        color: white;
-	      }
-	      div.container {
-	        max-width: 500px;
-	        margin: 100px auto;
-	        border: 20px solid white;
-	        padding: 10px;
-	        text-align: center;
-	      }
-	      h4 {
-	        text-transform: uppercase;
-	      }
-	    </style>
-	  </head>
-	  <body>
-	    <div class="container">
-	      <h4>Cat Gif of the day</h4>
-	      <img src="{{url}}" />
-	      <p><small>Courtesy: <a href="http://www.buzzfeed.com/copyranter/the-best-cat-gif-post-in-the-history-of-cat-gifs">Buzzfeed</a></small></p>
-	    </div>
-	  </body>
-	</html>
+	You can name your Dockerfile as anything but according to best practices it is recommended to name it as `Dockerfile` for reasons we will see later
 
-.. Note::
+.. code-block :: bash
 
-	If you want, you can run this app through your laptop’s native Python installation first just to see what it looks like. Run ``sudo pip install -r requirements.txt`` and then run ``python app.py``.
+	FROM ubuntu:16.04
+	MAINTAINER Upendra Devisetty <upendra@cyverse.org>
+	LABEL version="1.0" description="This Dockerfile is for building fortune cowsay lolcat ubuntu image"
+	RUN apt-get update
+	RUN apt-get install -y fortune cowsay lolcat
 
-	You should then be able to open a web browser, go to http://localhost:5000, and see the message "Hello! I am a Flask application".
+	ENV PATH=/usr/games/:$PATH
+	CMD fortune | cowsay | lolcat
 
-	This is totally optional - but some people like to see what the app’s supposed to do before they try to Dockerize it.
+That's it. Now building the Docker image using `docker build` command as below. The ``docker build command`` is quite simple - it takes an optional tag name with the ``-t`` flag, and the location of the directory containing the Dockerfile - the ``.`` indicates the current directory:
 
-.. _Dockerfile:
+.. code-block :: bash
 
-1.4. **Dockerfile**
+	docker build -t ubuntu/fortunecowsaylolcat2 .
+	Sending build context to Docker daemon  2.048kB
+	Step 1/5 : FROM ubuntu:16.04
+	 ---> c9d990395902
+	Step 2/5 : MAINTAINER Upendra Devisetty <upendra@cyverse.org>
+	 ---> Running in a365c28eb283
+	Removing intermediate container a365c28eb283
+	 ---> 91d18ff89d44
+	Step 3/5 : LABEL Description "This Dockerfile is for building fortune coway ubuntu image"
+	 ---> Running in d24ff4a347fa
+	Removing intermediate container d24ff4a347fa
+	 ---> 73daa1277fea
+	Step 4/5 : RUN apt-get update
+	 ---> Running in eed1e2fe25de
+	 ..........
+	 ..........
+	 Successfully built ffe89a681d5c
+	Successfully tagged ubuntu/fortunecowsaylolcat2:latest
 
-A **Dockerfile** is a text file that contains a list of commands that the Docker daemon calls while creating an image. The Dockerfile contains all the information that Docker needs to know to run the app — a base Docker image to run from, location of your project code, any dependencies it has, and what commands to run at start-up. It is a simple way to automate the image creation process. The best part is that the commands you write in a Dockerfile are almost identical to their equivalent Linux commands. This means you don't really have to learn new syntax to create your own Dockerfiles.
+Great! We successfully built a Docker image using Dockerfile. Let's test it out by launching a container using `docker run`. 
+.. code-block :: bash
 
-We want to create a Docker image with this web app. As mentioned above, all user images are based on a base image. Since our application is written in Python, we will build our own Python image based on ``Alpine``. We'll do that using a Dockerfile.
+	$ docker run --rm ubuntu/fortunecowsaylolcat2:1.0 
+	 ________________________________
+	/ It was all so different before \
+	\ everything changed.            /
+	 --------------------------------
+	        \   ^__^
+	         \  (oo)\_______
+	            (__)\       )\/\
+	                ||----w |
+	                ||     ||
 
-Create a file called Dockerfile in the ``flask`` directory, and add content to it as described below. Since you are currently in ``templates`` directory, you need to go up one directory up before you can create your Dockerfile
+Superb! So you have build a Docker image using Dockerfile. See how easy it is and it is also reproducible since you know how it is built. In addition, you can version control (using git or others) this Dockerfile. 
 
-.. code-block:: bash
+Before we go further, let's look at what those commands in Dockerfile mean
 
-	cd ..
+**FROM**
 
-.. code-block:: bash
+This instruction is used to set the base image for subsequent instructions. It is mandatory to set this in the first line of a Dockerfile. You can use it any number of times though.
 
-	# our base image
-	FROM alpine:3.5
+**MAINTAINER**
 
-	# install python and pip
-	RUN apk add --update py2-pip
+This is a non-executable instruction used to indicate the author of the Dockerfile.
 
-	# install Python modules needed by the Python app
-	COPY requirements.txt /usr/src/app/
-	RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+**LABEL**
 
-	# copy files required for the app to run
-	COPY app.py /usr/src/app/
-	COPY templates/index.html /usr/src/app/templates/
+You can assign metadata in the form of key-value pairs to the image using this instruction. It is important to notice that each LABEL instruction creates a new layer in the image, so it is best to use as few LABEL instructions as possible
 
-	# tell the port number the container should expose
-	EXPOSE 5000
+**RUN**
 
-	# run the application
-	CMD ["python", "/usr/src/app/app.py"]
+This instruction lets you execute a command on top of an existing layer and create a new layer with the results of command execution
 
-Now let's see what each of those lines mean..
+**CMD** 
 
-1.4.1 We'll start by specifying our base image, using the FROM keyword:
+This defines the commands that will run on the Image at start-up. Unlike a **RUN**, this does not create a new layer for the Image, but simply runs the command. There can only be one CMD per a Dockerfile/Image. If you need to run multiple commands, the best way to do that is to have the CMD run a script. CMD requires that you tell it where to run the command, unlike RUN.
 
-.. code-block:: bash
+**ENV**
 
-	FROM alpine:3.5
+This defines Environmental variables in the Docker image
 
-1.4.2. The next step usually is to write the commands of copying the files and installing the dependencies. But first we will install the Python pip package to the alpine linux distribution. This will not just install the pip package but any other dependencies too, which includes the python interpreter. Add the following ``RUN`` command next:
+We will see some more of Dockerfile commands in subsequent sections of the workshop.
 
-.. code-block:: bash
+**Use case 1: Building a astroML Docker image**
 
-	RUN apk add --update py2-pip
+This is a minimal Docker image using `astroML` as an example. `plot_spectrum_sum_of_norms.py` is an example script from astroML. It is modified to run better in a container environment.
 
-1.4.3. Let's add the files that make up the Flask Application. Install all Python requirements for our app to run. This will be accomplished by adding the lines:
+.. code-block :: bash
 
-.. code-block:: bash
+	$ mkdir astroML && cd astroML
 
-	COPY requirements.txt /usr/src/app/
-	RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+	$ vi Dockerfile
+	FROM debian:stretch
+	MAINTAINER Upendra Devisetty <upendra@cyverse.org>
+	LABEL version="1.0" description="This image is for astroML"
 
-1.4.4. Copy the files you have created earlier into our image by using ``COPY`` command.
+	# The base image is minimal with very few software packages. We
+	# udpate apt and install python-pip with recommanded packages here.
+	RUN apt-get -qq update &&\
+	    apt-get install -y python-pip &&\
+	    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+	# Next, we install astroML's dependencies and astroML itself using pip.
+	RUN pip install numpy scipy scikit-learn matplotlib astropy &&\
+	    pip	install astroML astroML_addons
 
-.. code-block:: bash
+	# Change the default work directory to "/root" inside the container.
+	WORKDIR	/root
 
-	COPY app.py /usr/src/app/
-	COPY templates/index.html /usr/src/app/templates/
+	# Install Jupyter and other visualization packages
+	RUN pip install jupyter ipywidgets &&\
+	    jupyter nbextension enable --py --sys-prefix widgetsnbextension
 
-1.4.5. Specify the port number which needs to be exposed. Since our flask app is running on 5000 that's what we'll expose.
+	CMD jupyter-notebook --allow-root --ip='*' --no-browser
 
-.. code-block:: bash
+Let's build the image from the Dockerfile now
 
-	EXPOSE 5000
+.. code-block :: bash
 
-1.4.6. The last step is the command for running the application which is simply - ``python ./app.py``. Use the ``CMD`` command to do that:
+	$ docker build -t debian/astroml:1.0 .
 
-.. code-block:: bash
+Now run the built image to execute first by overriding the `CMD` with python script
 
-	CMD ["python", "/usr/src/app/app.py"]
+.. code-block :: bash
+	
+	$ docker run --rm -p 8888:8888 -v ${PWD}:/root debian/astroml:1.0 python plot_spectrum_sum_of_norms.py
 
-The primary purpose of ``CMD`` is to tell the container which command it should run by default when it is started.
+The result is the pdf - `spectrum_sum_of_norms.pdf`
 
-.. _Build the image:
+Now remove the the two ouputs and run with the `CMD`
 
-2. Build the image
+.. code-block :: bash
 
-Now that you have your Dockerfile, you can build your image. The ``docker build`` command does the heavy-lifting of creating a docker image from a Dockerfile.
+	$ rm -r astroML_data spectrum_sum_of_norms.pdf 
 
-The ``docker build command`` is quite simple - it takes an optional tag name with the ``-t`` flag, and the location of the directory containing the Dockerfile - the ``.`` indicates the current directory:
+	$ docker run --rm -p 8888:8888 -v ${PWD}:/root debian/astroml:1.0 
+	[W 05:02:51.917 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+	[I 05:02:51.924 NotebookApp] Serving notebooks from local directory: /root
+	[I 05:02:51.924 NotebookApp] 0 active kernels
+	[I 05:02:51.924 NotebookApp] The Jupyter Notebook is running at:
+	[I 05:02:51.924 NotebookApp] http://[all ip addresses on your system]:8888/?token=394d9f1484335907821983ae97f55951a2b0b9a1f57770ea
+	[I 05:02:51.925 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+	[C 05:02:51.929 NotebookApp] 
+	    
+	    Copy/paste this URL into your browser when you connect for the first time,
+	    to login with a token:
+	        http://localhost:8888/?token=394d9f1484335907821983ae97f55951a2b0b9a1f57770ea
 
-.. Note::
+- **Exercise:** 
 
-	When you run the ``docker build`` command given below, make sure to replace ``<YOUR_DOCKERHUB_USERNAME>`` with your username. This username should be the same one you created when registering on Docker hub. If you haven't done that yet, please go ahead and create an account in `Dockerhub <https://hub.docker.com>`_.
+Create a new Jupyter notebook for the `plot_spectrum_sum_of_norms.py` script and execute it to make sure that all the steps are working fine..
 
-.. code-block:: bash
+**Use case 2: Building a extract_metadata Docker image**
 
-	YOUR_DOCKERHUB_USERNAME=<YOUR_DOCKERHUB_USERNAME>
+Next we will see how we can use a custom script as a CMD/ENTRYPOINT
 
-For example this is how I assign my dockerhub username
+First get on to this github repo and do a fork 
 
-.. code-block:: bash
+Then clone the repo to your local computer 
 
-	YOUR_DOCKERHUB_USERNAME=upendradevisetty
+.. code-block :: bash
 
-Now build the image using the following command:
+	$ git clone 
 
-.. code-block:: bash
+Now build the Docker image 
 
-	$ docker build -t $YOUR_DOCKERHUB_USERNAME/myfirstapp .
-	Sending build context to Docker daemon   7.68kB
-	Step 1/8 : FROM alpine:3.5
-	 ---> 88e169ea8f46
-	Step 2/8 : RUN apk add --update py2-pip
-	 ---> Using cache
-	 ---> 8b1f026c3899
-	Step 3/8 : COPY requirements.txt /usr/src/app/
-	 ---> Using cache
-	 ---> 6923f451ee09
-	Step 4/8 : RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
-	 ---> Running in fb6b7b8beb3c
-	Collecting Flask==0.10.1 (from -r /usr/src/app/requirements.txt (line 1))
-	  Downloading Flask-0.10.1.tar.gz (544kB)
-	Collecting Werkzeug>=0.7 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
-	  Downloading Werkzeug-0.14.1-py2.py3-none-any.whl (322kB)
-	Collecting Jinja2>=2.4 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
-	  Downloading Jinja2-2.10-py2.py3-none-any.whl (126kB)
-	Collecting itsdangerous>=0.21 (from Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
-	  Downloading itsdangerous-0.24.tar.gz (46kB)
-	Collecting MarkupSafe>=0.23 (from Jinja2>=2.4->Flask==0.10.1->-r /usr/src/app/requirements.txt (line 1))
-	  Downloading MarkupSafe-1.0.tar.gz
-	Installing collected packages: Werkzeug, MarkupSafe, Jinja2, itsdangerous, Flask
-	  Running setup.py install for MarkupSafe: started
-	    Running setup.py install for MarkupSafe: finished with status 'done'
-	  Running setup.py install for itsdangerous: started
-	    Running setup.py install for itsdangerous: finished with status 'done'
-	  Running setup.py install for Flask: started
-	    Running setup.py install for Flask: finished with status 'done'
-	Successfully installed Flask-0.10.1 Jinja2-2.10 MarkupSafe-1.0 Werkzeug-0.14.1 itsdangerous-0.24
-	You are using pip version 9.0.0, however version 9.0.1 is available.
-	You should consider upgrading via the 'pip install --upgrade pip' command.
-	 ---> 16d47a8073fd
-	Removing intermediate container fb6b7b8beb3c
-	Step 5/8 : COPY app.py /usr/src/app/
-	 ---> 338019e5711f
-	Step 6/8 : COPY templates/index.html /usr/src/app/templates/
-	 ---> b65ed769c446
-	Step 7/8 : EXPOSE 5000
-	 ---> Running in b95001d36e4d
-	 ---> 0deaa29ca54a
-	Removing intermediate container b95001d36e4d
-	Step 8/8 : CMD python /usr/src/app/app.py
-	 ---> Running in 4a8e82f87e2f
-	 ---> 40a121fff878
-	Removing intermediate container 4a8e82f87e2f
-	Successfully built 40a121fff878
-	Successfully tagged upendradevisetty/myfirstapp:latest
+.. code-block :: bash
 
-If you don't have the ``alpine:3.5 image``, the client will first pull the image and then create your image. Therefore, your output on running the command will look different from mine. If everything went well, your image should be ready! Run ``docker images`` and see if your image ``$YOUR_DOCKERHUB_USERNAME/myfirstapp`` shows.
+	$ docker build 
 
-.. _Run your image:
+Test the Docker image by launching a container
 
-3. Run your image
+.. code-block :: bash
 
-When Docker can successfully build your Dockerfile, test it by starting a new container from your new image using the docker run command. Don’t forget to include the port forwarding options you learned about before.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8888:5000 --name myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp
-
-Head over to ``http://localhost:8888`` and your app should be live.
-
-|catpic|
-
-Hit the Refresh button in the web browser to see a few more cat images.
-
-1.3. Dockerfile commands summary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here's a quick summary of the few basic commands we used in our Dockerfile.
-
-- **FROM** starts the Dockerfile. It is a requirement that the Dockerfile must start with the FROM command. Images are created in layers, which means you can use another image as the base image for your own. The FROM command defines your base layer. As arguments, it takes the name of the image. Optionally, you can add the Dockerhub username of the maintainer and image version, in the format username/imagename:version.
-
-- **RUN** is used to build up the Image you're creating. For each RUN command, Docker will run the command then create a new layer of the image. This way you can roll back your image to previous states easily. The syntax for a RUN instruction is to place the full text of the shell command after the RUN (e.g., RUN mkdir /user/local/foo). This will automatically run in a /bin/sh shell. You can define a different shell like this: RUN /bin/bash -c 'mkdir /user/local/foo'
-
-- **COPY** copies local files into the container.
-
-- **CMD** defines the commands that will run on the Image at start-up. Unlike a RUN, this does not create a new layer for the Image, but simply runs the command. There can only be one CMD per a Dockerfile/Image. If you need to run multiple commands, the best way to do that is to have the CMD run a script. CMD requires that you tell it where to run the command, unlike RUN. So example CMD commands would be:
-
-.. code-block:: bash
-
-	CMD ["python", "./app.py"]
-
-	CMD ["/bin/bash", "echo", "Hello World"]
-
-- EXPOSE creates a hint for users of an image which ports provide services. It is included in the information which can be retrieved via ``$ docker inspect <container-id>``.
-
-.. Note::
-
-	The EXPOSE command does not actually make any ports accessible to the host! Instead, this requires publishing ports by means of the ``-p`` flag when using ``docker run``.
-
-- PUSH pushes your image to Docker Cloud, or alternately to a private registry
-
-.. Note::
-
-	If you want to learn more about Dockerfiles, check out `Best practices for writing Dockerfiles <https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/>`_.
-
-Exercise 1 (5-10 mins): Deploy a custom Docker image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Download the sample code from https://github.com/Azure-Samples/docker-django-webapp-linux.git
-- Build the image using the Dockerfile in that repo using ``docker build`` command
-- Run an instance from that image
-- Verify the web app and container are functioning correctly
-- Share your (non-localhost) url on Slack
+	$ docker run
 
 2. Docker registries
 ====================
 
-To demonstrate the portability of what we just created, let’s upload our built Docker image and run it somewhere else (Atmosphere cloud). After all, you’ll need to learn how to push to registries when you want to deploy containers to production.
+To demonstrate the portability of what we just created, let’s upload our built Docker image and run it somewhere else (CyVerse Atmosphere cloud or Discovery Environment). After all, you’ll need to learn how to push to registries when you want to deploy containers to production.
 
 .. important::
 
@@ -443,7 +364,7 @@ There are several things you can do with Docker registries:
 2.1 Public repositories
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Some example of public registries include `Docker cloud <https://cloud.docker.com/>`_, `Docker hub <https://hub.docker.com/>`_ and `quay.io <https://quay.io/>`_.
+Some example of public registries include `Docker cloud <https://cloud.docker.com/>`_, `Docker hub <https://hub.docker.com/>`_ and `quay.io <https://quay.io/>`_ etc.,
 
 2.1.1 Log in with your Docker ID
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -458,12 +379,10 @@ First you have to login to your Docker hub account. To do that:
 
 .. code-block:: bash
 
-	$ docker login
-	Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-	Username (upendradevisetty):
-	Password:
+	$ docker login -u <dockerhub username> 
+	Password: 
 
-Enter Username and Password when prompted.
+Enter you Password when prompted.
 
 2.1.2 Tag the image
 ^^^^^^^^^^^^^^^^^^^
@@ -478,7 +397,7 @@ Now, put it all together to tag the image. Run docker tag image with your userna
 
 .. code-block:: bash
 
-	$ docker tag $YOUR_DOCKERHUB_USERNAME/myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0
+	$ docker tag <dockerhub username>/extractmetadata:1.0
 
 2.1.3 Publish the image
 ^^^^^^^^^^^^^^^^^^^^^^^
