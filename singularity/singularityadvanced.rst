@@ -58,6 +58,8 @@ A few things to consider when using HPC systems:
 #. If you need to edit text files, command line text editors don't support using a mouse, so working efficiently has a learning curve.  There are text editors that support editing files over SSH.  This lets you use a local text editor and just save the changes to the HPC system.
 #. Singularity has changed image formats.  Depending on the version of Singularity running on the HPC system, new squashFS or .simg formats may not work. The images take a lot less space
 
+Tutorial #2
+~~~~~~~~~~~
 
 2. Singularity and MPI
 ======================
@@ -128,7 +130,7 @@ GPU support in Singularity is fantastic
 
 Since Singularity supported docker containers, it has been fairly simple to utilize GPUs for machine learning code like TensorFlow. On Ocelote we have downloaded Docker images from Nvidia for most ML workflows, and converted them to Singularity.  They are kept in /unsupported/singularity/nvidia, and can be copied to your own directories. 
 
-Tutorial #1
+Tutorial #2
 ~~~~~~~~~~~
 This example is a case of running a simple container using an interactive session.  You don't need to know anything about machine learning.  From Ocelote:
 
