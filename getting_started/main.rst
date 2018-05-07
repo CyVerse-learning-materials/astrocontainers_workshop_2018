@@ -47,7 +47,7 @@ into Cloud and HPC.
 
 Couldn't find what you were looking for?
 
-- You can reach the lead instructor, Upendra Devisetty, at upendra at cyverse dot org.
+- You can reach the lead instructor, Chan, chikwan, at chanc at email.arizona dot edu.
 
 - You can also talk to any of the instructors or TAs if you need immediate help.
 
