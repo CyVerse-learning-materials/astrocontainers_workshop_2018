@@ -170,7 +170,7 @@ Exit out of the container by giving the ``exit`` command.
 		CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS                          PORTS                    NAMES
 		de4bbc3eeaec        alpine                "/bin/sh"                3 minutes ago       Exited (0) About a minute ago                            pensive_leavitt
 
-	If you want to keep the container active, then you can use keys ``ctrl +p, ctrl +q``. To make sure that it is not exited run the same ``docker ps -a`` command again::
+	If you want to keep the container active, then you can use keys ``Ctrl-p, Ctrl-q``. To make sure that it is not exited run the same ``docker ps -a`` command again::
 
 		$ docker ps -l
 		CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS                         PORTS                    NAMES
@@ -210,8 +210,8 @@ Volumes are often a better choice than persisting data in a container's writable
 
 	If your container generates non-persistent state data, consider using a ``tmpfs`` mount to avoid storing the data anywhere permanently, and to increase the container's performance by avoiding writing into the container's writable layer.
 
-4.1.1 Choose the -v or –mount flag for mounting volumes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4.1.1 Choose the -v or --mount flag for mounting volumes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Originally, the ``-v`` or ``--volume`` flag was used for standalone containers and the ``--mount`` flag was used for swarm services. However, starting with Docker 17.06, you can also use ``--mount`` with standalone containers. In general, ``--mount`` is more explicit and verbose. The biggest difference is that the ``-v`` syntax combines all the options together in one field, while the ``--mount`` syntax separates them. Here is a comparison of the syntax for each flag.
 
@@ -719,7 +719,7 @@ Now you can write your python code. Here is an example
 
 |jn_login3.5|
 
-To shut down the container once you're done working, simply hit Ctrl-C in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
+To shut down the container once you're done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
 
 .. |docker| image:: ../img/docker.png
   :width: 750
