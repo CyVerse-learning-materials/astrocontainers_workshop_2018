@@ -268,129 +268,7 @@ TODO: use HOPS to fringe fit VLBI data.
 
 Great! so you have now looked at ``docker run``, played with a Docker containers and also got the hang of some terminology. Armed with all this knowledge, you are now ready to get to the real stuff - doing data analysis using Jupyter Notebook with Docker.
 
-Let's start by taking baby-steps. First, we'll use Docker to run a static website in a container. The website is based on an existing image and in the next section we will see how to build a new image and run a website in that container. We'll pull a Docker image from Dockerhub, run the container, and see how easy it is to set up a web server.
-
-.. Note::
-
-	Code for this section is in this repo in the `static-site directory <https://github.com/docker/labs/tree/master/beginner/static-site>`_
-
-The image that you are going to use is a single-page website that was already created for this demo and is available on the Dockerhub as `dockersamples/static-site <https:/hub.docker.com/community/images/dockersamples/static-site>`_. You can pull and run the image directly in one go using ``docker run`` as follows.
-
-.. code-block:: bash
-
-	$ docker run -d dockersamples/static-site
-
-.. Note::
-
-	The ``-d`` flag enables detached mode, which detaches the running container from the terminal/shell and returns your prompt after the container starts.
-
-So, what happens when you run this command?
-
-Since the image doesn't exist on your Docker host (laptop/computer), the Docker daemon first fetches it from the registry and then runs it as a container.
-
-Now that the server is running, do you see the website? What port is it running on? And more importantly, how do you access the container directly from our host machine?
-
-Actually, you probably won't be able to answer any of these questions yet! ☺ In this case, the client didn't tell the Docker Engine to publish any of the ports, so you need to re-run the ``docker run`` command to add this instruction.
-
-Let's re-run the command with some new flags to publish ports and pass your name to the container to customize the message displayed. We'll use the ``-d`` option again to run the container in detached mode.
-
-First, stop the container that you have just launched. In order to do this, we need the container ID.
-
-Since we ran the container in detached mode, we don't have to launch another terminal to do this. Run ``docker ps`` to view the running containers.
-
-.. code-block:: bash
-
-	$ docker ps
-	CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
-	a7a0e504ca3e        dockersamples/static-site   "/bin/sh -c 'cd /usr/"   28 seconds ago      Up 26 seconds       80/tcp, 443/tcp     stupefied_mahavira
-
-Check out the CONTAINER ID column. You will need to use this CONTAINER ID value, a long sequence of characters, to identify the container you want to stop, and then to remove it. The example below provides the CONTAINER ID on our system; you should use the value that you see in your terminal.
-
-.. code-block:: bash
-
-	$ docker stop a7a0e504ca3e
-	$ docker rm   a7a0e504ca3e
-
-.. Note::
-
-	A cool feature is that you do not need to specify the entire **CONTAINER ID**. You can just specify a few starting characters and if it is unique among all the containers that you have launched, the Docker client will intelligently pick it up.
-
-Now, let's launch a container in detached mode as shown below:
-
-.. code-block:: bash
-
-	$ docker run --name static-site -d -P dockersamples/static-site
-	e61d12292d69556eabe2a44c16cbd54486b2527e2ce4f95438e504afb7b02810
-
-In the above command:
-
--	``-d`` will create a container with the process detached from our terminal
--	``-P`` will publish all the exposed container ports to random ports on the Docker host
--	``--name`` allows you to specify a container name
-
-Now you can see the ports by running the ``docker port`` command.
-
-.. code-block:: bash
-
-	$ docker port static-site
-	443/tcp -> 0.0.0.0:32770
-	80/tcp -> 0.0.0.0:32773
-
-If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open a web browser and go to port 80 on your host. The exact address will depend on how you're running Docker
-
-- Laptop or Native linux: ``http://localhost:[YOUR_PORT_FOR 80/tcp]``. On my system this is ``http://localhost:32773``.
-
-.. image:: ../img/static_site_docker.png
-  :width: 500
-  :height: 450
-  :scale: 100%
-  :align: center
-
-- Cloud server: If you are running the same set of commands on Atmosphere/Jetstream or on any other cloud service, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. On my Atmosphere instance this is ``http://128.196.142.26:32769/``. We will see more about deploying Docker containers on Atmosphere/Jetstream Cloud in the Advanced Docker session.
-
-.. image:: ../img/static_site_docker1.png
-  :width: 500
-  :height: 450
-  :scale: 100%
-  :align: center
-
-.. Note::
-
-	``-P`` will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``.
-
-	For example::
-
-	$ docker run --name static-site2 -d -p 8088:80 dockersamples/static-site
-
-
-If you are running Docker for Mac, Docker for Windows, or Docker on Linux, you can open ``http://localhost:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://localhost:8088``.
-
-If you are running Docker on Atmosphere/Jetstream or on any other cloud, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://128.196.142.26:8088/``
-
-If you see "Hello Docker!", then you're good!
-
-Let's stop and remove the containers since you won't be using them anymore.
-
-.. code-block:: bash
-
-	$ docker stop static-site static-site2
-	$ docker rm static-site static-site2
-
-Let's use a shortcut to both stop and delete that container from your system:
-
-.. code-block:: bash
-
-	$ docker rm -f static-site static-site2
-
-Run ``docker ps`` to make sure the containers are gone.
-
-.. code-block:: bash
-
-	$ docker ps
-	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-
-Use case 2: Processing Galaxy Simulation with Jupyter in Docker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TODO: introduce the "-p" flag.
 
 For a data scientist, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
 
@@ -421,7 +299,8 @@ Thanks to the rich ecosystem, there are already several readily available images
 
 Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don’t want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter Data Science notebook stack up and running in no time at all. Let’s get started! We will see few examples of these in the following sections...
 
-1. Launch a Jupyter notebook conatiner
+Use case 2: Processing Galaxy Simulation with Jupyter in Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Docker allows us to run a ‘ready to go’ Jupyter notebook in what’s known as a container:
 
