@@ -17,33 +17,6 @@ You can run a simple command on the login node as opposed to a large job:
   module load singularity
   singularity exec docker://python:latest python --version
 
-On an HPC system, your job submission script would look something like:
-
-.. code-block:: bash
-
-  ###========================================
-  #!/bin/bash
-  #PBS -N singularity-job
-  #PBS -W group_list=pi
-  #PBS -q windfall
-  #PBS -j oe
-  #PBS -l select=1:ncpus=1:mem=6gb
-  #PBS -l walltime=01:00:00
-  #PBS -l cput=12:00:00
-  module load singularity
-  cd /extra/chrisreidy/singularity
-  date
-  singularity exec docker://python:latest python --version
-  date
-
-This example uses PBS which is the schduler available on Ocelote.  ElGato uses LSF which has the same functions but different syntax.
-
-It is usually possible to get an interactive session as well. For example:
-
-.. code-block:: bash
-
-   qsub -I -N jobname -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb -l cput=1:0:0 -l walltime=1:0:0
-
 
 .. Note::
 
@@ -58,8 +31,98 @@ A few things to consider when using HPC systems:
 #. If you need to edit text files, command line text editors don't support using a mouse, so working efficiently has a learning curve.  There are text editors that support editing files over SSH.  This lets you use a local text editor and just save the changes to the HPC system.
 #. Singularity has changed image formats.  Depending on the version of Singularity running on the HPC system, new squashFS or .simg formats may not work. The images take a lot less space
 
-Tutorial #2
+Tutorial #1
 ~~~~~~~~~~~
+
+This is a review of knowledge already covered in this workshop.  
+
+.. Note::
+
+#. Build this where you have root authority
+#. Some packages are more complex than "pip install numpy"
+#. Include your bind points
+
+.. code-block:: bash
+
+  BootStrap: yum
+  OSVersion: 7
+  MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/$basearch/
+  Include: yum wget
+  # best to build up container using kickstart mentality. 
+  # ie, to add more packages to image,
+  # re-run bootstrap command again. 
+  # bootstrap on existing image will build on top of it, not overwriting it/restarting from scratch
+  # singularity .def file is like kickstart file
+  # unix commands can be run, but if there is any error, the bootstrap process ends
+  %setup
+   # commands to be executed on host outside container during bootstrap
+  %post
+    # commands to be executed inside container during bootstrap
+    # add python and install some packages
+    yum -y install vim wget python epel-release
+    yum -y install python-pip
+     # install tensorflow
+    pip install --upgrade pip
+    pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
+    pip install --upgrade numpy scipy scikit-learn matplotlib astropy
+     # create bind points for storage.
+     mkdir /extra
+     mkdir /xdisk
+     exit 0
+  %runscript
+   # commands to be executed when the container runs
+   echo "Arguments received: $*"
+   exec /usr/bin/python "$@"
+  %test
+   # commands to be executed within container at close of bootstrap process
+   
+Create container
+
+.. code-block:: bash
+
+  singularity build astropy.img astropy.recipe
+   
+The next step is to copy this singularity to one of your directories on Ocelote. For example:
+
+.. code-block:: bash
+
+  scp astropy.img chrisreidy@filexfer.hpc.arizona.edu:
+
+Log into home directory on Ocelote then "mv" file to /extra/chrisreidy/singularity
+Test with these commands
+
+.. code-block:: bash
+
+  $ module load singularity
+  $ singularity exec astropy.img python --version
+  Python 3.6.4
+  
+On an HPC system, your job submission script would look something like:
+
+.. code-block:: bash
+
+  ###========================================
+  #!/bin/bash
+  #PBS -N singularity-job
+  #PBS -W group_list=GroupName
+  #PBS -q windfall
+  #PBS -l select=1:ncpus=1:mem=6gb
+  #PBS -l walltime=01:00:00
+  #PBS -l cput=12:00:00
+  module load singularity
+  cd /extra/chrisreidy/singularity
+  date
+  singularity exec astropy.img python --version
+  date
+
+This example uses PBS which is the schduler available on Ocelote.  ElGato uses LSF which has the same functions but different syntax.
+
+It is usually possible to get an interactive session as well. For example:
+
+.. code-block:: bash
+
+   qsub -I -N jobname -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb -l cput=1:0:0 -l walltime=1:0:0
+
 
 2. Singularity and MPI
 ======================
@@ -150,14 +213,17 @@ This example is a case of running a simple container using an interactive sessio
 
 Please note that the --nv flag specifically passes the GPU drivers into the container. If you leave it out, the GPU will not be detected.
 
+Tutorial #3
+~~~~~~~~~~~
 
+This example is a little different.  It demonstrates the ability to pull a Docker image, embed it in Singularity and run it on a GPU node.
 For TensorFlow, you can directly pull their latest GPU image and utilize it as follows.
 
 .. code-block:: bash
 
-  # Change to your $WORK directory
-  cd $WORK
-  #Get the software
+  # Start an interactive session after you are on the login node.  Edit as needed:   
+  qsub -I -N jobname -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
+  # Get the software
   git clone https://github.com/tensorflow/models.git ~/models
   # Pull the image
   singularity pull docker://tensorflow/tensorflow:latest-gpu
@@ -168,32 +234,3 @@ For TensorFlow, you can directly pull their latest GPU image and utilize it as f
 
     You probably noticed that we check out the models repository into your $HOME directory. This is because your $HOME and $WORK directories are only available inside the container if the root folders /home and /work exist inside the container. In the case of tensorflow-latest-gpu.img, the /work directory does not exist, so any files there are inaccessible to the container.
 
-
-Hands-On Exercise
-~~~~~~~~~~~~~~~~~
-
-Build a Singularity container that implements a simple Tensorflow image classifier.
-
-The image classifier script is available "out of the box" here:
-`https://raw.githubusercontent.com/tensorflow/models/master/tutorials/image/imagenet/classify_image.py <https://raw.githubusercontent.com/tensorflow/models/master/tutorials/image/imagenet/classify_image.py>`_
-
-Tensorflow has working Docker containers on DockerHub that you can use to support all the dependencies.  For example, the first line of your Dockerfile might look like:
-
-.. code-block:: bash
-
-  FROM tensorflow/tensorflow:1.5.0-py3
-
-When running the image classifier, the non-containerized version would be invoked with something like:
-
-.. code-block:: bash
-
-  python /classify_image.py --model_dir /model --image_file cat.png
-
-You can use a Singularity file or a Dockerfile to help you.  For reference, you can lookback at the "Singularity Intro" section on building Singularity images, yesterday's material on building Dockerfiles, or the respective manual pages:
-
-- `http://singularity.lbl.gov/docs-build-container <http://singularity.lbl.gov/docs-build-container>`_
-- `https://docs.docker.com/engine/reference/builder/ <https://docs.docker.com/engine/reference/builder/>`_
-
-.. |singularity| image:: ../img/singularity.png
-  :height: 200
-  :width: 200
