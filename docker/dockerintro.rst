@@ -183,11 +183,11 @@ Exit out of the container by giving the ``exit`` command.
 4. Managing data in Docker
 ==========================
 
-It is possible to store data within the writable layer of a container, but there are some limitations:
+From the above examples, we learned that a running Docker container is an isolated environment created from an Docker image.  This means, although it is possible to store data within the "writable layer" of a container, there are some limitations:
 
-- The data doesn’t persist when that container is no longer running, and it can be difficult to get the data out of the container if another process needs it.
+- The data doesn't persist when that container is no longer running, and it can be difficult to get the data out of the container if another process needs it.
 
-- A container’s writable layer is tightly coupled to the host machine where the container is running. You can’t easily move the data somewhere else.
+- A container's writable layer is tightly coupled to the host machine where the container is running. You can't easily move the data somewhere else.
 
 Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. When in doubt, volumes are almost always the right choice.
 
@@ -198,17 +198,17 @@ Docker offers three different ways to mount data into a container from the Docke
 
 |volumes|
 
-Volumes are often a better choice than persisting data in a container’s writable layer, because using a volume does not increase the size of containers using it, and the volume’s contents exist outside the lifecycle of a given container. While bind mounts (which we will see later) are dependent on the directory structure of the host machine, volumes are completely managed by Docker. Volumes have several advantages over bind mounts:
+Volumes are often a better choice than persisting data in a container's writable layer, because using a volume does not increase the size of containers using it, and the volume's contents exist outside the lifecycle of a given container. While bind mounts (which we will see later) are dependent on the directory structure of the host machine, volumes are completely managed by Docker. Volumes have several advantages over bind mounts:
 
 - Volumes are easier to back up or migrate than bind mounts.
 - You can manage volumes using Docker CLI commands or the Docker API.
 - Volumes work on both Linux and Windows containers.
 - Volumes can be more safely shared among multiple containers.
-- A new volume’s contents can be pre-populated by a container.
+- A new volume's contents can be pre-populated by a container.
 
 .. Note::
 
-	If your container generates non-persistent state data, consider using a ``tmpfs`` mount to avoid storing the data anywhere permanently, and to increase the container’s performance by avoiding writing into the container’s writable layer.
+	If your container generates non-persistent state data, consider using a ``tmpfs`` mount to avoid storing the data anywhere permanently, and to increase the container's performance by avoiding writing into the container's writable layer.
 
 4.1.1 Choose the -v or –mount flag for mounting volumes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -278,7 +278,7 @@ Remove a volume
 4.1.3 Populate a volume using a container
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This example starts an ``nginx`` container and populates the new volume ``nginx-vol`` with the contents of the container’s ``/var/log/nginx`` directory, which is where Nginx stores its log files.
+This example starts an ``nginx`` container and populates the new volume ``nginx-vol`` with the contents of the container's ``/var/log/nginx`` directory, which is where Nginx stores its log files.
 
 .. code-block:: bash
 
@@ -357,7 +357,7 @@ After running either of these examples, run the following commands to clean up t
 
 .. tip::
 
-	If you are developing new Docker applications, consider using named **volumes** instead. You can’t use Docker CLI commands to directly manage bind mounts.
+	If you are developing new Docker applications, consider using named **volumes** instead. You can't use Docker CLI commands to directly manage bind mounts.
 
 |bind_mount|
 
@@ -442,11 +442,11 @@ Remove the volume:
 4.3 tmpfs
 ~~~~~~~~~
 
-**tmpfs mounts:** A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service’s containers.
+**tmpfs mounts:** A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service's containers.
 
 |tmpfs|
 
-**Volumes** and **bind mounts** are mounted into the container’s filesystem by default, and their contents are stored on the host machine. There may be cases where you do not want to store a container’s data on the host machine, but you also don’t want to write the data into the container’s writable layer, for performance or security reasons, or if the data relates to non-persistent application state. An example might be a temporary one-time password that the container’s application creates and uses as-needed. To give the container access to the data without writing it anywhere permanently, you can use a tmpfs mount, which is only stored in the host machine’s memory (or swap, if memory is low). When the container stops, the tmpfs mount is removed. If a container is committed, the tmpfs mount is not saved.
+**Volumes** and **bind mounts** are mounted into the container's filesystem by default, and their contents are stored on the host machine. There may be cases where you do not want to store a container's data on the host machine, but you also don't want to write the data into the container's writable layer, for performance or security reasons, or if the data relates to non-persistent application state. An example might be a temporary one-time password that the container's application creates and uses as-needed. To give the container access to the data without writing it anywhere permanently, you can use a tmpfs mount, which is only stored in the host machine's memory (or swap, if memory is low). When the container stops, the tmpfs mount is removed. If a container is committed, the tmpfs mount is not saved.
 
 .. code-block:: bash
 
@@ -583,7 +583,7 @@ If you are running Docker for Mac, Docker for Windows, or Docker on Linux, you c
 
 If you are running Docker on Atmosphere/Jetstream or on any other cloud, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://128.196.142.26:8088/``
 
-If you see "Hello Docker!", then you’re done!
+If you see "Hello Docker!", then you're done!
 
 Let's stop and remove the containers since you won't be using them anymore.
 
@@ -614,9 +614,9 @@ But why Set Up a Data Science Environment in a Container?
 
 - One reason is speed. We want data scientists using our platform to launch a Jupyter or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
 
-- Containerization benefits both data science and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don’t have to configure anything at all. We provide plenty of standard environment templates to choose from.)
+- Containerization benefits both data science and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don't have to configure anything at all. We provide plenty of standard environment templates to choose from.)
 
-- Ultimately, containers solve a lot of common problems associated with doing data science work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how data scientists work, and ensure that old code doesn’t stop running because of environment changes. To start using containers and our library of curated images to do collaborative data science work, request a demo of our platform today.
+- Ultimately, containers solve a lot of common problems associated with doing data science work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how data scientists work, and ensure that old code doesn't stop running because of environment changes. To start using containers and our library of curated images to do collaborative data science work, request a demo of our platform today.
 
 - Configuring a data science environment can be a pain. Dealing with inconsistent package versions, having to dive through obscure error messages, and having to wait hours for packages to compile can be frustrating. This makes it hard to get started with data science in the first place, and is a completely arbitrary barrier to entry.
 
@@ -635,7 +635,7 @@ Thanks to the rich ecosystem, there are already several readily available images
 - `Flink <https://github.com/apache/flink/tree/master/flink-contrib/docker-flink>`_
 - `R <https://github.com/rocker-org/rocker>`_
 
-Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don’t want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter ‘Data Science’ notebook stack up and running in no time at all. Let’s get started! We will see few examples of thse in the following sections...
+Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don't want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter "Data Science" notebook stack up and running in no time at all. Let's get started! We will see few examples of thse in the following sections...
 
 .. Note::
 
@@ -643,7 +643,7 @@ Motivation: Say you want to play around with some cool data science libraries in
 
 1. Launch a Jupyter notebook conatiner
 
-Docker allows us to run a ‘ready to go’ Jupyter data science stack in what’s known as a container:
+Docker allows us to run a "ready to go" Jupyter data science stack in what's known as a container:
 
 1.1 Create a `docker-compose.yml` file
 
@@ -705,11 +705,11 @@ The last line is a URL that we need to copy and paste into our browser to access
 
 	Do not copy and paste the above URL in your browser as this URL is specific to my environment.
 
-Once you’ve done that you should be greeted by your very own containerised Jupyter service!
+Once you've done that you should be greeted by your very own containerised Jupyter service!
 
 |jn_login|
 
-To create your first notebook, drill into the work directory and then click on the ‘New’ button on the right hand side and choose ‘Python 3’ to create a new Python 3 based Notebook.
+To create your first notebook, drill into the work directory and then click on the "New" button on the right hand side and choose "Python 3" to create a new Python 3 based Notebook.
 
 |jn_login2|
 
@@ -719,7 +719,7 @@ Now you can write your python code. Here is an example
 
 |jn_login3.5|
 
-To shut down the container once you’re done working, simply hit Ctrl-C in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
+To shut down the container once you're done working, simply hit Ctrl-C in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
 
 .. |docker| image:: ../img/docker.png
   :width: 750
