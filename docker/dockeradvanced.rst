@@ -259,6 +259,8 @@ This is a minimal Docker image using `astroML` as an example. `plot_spectrum_sum
 
 	$ mkdir astroML && cd astroML
 
+	$ wget https://de.cyverse.org/dl/d/2CE93196-0F91-414F-B532-0AC8D3AE032E/plot_spectrum_sum_of_norms.py
+
 	$ vi Dockerfile
 	FROM debian:stretch
 	MAINTAINER Upendra Devisetty <upendra@cyverse.org>
@@ -280,7 +282,15 @@ This is a minimal Docker image using `astroML` as an example. `plot_spectrum_sum
 	RUN pip install jupyter ipywidgets &&\
 	    jupyter nbextension enable --py --sys-prefix widgetsnbextension
 
-	CMD jupyter-notebook --allow-root --ip='*' --no-browser
+	COPY plot_spectrum_sum_of_norms.py /usr/bin
+	COPY run.sh /usr/bin
+	RUN chmod +x /usr/bin/plot_spectrum_sum_of_norms.py
+	RUN chmod +x /usr/bin/run.sh
+	ENTRYPOINT ["run.sh"]
+
+	$ vi run.sh
+	#!/bin/bash
+	plot_spectrum_sum_of_norms.py $1
 
 Let's build the image from the Dockerfile now
 
@@ -292,56 +302,32 @@ Now run the built image to execute first by overriding the `CMD` with python scr
 
 .. code-block :: bash
 	
-	$ docker run --rm -p 8888:8888 -v ${PWD}:/root debian/astroml:1.0 python plot_spectrum_sum_of_norms.py
+	$ docker run --rm -v ${PWD}:/root debian/astroml:1.0 test.pdf
 
-The result is the pdf - `spectrum_sum_of_norms.pdf`
+The result is the pdf - `test.pdf`
 
 Now remove the the two ouputs and run with the `CMD`
 
 .. code-block :: bash
 
-	$ rm -r astroML_data spectrum_sum_of_norms.pdf 
+	$ rm -r astroML_data test.pdf 
 
-	$ docker run --rm -p 8888:8888 -v ${PWD}:/root debian/astroml:1.0 
-	[W 05:02:51.917 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
-	[I 05:02:51.924 NotebookApp] Serving notebooks from local directory: /root
-	[I 05:02:51.924 NotebookApp] 0 active kernels
-	[I 05:02:51.924 NotebookApp] The Jupyter Notebook is running at:
-	[I 05:02:51.924 NotebookApp] http://[all ip addresses on your system]:8888/?token=394d9f1484335907821983ae97f55951a2b0b9a1f57770ea
-	[I 05:02:51.925 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-	[C 05:02:51.929 NotebookApp] 
+	$ docker run --rm -it -p 8888:8888 -v ${PWD}:/root --entrypoint jupyter-notebook debian/astroml:1.0 --allow-root --ip='*' --no-browser
+	[W 18:11:00.622 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+	[I 18:11:00.629 NotebookApp] Serving notebooks from local directory: /root
+	[I 18:11:00.629 NotebookApp] 0 active kernels
+	[I 18:11:00.629 NotebookApp] The Jupyter Notebook is running at:
+	[I 18:11:00.629 NotebookApp] http://[all ip addresses on your system]:8888/?token=a2a9027494420d6151824ad23d930b91a37eeb44597454ac
+	[I 18:11:00.630 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+	[C 18:11:00.633 NotebookApp] 
 	    
 	    Copy/paste this URL into your browser when you connect for the first time,
 	    to login with a token:
-	        http://localhost:8888/?token=394d9f1484335907821983ae97f55951a2b0b9a1f57770ea
+	        http://localhost:8888/?token=a2a9027494420d6151824ad23d930b91a37eeb44597454ac
 
 - **Exercise:** 
 
 Create a new Jupyter notebook for the `plot_spectrum_sum_of_norms.py` script and execute it to make sure that all the steps are working fine..
-
-**Use case 2: Building a extract_metadata Docker image**
-
-Next we will see how we can use a custom script as a CMD/ENTRYPOINT
-
-First get on to this github repo and do a fork 
-
-Then clone the repo to your local computer 
-
-.. code-block :: bash
-
-	$ git clone 
-
-Now build the Docker image 
-
-.. code-block :: bash
-
-	$ docker build 
-
-Test the Docker image by launching a container
-
-.. code-block :: bash
-
-	$ docker run
 
 2. Docker registries
 ====================
@@ -397,7 +383,7 @@ Now, put it all together to tag the image. Run docker tag image with your userna
 
 .. code-block:: bash
 
-	$ docker tag <dockerhub username>/extractmetadata:1.0
+	$ docker tag debian/astroml:1.0 <dockerhub username>/astroml:1.0
 
 2.1.3 Publish the image
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -406,11 +392,15 @@ Upload your tagged image to the Dockerhub repository
 
 .. code-block:: bash
 
-	$ docker push $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0
+	$ docker push <dockerhub username>/astroml:1.0
 
 Once complete, the results of this upload are publicly available. If you log in to Docker Hub, you will see the new image there, with its pull command.
 
-|docker_image|
+.. image:: ../img/docker_image.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 Congrats! You just made your first Docker image and shared it with the world!
 
@@ -429,13 +419,11 @@ Now run the following command to run the docker image from Dockerhub
 
 .. code-block:: bash
 
-	$ sudo docker run -d -p 8888:5000 --name myfirstapp $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0
+	$ docker run --rm -v ${PWD}:/root upendradevisetty/astroml:1.0
 
 .. Note::
 
 	You don't have to run ``docker pull`` since if the image isn’t available locally on the machine, Docker will pull it from the repository.
-
-Head over to ``http://<ipaddress>:8888`` and your app should be live.
 
 2.2 Private repositories
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -449,7 +437,11 @@ You might have guessed by now that the registry must be available as a Docker im
 
 A Dockerhub search on the keyword ``registry`` brings up the following image as the top result:
 
-|private_registry|
+.. image:: ../img/private_registry.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 Run a container from ``registry`` Dockerhub image
 
@@ -474,7 +466,7 @@ Next step is to tag your image under the registry namespace and push it there
 
 	$ REGISTRY=localhost:5000
 
-	$ docker tag $YOUR_DOCKERHUB_USERNAME/myfirstapp:1.0 $REGISTRY/$(whoami)/myfirstapp:1.0
+	$ docker tag upendradevisetty/astroml:1.0 $REGISTRY/$(whoami)/astroml:1.0
 
 2.2.2 Publish the image into the local registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -483,15 +475,13 @@ Finally push the image to the local registry
 
 .. code-block:: bash
 
-	$ docker push $REGISTRY/$(whoami)/myfirstapp:1.0
-	The push refers to a repository [localhost:5000/upendra_35/myfirstapp]
-	64436820c85c: Pushed
-	831cff83ec9e: Pushed
-	c3497b2669a8: Pushed
-	1c5b16094682: Pushed
-	c52044a91867: Pushed
-	60ab55d3379d: Pushed
-	1.0: digest: sha256:5095dea8b2cf308c5866ef646a0e84d494a00ff0e9b2c8e8313a176424a230ce size: 1572
+	$ docker push $REGISTRY/$(whoami)/astroml:1.0
+	The push refers to repository [localhost:5000/upendra_35/astroml]
+	dbc133154d04: Pushed 
+	2efc0f8eb69d: Pushed 
+	2ec163aac8ff: Pushed 
+	0f3a12fef684: Pushed 
+	1.0: digest: sha256:eba0beb8f735a8d32b74bed0e0194c0b04e6d15608c21736f819ca8ee06f83c5 size: 1167
 
 2.2.3 Pull and run the image from the local repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -500,7 +490,19 @@ You can also pull the image from the local repository similar to how you pull it
 
 .. code-block:: bash
 
-	$ docker run -d -P --name=myfirstapplocal $REGISTRY/$(whoami)/myfirstapp:1.0
+	$ docker run --rm -p 8888:8888 -v ${PWD}:/root $REGISTRY/$(whoami)/astroml:1.0
+	[I 17:06:53.813 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
+	[W 17:06:54.094 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+	[I 17:06:54.106 NotebookApp] Serving notebooks from local directory: /root
+	[I 17:06:54.106 NotebookApp] 0 active kernels
+	[I 17:06:54.106 NotebookApp] The Jupyter Notebook is running at:
+	[I 17:06:54.106 NotebookApp] http://[all ip addresses on your system]:8888/?token=b0ff6191b65f65a7bdc185597b4168e4f9755d06363dde62
+	[I 17:06:54.107 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+	[C 17:06:54.110 NotebookApp] 
+	    
+	    Copy/paste this URL into your browser when you connect for the first time,
+	    to login with a token:
+	        http://localhost:8888/?token=b0ff6191b65f65a7bdc185597b4168e4f9755d06363dde62
 
 3. Automated Docker image building from github
 ==============================================
@@ -542,66 +544,54 @@ To use automated builds, you first must have an account on `Docker Hub <https://
 
 After you grant access to your code repository, the system returns you to Docker Hub and the link is complete. For example, github linked hosted repository looks like this:
 
-|auto_build-1|
+.. image:: ../img/auto_build-1.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
+
 
 3.3 Create a new automated build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Automated build repositories rely on the integration with your github code repository to build.
 
-Let's create an automatic build for our ``flask-app`` using the instructions below:
+Let's create an automatic build for our ``astroML`` using the instructions below:
 
 1. Initialize git repository for the `flask-app` directory
 
 .. code-block:: bash
 
 	$ git init
-	Initialized empty Git repository in /Users/upendra_35/Documents/git.repos/flask-app/.git/
+	Initialized empty Git repository in /Users/upendra_35/Downloads/docker_workshop/astroML/.git/
 
-	$ git status
-	On branch master
-
-	Initial commit
-
-	Untracked files:
-  	(use "git add <file>..." to include in what will be committed)
-
-		Dockerfile
-		app.py
-		requirements.txt
-		templates/
-
-	nothing added to commit but untracked files present (use "git add" to track)
-
-	$ git add * && git commit -m"Add files and folders"
-	[master (root-commit) cfdf021] Add files and folders
-	 4 files changed, 75 insertions(+)
+	$ git add Dockerfile run.sh plot_spectrum_sum_of_norms.py && git commit -m"Add files and folders"
+	[master (root-commit) 3d85ec9] Add files and folders
+	 3 files changed, 83 insertions(+)
 	 create mode 100644 Dockerfile
-	 create mode 100644 app.py
-	 create mode 100644 requirements.txt
-	 create mode 100644 templates/index.html
+	 create mode 100644 plot_spectrum_sum_of_norms.py
+	 create mode 100644 run.sh
 
 2. Create a new repository on github by navigating to this url - https://github.com/new
 
-|create_repo|
+.. image:: ../img/create_repo.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 3. Push the repository to github
 
-|create_repo2|
+.. image:: ../img/create_repo2.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 .. code-block:: bash
 
-	$ git remote add origin https://github.com/upendrak/flask-app.git
-
+	$ git remote add origin https://github.com/upendrak/atroML.git
 	$ git push -u origin master
-	Counting objects: 7, done.
-	Delta compression using up to 8 threads.
-	Compressing objects: 100% (5/5), done.
-	Writing objects: 100% (7/7), 1.44 KiB | 0 bytes/s, done.
-	Total 7 (delta 0), reused 0 (delta 0)
-	To https://github.com/upendrak/flask-app.git
-	 * [new branch]      master -> master
-	Branch master set up to track remote branch master from origin.
 
 4.	Select ``Create`` > ``Create Automated Build`` from Docker Hub.
 
@@ -609,11 +599,15 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 
 - For now select your GitHub account from the User/Organizations list on the left. The list of repositories change.
 
-- Pick the project to build. In this case ``flask-app``. Type in "AstroContainers flask-app" in the Short Description box.
+- Pick the project to build. In this case ``atroML``. Type in "AstroML docker image" in the Short Description box.
 
 - If you have a long list of repos, use the filter box above the list to restrict the list. After you select the project, the system displays the Create Automated Build dialog.
 
-|auto_build-2|
+.. image:: ../img/auto_build-2.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 .. Note::
 
@@ -621,11 +615,15 @@ Let's create an automatic build for our ``flask-app`` using the instructions bel
 
 5.	Customize the automated build by pressing the ``Click here to customize`` behavior link.
 
-|auto_build-2.1|
+.. image:: ../img/auto_build-2.1.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 Specify which code branches or tags to build from. You can build by a code branch or by an image tag. You can enter a specific value or use a regex to select multiple values. To see examples of regex, press the Show More link on the right of the page.
 
-- Enter the ``master`` (default) for the name of the branch.
+- Leave Push Type as Branch as is.
 
 - Leave the Dockerfile location as is.
 
@@ -649,11 +647,9 @@ It can take a few minutes for your automated build job to be created. When the s
 
 7. Manually Trigger a Build
 
-Before you trigger an automated build by pushing to your GitHub ``flask-app`` repo, you'll trigger a manual build. Triggering a manual build ensures everything is working correctly.
+Before you trigger an automated build by pushing to your GitHub ``astroML`` repo, you'll trigger a manual build. Triggering a manual build ensures everything is working correctly.
 
 From your automated build page choose ``Build Settings``
-
-|auto_build-5|
 
 Press ``Trigger`` button and finally click ``Save Changes``.
 
@@ -661,7 +657,11 @@ Press ``Trigger`` button and finally click ``Save Changes``.
 
 	Docker builds everything listed whenever a push is made to the code repository. If you specify a particular branch or tag, you can manually build that image by pressing the Trigger. If you use a regular expression syntax (regex) to define your build branch or tag, Docker does not give you the option to manually build.
 
-|auto_build-6|
+.. image:: ../img/auto_build-6.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 8. Review the build results
 
@@ -673,16 +673,11 @@ Wait until your image build is done.
 
 You may have to manually refresh the page and your build may take several minutes to complete.
 
-|auto_build-7|
-
-Exercise 2 (5-10 mins): Updating and automated building
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Add some more cat pics to the `app.py` file
-- Add, Commit and Push it to your github repo
-- Trigger automatic build with a new tag (2.0) on Dockerhub
-- Run an instance to make sure the new pics show up
-- Share your Dockerhub link url on Slack
+.. image:: ../img/auto_build-7.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 4. Docker Compose for multi container apps
 ==========================================
@@ -848,58 +843,8 @@ And that’s it! You should be able to see the Flask application running on ``ht
 
 |docker-compose|
 
-Exercise 3 (~10 mins): Compose for multi container apps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Change the greeting in ``app.py`` and save it. For example, change the ``This Compose/Flask demo has been viewed`` message to ``This AstroContainers Workshop demo has been viewed``
-- Refresh the `app` in your browser. What do you see now?
-- Create a automatic build for ``compose-flask`` project directory
-- Share your Dockerhub link url on Slack
-
-.. |catpic| image:: ../img/catpic-1.png
-  :width: 750
-  :height: 700
-
-.. |docker_image| image:: ../img/docker_image.png
-  :width: 750
-  :height: 700
-
-.. |private_registry| image:: ../img/private_registry.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-1| image:: ../img/auto_build-1.png
-  :width: 750
-  :height: 700
-
-.. |create_repo| image:: ../img/create_repo.png
-  :width: 750
-  :height: 700
-
-.. |create_repo2| image:: ../img/create_repo2.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-2| image:: ../img/auto_build-2.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-2.1| image:: ../img/auto_build-2.1.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-5| image:: ../img/auto_build-5.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-6| image:: ../img/auto_build-6.png
-  :width: 750
-  :height: 700
-
-.. |auto_build-7| image:: ../img/auto_build-7.png
-  :width: 750
-  :height: 700
-
-.. |docker-compose| image:: ../img/dc-1.png
-  :width: 750
-  :height: 700
+.. image:: ../img/dc-1.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
