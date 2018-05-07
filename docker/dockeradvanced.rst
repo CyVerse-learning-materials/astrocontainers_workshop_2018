@@ -208,18 +208,19 @@ That's it. Now building the Docker image using `docker build` command as below. 
 	Successfully tagged ubuntu/fortunecowsaylolcat2:latest
 
 Great! We successfully built a Docker image using Dockerfile. Let's test it out by launching a container using `docker run`. 
+
 .. code-block :: bash
 
 	$ docker run --rm ubuntu/fortunecowsaylolcat2:1.0 
-	 ________________________________
-	/ It was all so different before \
-	\ everything changed.            /
-	 --------------------------------
-	        \   ^__^
-	         \  (oo)\_______
-	            (__)\       )\/\
-	                ||----w |
-	                ||     ||
+		 ________________________________
+		/ It was all so different before \
+		\ everything changed.            /
+		 --------------------------------
+		        \   ^__^
+		         \  (oo)\_______
+		            (__)\       )\/\
+		                ||----w |
+		                ||     ||
 
 Superb! So you have build a Docker image using Dockerfile. See how easy it is and it is also reproducible since you know how it is built. In addition, you can version control (using git or others) this Dockerfile. 
 
@@ -840,8 +841,6 @@ A brief explanation of ``docker-compose.yml`` is as below:
 	Successfully tagged composeflask_web:latest
 
 And that’s it! You should be able to see the Flask application running on ``http://localhost:8888`` or ``<ipaddress>:8888``
-
-|docker-compose|
 
 .. image:: ../img/dc-1.png
   :width: 550
