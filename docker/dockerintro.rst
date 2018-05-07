@@ -289,39 +289,14 @@ You just created 4 fringe plots which contain all important information of the V
 5. Exposing container ports
 ===========================
 
-For data analysis, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
-
-But why set up a data analysis environment in a container?
-
-- One reason is speed. We want data scientists using our platform to launch a Jupyter Notebook or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
-
-- Containerization benefits both data analysis and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don't have to configure anything at all. We provide plenty of standard environment templates to choose from.)
-
-- Ultimately, containers solve a lot of common problems associated with doing data analysis work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how astronomers work, and ensure that old code doesn't stop running because of environment changes.
-
-- Configuring a data analysis environment can be a pain. Dealing with inconsistent package versions, having to dive through obscure error messages, and having to wait hours for packages to compile can be frustrating. This makes it hard to get started with data analysis in the first place, and is a completely arbitrary barrier to entry.
-
-Thanks to the rich ecosystem, there are already several readily available images for the common components in data analysis pipelines. Here are some Docker images to help you quickly spin up your own data analysis pipeline:
-
-- `MySQL <https://hub.docker.com/_/mysql/>`_
-- `Postgres <https://hub.docker.com/_/postgres/>`_
-- `Redmine <https://hub.docker.com/_/redmine/>`_
-- `MongoDB <https://hub.docker.com/_/mongo/>`_
-- `Hadoop <https://hub.docker.com/r/sequenceiq/hadoop-docker/>`_
-- `Spark <https://hub.docker.com/r/sequenceiq/spark/>`_
-- `Zookeeper <https://hub.docker.com/r/wurstmeister/zookeeper/>`_
-- `Kafka <https://github.com/spotify/docker-kafka>`_
-- `Cassandra <https://hub.docker.com/_/cassandra/>`_
-- `Storm <https://github.com/wurstmeister/storm-docker>`_
-- `Flink <https://github.com/apache/flink/tree/master/flink-contrib/docker-flink>`_
-- `R <https://github.com/rocker-org/rocker>`_
-
-Motivation: Say you want to play around with some cool data analysis libraries in Python but what you don't want to do is spend hours on installing Python, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter notebook stack up and running in no time at all. Let's get started!
+Mounting a host directory is one way to make a container connect with the outside work. Another possible is through network by exposing a port.
 
 Use case 2: Processing Galaxy Simulation with Jupyter in Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Docker allows us to run a "ready to go" Jupyter notebook in a container.  Inside the ``2018-05-examples`` git repository that you downloaded earlier, there is a sample Galaxy simulation:
+In this second use case, we will use Docker to run a "ready to go" Jupyter notebook in a container.  We will expose the port 8888 from the container to the localhost so that you can connect to the notebook.
+
+Inside the ``2018-05-examples`` git repository that you downloaded earlier, there is a sample Galaxy simulation:
 
 .. code-block :: bash
 
@@ -369,34 +344,5 @@ Once you've done that you should be greeted by your very own containerised Jupyt
   :height: 450
   :scale: 100%
   :align: center
-
-To create your first notebook, drill into the `work` directory and then click on the "New" button on the right hand side and choose "Python 3" to create a new Python 3 based Notebook.
-
-.. image:: ../img/jn_login2.png
-  :width: 800
-  :height: 300
-  :scale: 100%
-  :align: center
-
-Now you can write your python code. Here is an example
-
-.. image:: ../img/jn_login3.png
-  :width: 800
-  :height: 300
-  :scale: 100%
-  :align: center
-
-.. image:: ../img/jn_login3.5.png
-  :width: 800
-  :height: 300
-  :scale: 100%
-  :align: center
-
-Now if you check the contents of the `test` folder you will see both the `demo` notebook and `out.txt` file
-
-.. code-block :: bash
-
-	$ ls test/
-	demo.ipynb  out.txt
 
 To shut down the container once you're done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
