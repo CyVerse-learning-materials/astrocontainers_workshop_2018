@@ -10,30 +10,31 @@ Conducting analyses on high performance computing clusters happens through very 
 
 Most jobs on an HPC cluster are neither interactive, nor realtime.  When you submit a job to the scheduler, you must tell it what resources you need (e.g. how many nodes, what type of nodes) and what you want to run.  Then the scheduler finds resources matching your requirements, and runs the job for you when it can.
 
-For example, if you want to run the command:
+You can run a simple command on the login node as opposed to a large job:
 
 .. code-block:: bash
 
+  module load singularity
   singularity exec docker://python:latest python --version
 
 On an HPC system, your job submission script would look something like:
 
 .. code-block:: bash
 
- ###========================================
-#!/bin/bash
-#PBS -N singularity-job
-#PBS -W group_list=pi
-#PBS -q windfall
-#PBS -j oe
-#PBS -l select=1:ncpus=1:mem=6gb
-#PBS -l walltime=01:00:00
-#PBS -l cput=12:00:00
-module load singularity
-cd /extra/chrisreidy/singularity
-date
-singularity exec docker://python:latest python --version
-date
+  ###========================================
+  #!/bin/bash
+  #PBS -N singularity-job
+  #PBS -W group_list=pi
+  #PBS -q windfall
+  #PBS -j oe
+  #PBS -l select=1:ncpus=1:mem=6gb
+  #PBS -l walltime=01:00:00
+  #PBS -l cput=12:00:00
+  module load singularity
+  cd /extra/chrisreidy/singularity
+  date
+  singularity exec docker://python:latest python --version
+  date
 
 This example uses PBS which is the schduler available on Ocelote.  ElGato uses LSF which has the same functions but different syntax.
 
@@ -125,24 +126,28 @@ For a single node, you can also use the **container MPI** to run in parallel (us
 
 GPU support in Singularity is fantastic
 
-Since Singularity supported docker containers, it has been fairly simple to utilize GPUs for machine learning code like TensorFlow. From Ocelote:
+Since Singularity supported docker containers, it has been fairly simple to utilize GPUs for machine learning code like TensorFlow. On Ocelote we have downloaded Docker images from Nvidia for most ML workflows, and converted them to Singularity.  They are kept in /unsupported/singularity/nvidia, and can be copied to your own directories. 
+
+Tutorial #1
+~~~~~~~~~~~
+This example is a case of running a simple container using an interactive session.  You don't need to know anything about machine learning.  From Ocelote:
 
 .. code-block:: bash
 
-  # Work from a compute node
+  cd /extra/netid
+  mkdir astro
+  cd astro
+  cp /unsupported/singularity/nvidia/nvidia-tensorflow.18.03-py3.simg .
+  cp /unsupported/singularity/nvidia/tensorflow_example.py .
+  # Work from a compute node. This step is likely to take more than a minute depending on how busy the scheduler is.
   qsub -I -N jobname -m bea -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
   # Load the singularity module
   module load singularity
-  # Pull your image
-  singularity pull docker://nvidia/caffe:latest
-
-  singularity exec --nv nvidia-tensorflow.18.01-py3.simg python TFlow_example.py
+  cd /extra/netid/astro
+  singularity exec --nv nvidia-tensorflow.18.03-py3.simg python tensorflow_example.py
 
 Please note that the --nv flag specifically passes the GPU drivers into the container. If you leave it out, the GPU will not be detected.
 
-.. code-block:: bash
-
-  singularity exec caffe-latest.img caffe device_query -gpu 0
 
 For TensorFlow, you can directly pull their latest GPU image and utilize it as follows.
 
