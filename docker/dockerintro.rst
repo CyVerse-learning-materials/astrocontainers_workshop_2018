@@ -6,7 +6,7 @@
 1. Prerequisites
 ================
 
-There are no specific skills needed for this tutorial beyond a basic comfort with the command line and using a text editor. Prior experience in developing web applications will be helpful but is not required.
+There are no specific skills needed for this tutorial beyond a basic comfort with the command line and using a text editor. Prior experience in python will be helpful but is not required.
 
 2. Docker Installation
 ======================
@@ -22,21 +22,6 @@ The getting started guide on Docker has detailed instructions for setting up Doc
 	If you're using an older version of Windows or MacOS you may need to use `Docker Machine <https://docs.docker.com/machine/overview/>`_ instead.
 
 	All commands work in either bash or Powershell on Windows.
-
-.. Note::
-
-	Depending on how you've installed Docker on your system, you might see a ``permission denied`` error after running the above command. If you're on Linux, you may need to prefix your Docker commands with sudo. Alternatively to run docker command without sudo, you need to add your user (who has root privileges) to docker group.
-	For this run:
-
-	Create the docker group::
-
-		$ sudo groupadd docker
-
-	Add your user to the docker group::
-
-		$ sudo usermod -aG docker $USER
-
-	Log out and log back in so that your group membership is re-evaluated
 
 Once you are done installing Docker, test your Docker installation by running the following command to make sure you are using version 1.13 or higher:
 
@@ -69,6 +54,21 @@ When run without ``--version`` you should see a whole bunch of lines showing the
 	    to your terminal.
 	.......
 
+.. Note::
+
+	Depending on how you've installed Docker on your system, you might see a ``permission denied`` error after running the above command. If you're on Linux, you may need to prefix your Docker commands with sudo. Alternatively to run docker command without sudo, you need to add your user (who has root privileges) to docker group.
+	For this run:
+
+	Create the docker group::
+
+		$ sudo groupadd docker
+
+	Add your user to the docker group::
+
+		$ sudo usermod -aG docker $USER
+
+	Log out and log back in so that your group membership is re-evaluated
+
 3. Running Docker containers
 ============================
 
@@ -76,7 +76,7 @@ Now that you have everything setup, it's time to get our hands dirty. In this se
 
 But wait, what exactly is a container and image?
 
-**Containers** - Running instances of Docker images — containers run the actual applications. A container includes an application and all of its dependencies. It shares the kernel with other containers, and runs as an isolated process in user space on the host OS.
+**Containers** - Running instances of Docker images - containers run the actual applications. A container includes an application and all of its dependencies. It shares the kernel with other containers, and runs as an isolated process in user space on the host OS.
 
 **Images** - The file system and configuration of our application which are used to create containers. To find out more about a Docker image, run ``docker inspect hello-world``. In the demo above, you could have used the ``docker pull`` command to download the ``hello-world`` image. However when you executed the command ``docker run hello-world``, it also did a ``docker pull`` behind the scenes to download the ``hello-world`` image with ``latest`` tag (we will learn more about tags little later).
 
@@ -573,7 +573,7 @@ If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open 
 
 .. Note::
 
-	``-P` `will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``. For example:
+	``-P`` will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``. For example:
 
 .. code-block:: bash
 
@@ -583,7 +583,7 @@ If you are running Docker for Mac, Docker for Windows, or Docker on Linux, you c
 
 If you are running Docker on Atmosphere/Jetstream or on any other cloud, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://128.196.142.26:8088/``
 
-If you see “Hello Docker!” then you’re done!
+If you see "Hello Docker!", then you’re done!
 
 Let's stop and remove the containers since you won't be using them anymore.
 
@@ -721,174 +721,6 @@ Now you can write your python code. Here is an example
 
 To shut down the container once you’re done working, simply hit Ctrl-C in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
 
-2. Launch a R-Studio container
-
-Next, we will see a Docker image from Rocker which will allow us to run RStudio inside the container and has many useful R packages already installed.
-
-|rstudio_ss|
-
-.. code-block:: bash
-
-	$ docker run --rm -d -p 8787:8787 rocker/rstudio:3.4.3
-
-.. Note::
-
-	 ``–rm`` ensures that when we quit the container, the container is deleted. If we did not do this, everytime we run a container, a version of it will be saved to our local computer. This can lead to the eventual wastage of a lot of disk space until we manually remove these containers.
-
-The command above will lead RStudio-Server to launch invisibly. To connect to it, open a browser and enter http://localhost:8787, or <ipaddress>:8787 on cloud
-
-|rstudio_login2|
-
-Enter ``rstudio`` as username and password. Finally Rstudio shows up and you can run your R command from here
-
-|rstudio_login|
-
-3. Machine learning using Docker
-
-In this simple example we’ll take a sample dataset of fruits metrics (like size, weight, texture) labelled apples and oranges. Then we can predict the fruit given a new set of fruit metrics using scikit-learn’s decision tree
-
-You can find the above code in this `github repo <https://github.com/upendrak/scikit_tree_docker>`_
-
-1. Create a directory that consists of all the files
-
-.. code-block:: bash
-
-	$ mkdir scikit_docker && cd scikit_docker
-
-2. Create ``requirements.txt`` file — Contains python modules and has nothing to do with Docker inside the folder - ``scikit_docker``.
-
-.. code-block:: bash
-
-	numpy
-	scipy
-	scikit-learn
-
-3. Create a file called ``app.py`` inside the folder — ``scikit_docker``
-
-.. code-block:: bash
-
-	from sklearn import tree
-	#DataSet
-	#[size,weight,texture]
-	X = [[181, 80, 44], [177, 70, 43], [160, 60, 38], [154, 54, 37],[166, 65, 40], [190, 90, 47], [175, 64, 39], [177, 70, 40], [159, 55, 37], [171, 75, 42], [181, 85, 43]]
-
-	Y = ['apple', 'apple', 'orange', 'orange', 'apple', 'apple', 'orange', 'orange', 'orange', 'apple', 'apple']
-
-	#classifier - DecisionTreeClassifier
-	clf_tree = tree.DecisionTreeClassifier();
-	clf_tree = clf_tree.fit(X,Y);
-
-	#test_data
-	test_data = [[190,70,42],[172,64,39],[182,80,42]];
-
-	#prediction
-	prediction_tree = clf_tree.predict(test_data);
-
-	# Write output to a file
-	with open("output.txt", 'w') as fh_out:
-		fh_out.write("Prediction of DecisionTreeClassifier:")
-		fh_out.write(str(prediction_tree))
-
-4. Create a Dockerfile that contains all the instructions for building a Docker image inside the project directory
-
-.. code-block:: bash
-
-	# Use an official Python runtime as a parent image
-	FROM python:3.6-slim
-	MAINTAINER Upendra Devisetty <upendra@cyverse.org>
-	LABEL Description "This Dockerfile is used to build a scikit-learn’s decision tree image"
-
-	# Set the working directory to /app
-	WORKDIR /app
-
-	# Copy the current directory contents into the container at /app
-	ADD . /app
-
-	# Install any needed packages specified in requirements.txt
-	RUN pip install -r requirements.txt
-
-	# Define environment variable
-	ENV NAME World
-
-	# Run app.py when the container launches
-	CMD ["python", "app.py"]
-
-5. Create a Docker compose YAML file
-
-.. code-block:: bash
-
-	version: '2'
-	services:
-	    datasci:
-	        build: .
-	        volumes:
-	            - .:/app
-
-5. Now Build and Run the Docker image using `docker-compose up` command to predict the fruit given a new set of fruit metrics
-
-.. code-block:: bash
-
-	$ docker-compose up
-	Building datasci
-	Step 1/8 : FROM python:3.6-slim
-	 ---> dc41c0491c65
-	Step 2/8 : MAINTAINER Upendra Devisetty <upendra@cyverse.org>
-	 ---> Running in 95a4da823100
-	 ---> 7c4d5b78bb0a
-	Removing intermediate container 95a4da823100
-	Step 3/8 : LABEL Description "This Dockerfile is used to build a scikit-learn’s decision tree image"
-	 ---> Running in e8000ae57a7d
-	 ---> d872e29971e3
-	Removing intermediate container e8000ae57a7d
-	Step 4/8 : WORKDIR /app
-	 ---> 083eb3e4fb16
-	Removing intermediate container c965871286f9
-	Step 5/8 : ADD . /app
-	 ---> 82b1dbdbe759
-	Step 6/8 : RUN pip install -r requirements.txt
-	 ---> Running in 3c82f7d5dd95
-	Collecting numpy (from -r requirements.txt (line 1))
-	  Downloading numpy-1.14.0-cp36-cp36m-manylinux1_x86_64.whl (17.2MB)
-	Collecting scipy (from -r requirements.txt (line 2))
-	  Downloading scipy-1.0.0-cp36-cp36m-manylinux1_x86_64.whl (50.0MB)
-	Collecting scikit-learn (from -r requirements.txt (line 3))
-	  Downloading scikit_learn-0.19.1-cp36-cp36m-manylinux1_x86_64.whl (12.4MB)
-	Installing collected packages: numpy, scipy, scikit-learn
-	Successfully installed numpy-1.14.0 scikit-learn-0.19.1 scipy-1.0.0
-	 ---> 3d402c23203f
-	Removing intermediate container 3c82f7d5dd95
-	Step 7/8 : ENV NAME World
-	 ---> Running in d0468b521e81
-	 ---> 9cd31e8e7c95
-	Removing intermediate container d0468b521e81
-	Step 8/8 : CMD python app.py
-	 ---> Running in 051bd2235697
-	 ---> 36bb4c3d9183
-	Removing intermediate container 051bd2235697
-	Successfully built 36bb4c3d9183
-	Successfully tagged scikitdocker_datasci:latest
-	WARNING: Image for service datasci was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
-	Creating scikitdocker_datasci_1 ...
-	Creating scikitdocker_datasci_1 ... done
-	Attaching to scikitdocker_datasci_1
-	scikitdocker_datasci_1 exited with code 0
-
-Use ``docker-compose rm`` to remove the container after docker-compose finish running
-
-.. code-block:: bash
-
-	docker-compose rm
-	Going to remove scikitdocker_datasci_1
-	Are you sure? [yN] y
-	Removing scikitdocker_datasci_1 ... done
-
-You will find the ouput file in the ``scikit_docker`` folder with the following contents
-
-.. code-block:: bash
-
-	$ cat output.txt
-	Prediction of DecisionTreeClassifier:['apple' 'orange' 'apple']
-
 .. |docker| image:: ../img/docker.png
   :width: 750
   :height: 700
@@ -930,17 +762,5 @@ You will find the ouput file in the ``scikit_docker`` folder with the following 
   :height: 700
 
 .. |jn_login3.5| image:: ../img/jn_login3.5.png
-  :width: 750
-  :height: 700
-
-.. |rstudio_ss| image:: ../img/rstudio_ss.png
-  :width: 750
-  :height: 700
-
-.. |rstudio_login2| image:: ../img/rstudio_login2.png
-  :width: 750
-  :height: 700
-
-.. |rstudio_login| image:: ../img/rstudio_login.png
   :width: 750
   :height: 700
