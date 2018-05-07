@@ -34,7 +34,7 @@ Singularity uses a 'flow' whereby you can (1) create and modify images on your d
 
 Local installations of Singularity are useful for testing out new containers, before pushing them to Singularity-Hub. 
 
-If you plan to use Singularity on HPC, you will need a local installation of Singularity to build your own containers. HPC admins are *very* unlikely to grant you ``sudo`` privileges needed to build your own containers there.
+If you plan to use Singularity on HPC you will need a local installation of Singularity to build your own containers. HPC admins are *very* unlikely to grant you ``sudo`` privileges needed to build your own containers there.
 
 Exercise 1 (15-20 mins)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,9 +55,7 @@ To Install Singularity on your laptop or desktop PC follow the instructions from
 2.2 HPC
 ~~~~~~~
 
-If you are interested in working on the UA HPC, you can load the ``singularity module``
-
-Most HPC systems are running Environment Modules with the simple command `module`. You can check to see what is available:
+If you are interested in working on the UA HPC, you can load Singularity as a module. Many HPC systems are running Environment Modules with the simple command ``module``. You can check to see what is available on an HPC with the command:
 
 .. code-block:: bash
 
@@ -69,8 +67,7 @@ If Singularity is installed:
 
 	$ module load singularity
 	
-	
-If you want to run Singularity on another remote HPC system, you may need to contact the systems administrator and request that they install the latest version of `Singularity  <http://singularity.lbl.gov/install-request>`_.	
+If you want to run Singularity on a different HPC, check their documentation. Else, you may need to contact the systems administrator and request they install the latest version of `Singularity  <http://singularity.lbl.gov/install-request>`_.
 
 2.3 XSEDE Jetstream / CyVerse Atmosphere Clouds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,7 +485,8 @@ When I try to install software to the image without `sudo` it is denied, because
 
     To install a container with Ubuntu from the ubuntu.com reposutiry you need to use `debootstrap`
 
-**Docker2Singularity &OR Singularity2Docker**
+Docker2Singularity &OR Singularity2Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One of the other features of Singularity is the ability to convert `Docker containers to Singularity Containers <https://github.com/singularityware/docker2singularity>`_, and `Singularity containers to Docker containers <https://github.com/vsoch/singularity2docker>`_
 
@@ -538,9 +536,7 @@ Note: to use `yum` to build a container you should be operating on a RHEL system
 
 The container registries which Singularity uses are listed above in Section 3.1.
 
-- Sections
-
-The Singularity file uses sections to specify the dependencies, environmental settings, and runscripts when it build.
+- The Singularity file uses sections to specify the dependencies, environmental settings, and runscripts when it build.
 
 *  %help - create text for a help menu associated with your container
 *  %setup - executed on the host system outside of the container, after the base OS has been installed.
