@@ -321,19 +321,22 @@ Motivation: Say you want to play around with some cool data analysis libraries i
 Use case 2: Processing Galaxy Simulation with Jupyter in Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Docker allows us to run a "ready to go" Jupyter notebook in what's known as a container:
+Docker allows us to run a "ready to go" Jupyter notebook in a container.  Inside the ``2018-05-examples`` git repository that you downloaded earlier, there is a sample Galaxy simulation:
 
 .. code-block :: bash
 
-	$ mkdir test
-
-	$ sudo chown 1000 test # You must grant the within-container notebook user write access to the host directory
+	$ pwd
+	/Users/ckchan/2018-05-examples/hops
+	$ cd ../galaxy/
+	$ pwd
+	/Users/ckchan/2018-05-examples/galaxy
 
 	# Specify the uid of the jovyan user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with --user root
 
-	$ docker run -it --rm -v ${PWD}/test:/home/jovyan/work -p 8888:8888 -e NB_UID=1000 --user root jupyter/minimal-notebook
+	$ docker run -it --rm -v $PWD:/home/jovyan/work -p 8888:8888 -e NB_UID=$(id -u) --user root astrocontainers/jupyter
 	Set username to: jovyan
 	usermod: no changes
+	Set jovyan UID to: 1329
 	Executing the command: jupyter notebook
 	[I 23:36:09.446 NotebookApp] Writing notebook server cookie secret to /home/jovyan/.local/share/jupyter/runtime/notebook_cookie_secret
 	[W 23:36:09.686 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
@@ -359,7 +362,7 @@ The last line is a URL that we need to copy and paste into our browser to access
 
 	Do not copy and paste the above URL in your browser as this URL is specific to my environment and it doesn't work for you.
 
-Once you've done that you should be greeted by your very own containerised Jupyter service!
+Once you've done that you should be greeted by your very own containerised Jupyter service! Now open ``InClassLab7_Template_wSolutions.ipynb`` and try analysis a Galaxy simulation!
 
 .. image:: ../img/jn_login.png
   :width: 700
