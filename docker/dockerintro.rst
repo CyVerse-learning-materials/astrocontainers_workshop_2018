@@ -337,11 +337,17 @@ The last line is a URL that we need to copy and paste into our browser to access
 
 	Do not copy and paste the above URL in your browser as this URL is specific to my environment and it doesn't work for you.
 
-Once you've done that you should be greeted by your very own containerised Jupyter service! Now open ``InClassLab7_Template_wSolutions.ipynb`` and try analysis a Galaxy simulation!
-
 .. image:: ../img/jn_login.png
   :width: 700
   :height: 450
+  :scale: 100%
+  :align: center
+
+Once you've done that you should be greeted by your very own containerised Jupyter service! Now open ``work/InClassLab7_Template_wSolutions.ipynb`` and try analysis a Galaxy simulation!
+
+.. image:: ../img/jn_galaxy.png
+  :width: 700
+  :height: 700
   :scale: 100%
   :align: center
 
