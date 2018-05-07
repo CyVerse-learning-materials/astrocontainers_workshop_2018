@@ -266,23 +266,19 @@ TODO: use HOPS to fringe fit VLBI data.
 5. Exposing container ports
 ===========================
 
-Great! so you have now looked at ``docker run``, played with a Docker containers and also got the hang of some terminology. Armed with all this knowledge, you are now ready to get to the real stuff - doing data analysis using Jupyter Notebook with Docker.
+For data analysis, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
 
-TODO: introduce the "-p" flag.
-
-For a data scientist, running a container that is already equipped with the libraries and tools needed for a particular analysis eliminates the need to spend hours debugging packages across different environments or configuring custom environments.
-
-But why Set Up a Data Science Environment in a Container?
+But why set up a data analysis environment in a container?
 
 - One reason is speed. We want data scientists using our platform to launch a Jupyter Notebook or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
 
-- Containerization benefits both data science and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don't have to configure anything at all. We provide plenty of standard environment templates to choose from.)
+- Containerization benefits both data analysis and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don't have to configure anything at all. We provide plenty of standard environment templates to choose from.)
 
-- Ultimately, containers solve a lot of common problems associated with doing data science work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how data scientists work, and ensure that old code doesn’t stop running because of environment changes.
+- Ultimately, containers solve a lot of common problems associated with doing data analysis work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how astronomers work, and ensure that old code doesn't stop running because of environment changes.
 
-- Configuring a data science environment can be a pain. Dealing with inconsistent package versions, having to dive through obscure error messages, and having to wait hours for packages to compile can be frustrating. This makes it hard to get started with data science in the first place, and is a completely arbitrary barrier to entry.
+- Configuring a data analysis environment can be a pain. Dealing with inconsistent package versions, having to dive through obscure error messages, and having to wait hours for packages to compile can be frustrating. This makes it hard to get started with data analysis in the first place, and is a completely arbitrary barrier to entry.
 
-Thanks to the rich ecosystem, there are already several readily available images for the common components in data science pipelines. Here are some Docker images to help you quickly spin up your own data science pipeline:
+Thanks to the rich ecosystem, there are already several readily available images for the common components in data analysis pipelines. Here are some Docker images to help you quickly spin up your own data analysis pipeline:
 
 - `MySQL <https://hub.docker.com/_/mysql/>`_
 - `Postgres <https://hub.docker.com/_/postgres/>`_
@@ -297,12 +293,12 @@ Thanks to the rich ecosystem, there are already several readily available images
 - `Flink <https://github.com/apache/flink/tree/master/flink-contrib/docker-flink>`_
 - `R <https://github.com/rocker-org/rocker>`_
 
-Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don’t want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter Data Science notebook stack up and running in no time at all. Let’s get started! We will see few examples of these in the following sections...
+Motivation: Say you want to play around with some cool data analysis libraries in Python but what you don't want to do is spend hours on installing Python, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter notebook stack up and running in no time at all. Let's get started!
 
 Use case 2: Processing Galaxy Simulation with Jupyter in Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Docker allows us to run a ‘ready to go’ Jupyter notebook in what’s known as a container:
+Docker allows us to run a "ready to go" Jupyter notebook in what's known as a container:
 
 .. code-block :: bash
 
@@ -377,4 +373,4 @@ Now if you check the contents of the `test` folder you will see both the `demo` 
 	$ ls test/
 	demo.ipynb  out.txt
 
-To shut down the container once you’re done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
+To shut down the container once you're done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
