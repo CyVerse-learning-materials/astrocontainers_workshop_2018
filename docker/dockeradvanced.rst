@@ -248,13 +248,19 @@ This defines the commands that will run on the Image at start-up. Unlike a **RUN
 
 **ENV**
 
-This defines Environmental variables in the Docker image
+This defines Environmental variables (one or more) in the Docker image
 
-We will see some more of Dockerfile commands in subsequent sections of the workshop.
+**WORKDIR**
+
+The WORKDIR directive is used to set where the command defined with CMD is to be executed.
+
+**ENTRYPOINT** 
+
+This argument sets the concrete default application that is used every time a container is created using the image. For example, if you have installed a specific application inside an image and you will use this image to only run that application, you can state it with ENTRYPOINT and whenever a container is created from that image, your application will be the target
 
 **Use case 1: Building a astroML Docker image**
 
-This is a minimal Docker image using `astroML` as an example. `plot_spectrum_sum_of_norms.py` is an example script from astroML. It is modified to run better in a container environment.
+This is a minimal Docker image using `astroML` as an example. ``plot_spectrum_sum_of_norms.py`` is an example script from astroML. It is modified to run better in a container environment.
 
 .. code-block :: bash
 
@@ -299,7 +305,7 @@ Let's build the image from the Dockerfile now
 
 	$ docker build -t debian/astroml:1.0 .
 
-Now run the built image to execute first by overriding the `CMD` with python script
+Now run the built image to execute first
 
 .. code-block :: bash
 	
@@ -307,7 +313,7 @@ Now run the built image to execute first by overriding the `CMD` with python scr
 
 The result is the pdf - `test.pdf`
 
-Now remove the the two ouputs and run with the `CMD`
+Now remove the the two ouputs and run it with overriding the ENTRYPOINT
 
 .. code-block :: bash
 
