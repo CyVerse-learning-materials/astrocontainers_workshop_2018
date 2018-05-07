@@ -193,16 +193,12 @@ From the above examples, we learned that a running Docker container is an isolat
 
 - A container's writable layer is tightly coupled to the host machine where the container is running. You can't easily move the data somewhere else.
 
-Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. For simplicity, we will only discuss bind mounts here, even though volumes is the more powerful and usable option for most of the time.
+Docker offers three different ways to mount data into a container from the Docker host: **volumes**, **bind mounts**, or **tmpfs volumes**. For simplicity, we will only discuss bind mounts here, even though volumes is the more powerful and usable option for most use cases.
 
 4.1 Bind mounts
 ~~~~~~~~~~~~~~~
 
 **Bind mounts:** When you use a bind mount, a file or directory on the host machine is mounted into a container.
-
-.. tip::
-
-	If you are developing new Docker applications, consider using named **volumes** instead. You can't use Docker CLI commands to directly manage bind mounts.
 
 .. image:: ../img/bind_mount.png
   :width: 500
@@ -219,74 +215,48 @@ Docker offers three different ways to mount data into a container from the Docke
 4.1.1 Start a container with a bind mount
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: bash
-
-	$ mkdir data
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=bind,source="$(pwd)"/data,target=/var/log/nginx nginx:latest
-
-Use `docker inspect devtest` to verify that the bind mount was created correctly. Look for the "Mounts" section
+Let's clone a git repository to obtain our data sets:
 
 .. code-block:: bash
 
-	$ docker inspect devtest
+	$ git clone git@github.com:AstroContainers/2018-05-examples.git
 
-	"Mounts": [
-	            {
-	                "Type": "bind",
-	                "Source": "/Users/upendra_35/Documents/git.repos/flask-app/data",
-	                "Destination": "/var/log/nginx",
-	                "Mode": "",
-	                "RW": true,
-	                "Propagation": "rprivate"
-	            }
-	        ],
-
-This shows that the mount is a bind mount, it shows the correct source and target, it shows that the mount is read-write, and that the propagation is set to rprivate.
-
-Stop the container:
+We can then ``cd`` into the HOPS work directory, and mount it to ``/root`` as we launch the ``eventhorizontelescope/hops`` container:
 
 .. code-block:: bash
 
-	$ docker rm -f devtest
+	$ cd 2018-05-examples/hops
+	$ ls
+	1234
+	$ docker run -it --rm --name hops -v $PWD:/root eventhorizontelescope/hops
+	Setup HOPS v3.19 with HOPS_ROOT=/root for x86_64-3.19
 
-4.1.2 Use a read-only bind mount
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For some development applications, the container needs to write into the bind mount, so changes are propagated back to the Docker host. At other times, the container only needs read access.
-
-This example modifies the one above but mounts the directory as a read-only bind mount, by adding ``ro`` to the (empty by default) list of options, after the mount point within the container. Where multiple options are present, separate them by commas.
-
-.. code-block:: bash
-
-	$ docker run -d -p 8891:80 --name devtest --mount type=bind,source="$(pwd)"/data,target=/var/log/nginx,readonly nginx:latest
-
-Use ``docker inspect devtest`` to verify that the bind mount was created correctly. Look for the Mounts section:
+You will start at the ``/root`` work directory and the host data ``1234`` is available in it:
 
 .. code-block:: bash
 
-	"Mounts": [
+	$ pwd
+	/root
+	$ ls
+	1234
+
+You can open another terminal and use ``docker inspect hops | grep -A9 Mounts`` to verify that the bind mount was created correctly. Look for the "Mounts" section
+
+.. code-block:: bash
+
+	$ docker inspect hops | grep -A9 Mounts
+        "Mounts": [
             {
                 "Type": "bind",
-                "Source": "/Users/upendra_35/Documents/git.repos/flask-app/data",
-                "Destination": "/var/log/nginx",
+                "Source": "/Users/ckchan/2018-05-examples/hops",
+                "Destination": "/root",
                 "Mode": "",
-                "RW": false,
+                "RW": true,
                 "Propagation": "rprivate"
             }
         ],
 
-Stop the container:
-
-.. code-block:: bash
-
-	$ docker rm -f devtest
-
-Remove the volume:
-
-.. code-block:: bash
-
-	$ docker volume rm devtest
+This shows that the mount is a bind mount, it shows the correct source and target, it shows that the mount is read-write, and that the propagation is set to rprivate.
 
 Use case 1: Processing VLBI data with HOPS in Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
