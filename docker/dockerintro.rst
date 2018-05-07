@@ -261,7 +261,30 @@ This shows that the mount is a bind mount, it shows the correct source and targe
 Use case 1: Processing VLBI data with HOPS in Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO: use HOPS to fringe fit VLBI data.
+HOPS stands for the Haystack Observatory Postprocessing System.  It is a standard tool used in Very-long-baseline interferometry (VLBI) to perform data analysis. HOPS has a long history and it depends on legacy libraries. This makes it difficult to compile HOPS on modern Unix/Linux systems. Nevertheless, the Docker, you **have** already launched a HOPS envirnment that you can analysis VLBI data!
+
+The most basic step in analysis VLBI is called "fringe fitting", which we will perform in the running HOPS container by
+
+.. code-block:: bash
+
+	$ ls 1234/No0055/
+	3C279.zxxerd  L..zxxerd  LL..zxxerd  LW..zxxerd  W..zxxerd  WW..zxxerd
+	$ fourfit 1234
+	fourfit: Warning: No valid data for this pass for pol 2
+	fourfit: Warning: No valid data for this pass for pol 3
+	$ ls 1234/No0055/
+	3C279.zxxerd  LL..zxxerd     LL.B.2.zxxerd  LW.B.3.zxxerd  W..zxxerd   WW.B.5.zxxerd
+	L..zxxerd     LL.B.1.zxxerd  LW..zxxerd     LW.B.4.zxxerd  WW..zxxerd
+
+``fourfit`` reads in the correlated data and create the so called "fringe files". The warnings are normal because there are missing polarizations in the data. In order to see the result of the fringe fitting, you can use ``fplot``:
+
+.. code-block:: bash
+
+	$ fplot -d %04d.ps 1234
+	$ ls
+	0000.ps  0001.ps  0002.ps  0003.ps  0004.ps  1234
+
+You just created 4 fringe plots which contain all important information of the VLBI experiment!  Now you can exit your HOPS container and open them on your host machine.
 
 5. Exposing container ports
 ===========================
