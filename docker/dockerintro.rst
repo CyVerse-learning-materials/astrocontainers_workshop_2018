@@ -1,7 +1,11 @@
 **Introduction to Docker**
 --------------------------
 
-|docker|
+.. image:: ../img/docker.png
+  :width: 400
+  :height: 350
+  :scale: 100%
+  :align: center
 
 1. Prerequisites
 ================
@@ -196,7 +200,11 @@ Docker offers three different ways to mount data into a container from the Docke
 
 **Volumes** are created and managed by Docker. You can create a volume explicitly using the ``docker volume create`` command, or Docker can create a volume during container creation. When you create a volume, it is stored within a directory on the Docker host (``/var/lib/docker/`` on Linux and check for the location on mac in here https://timonweb.com/posts/getting-path-and-accessing-persistent-volumes-in-docker-for-mac/). When you mount the volume into a container, this directory is what is mounted into the container. A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using ``docker volume prune`` command.
 
-|volumes|
+.. image:: ../img/volumes.png
+  :width: 500
+  :align: center
+  :height: 450
+  :scale: 100 %
 
 Volumes are often a better choice than persisting data in a container's writable layer, because using a volume does not increase the size of containers using it, and the volume's contents exist outside the lifecycle of a given container. While bind mounts (which we will see later) are dependent on the directory structure of the host machine, volumes are completely managed by Docker. Volumes have several advantages over bind mounts:
 
@@ -359,7 +367,11 @@ After running either of these examples, run the following commands to clean up t
 
 	If you are developing new Docker applications, consider using named **volumes** instead. You can't use Docker CLI commands to directly manage bind mounts.
 
-|bind_mount|
+.. image:: ../img/bind_mount.png
+  :width: 500
+  :height: 450
+  :scale: 100%
+  :align: center
 
 .. Warning::
 
@@ -444,7 +456,11 @@ Remove the volume:
 
 **tmpfs mounts:** A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service's containers.
 
-|tmpfs|
+.. image:: ../img/tmpfs.png
+  :width: 500
+  :height: 450
+  :scale: 100%
+  :align: center
 
 **Volumes** and **bind mounts** are mounted into the container's filesystem by default, and their contents are stored on the host machine. There may be cases where you do not want to store a container's data on the host machine, but you also don't want to write the data into the container's writable layer, for performance or security reasons, or if the data relates to non-persistent application state. An example might be a temporary one-time password that the container's application creates and uses as-needed. To give the container access to the data without writing it anywhere permanently, you can use a tmpfs mount, which is only stored in the host machine's memory (or swap, if memory is low). When the container stops, the tmpfs mount is removed. If a container is committed, the tmpfs mount is not saved.
 
@@ -565,25 +581,34 @@ If you are running Docker for Mac, Docker for Windows, or Docker on Linux, open 
 
 - Laptop or Native linux: ``http://localhost:[YOUR_PORT_FOR 80/tcp]``. On my system this is ``http://localhost:32773``.
 
-|static_site_docker|
+.. image:: ../img/static_site_docker.png
+  :width: 500
+  :height: 450
+  :scale: 100%
+  :align: center
 
 - Cloud server: If you are running the same set of commands on Atmosphere/Jetstream or on any other cloud service, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. On my Atmosphere instance this is ``http://128.196.142.26:32769/``. We will see more about deploying Docker containers on Atmosphere/Jetstream Cloud in the Advanced Docker session.
 
-|static_site_docker1|
+.. image:: ../img/static_site_docker1.png
+  :width: 500
+  :height: 450
+  :scale: 100%
+  :align: center
 
 .. Note::
 
-	``-P`` will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``. For example:
+	``-P`` will publish all the exposed container ports to random ports on the Docker host. However if you want to assign a fixed port then you can use ``-p`` option. The format is ``-p <host port>:<container port>``.
 
-.. code-block:: bash
+	For example::
 
 	$ docker run --name static-site2 -d -p 8088:80 dockersamples/static-site
+
 
 If you are running Docker for Mac, Docker for Windows, or Docker on Linux, you can open ``http://localhost:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://localhost:8088``.
 
 If you are running Docker on Atmosphere/Jetstream or on any other cloud, you can open ``ipaddress:[YOUR_PORT_FOR 80/tcp]``. For our example this is ``http://128.196.142.26:8088/``
 
-If you see "Hello Docker!", then you're done!
+If you see "Hello Docker!", then you're good!
 
 Let's stop and remove the containers since you won't be using them anymore.
 
@@ -612,11 +637,11 @@ For a data scientist, running a container that is already equipped with the libr
 
 But why Set Up a Data Science Environment in a Container?
 
-- One reason is speed. We want data scientists using our platform to launch a Jupyter or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
+- One reason is speed. We want data scientists using our platform to launch a Jupyter Notebook or RStudio session in minutes, not hours. We also want them to have that fast user experience while still working in a governed, central architecture (rather than on their local machines).
 
 - Containerization benefits both data science and IT/technical operations teams. In the DataScience.com Platform, for instance, we allow IT to configure environments with different languages, libraries, and settings in an admin dashboard and make those images available in the dropdown menu when a data scientist launches a session. These environments can be selected for any run, session, scheduled job, or API. (Or you don't have to configure anything at all. We provide plenty of standard environment templates to choose from.)
 
-- Ultimately, containers solve a lot of common problems associated with doing data science work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how data scientists work, and ensure that old code doesn't stop running because of environment changes. To start using containers and our library of curated images to do collaborative data science work, request a demo of our platform today.
+- Ultimately, containers solve a lot of common problems associated with doing data science work at the enterprise level. They take the pressure off of IT to produce custom environments for every analysis, standardize how data scientists work, and ensure that old code doesn’t stop running because of environment changes.
 
 - Configuring a data science environment can be a pain. Dealing with inconsistent package versions, having to dive through obscure error messages, and having to wait hours for packages to compile can be frustrating. This makes it hard to get started with data science in the first place, and is a completely arbitrary barrier to entry.
 
@@ -635,67 +660,39 @@ Thanks to the rich ecosystem, there are already several readily available images
 - `Flink <https://github.com/apache/flink/tree/master/flink-contrib/docker-flink>`_
 - `R <https://github.com/rocker-org/rocker>`_
 
-Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don't want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter "Data Science" notebook stack up and running in no time at all. Let's get started! We will see few examples of thse in the following sections...
-
-.. Note::
-
-	The above code can be found in this `github <https://github.com/upendrak/jupyternotebook_docker>`_
+Motivation: Say you want to play around with some cool data science libraries in Python or R but what you don’t want to do is spend hours on installing Python or R, working out what libraries you need, installing each and every one and then messing around with the tedium of getting things to work just right on your version of Linux/Windows/OSX/OS9 — well this is where Docker comes to the rescue! With Docker we can get a Jupyter Data Science notebook stack up and running in no time at all. Let’s get started! We will see few examples of these in the following sections...
 
 1. Launch a Jupyter notebook conatiner
 
-Docker allows us to run a "ready to go" Jupyter data science stack in what's known as a container:
+Docker allows us to run a ‘ready to go’ Jupyter notebook in what’s known as a container:
 
-1.1 Create a `docker-compose.yml` file
+.. code-block :: bash
 
-.. code-block:: bash
+	$ mkdir test
 
-	$ mkdir jn && cd jn
+	$ sudo chown 1000 test # You must grant the within-container notebook user write access to the host directory
 
-.. code-block:: bash
+	# Specify the uid of the jovyan user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with --user root
 
-	version: '2'
+	$ docker run -it --rm -v ${PWD}/test:/home/jovyan/work -p 8888:8888 -e NB_UID=1000 --user root jupyter/minimal-notebook
+	Set username to: jovyan
+	usermod: no changes
+	Executing the command: jupyter notebook
+	[I 23:36:09.446 NotebookApp] Writing notebook server cookie secret to /home/jovyan/.local/share/jupyter/runtime/notebook_cookie_secret
+	[W 23:36:09.686 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+	[I 23:36:09.722 NotebookApp] JupyterLab beta preview extension loaded from /opt/conda/lib/python3.6/site-packages/jupyterlab
+	[I 23:36:09.722 NotebookApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
+	[I 23:36:09.730 NotebookApp] Serving notebooks from local directory: /home/jovyan
+	[I 23:36:09.730 NotebookApp] 0 active kernels
+	[I 23:36:09.730 NotebookApp] The Jupyter Notebook is running at:
+	[I 23:36:09.730 NotebookApp] http://[all ip addresses on your system]:8888/?token=a81dbeec92b286df393bb484fdf53efffab410fd64ec8702
+	[I 23:36:09.730 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+	[C 23:36:09.731 NotebookApp]
+	Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+    	http://localhost:8888/?token=dfb50de6c1da091fd62336ac52cdb88de5fe339eb0faf478
 
-	services:
-	  datascience-notebook:
-	    image: jupyter/datascience-notebook
-	    volumes:
-	      - .:/data
-	    ports:
-	      - 8888:8888
-	    container_name:   datascience-notebook-container
-
-.. Note::
-
-	The ``jupyter/datascience-notebook`` image can be found on dockerhub
-
-|jn_ss|
-
-1.2 Run container using docker-compose file
-
-.. code-block:: bash
-
-	$ docker-compose up
-	Creating datascience-notebook-container ...
-	Creating datascience-notebook-container ... done
-	Attaching to datascience-notebook-container
-	datascience-notebook-container | Execute the command: jupyter notebook
-	datascience-notebook-container | [I 08:44:31.312 NotebookApp] Writing notebook server cookie secret to /home/jovyan/.local/share/jupyter/runtime/notebook_cookie_secret
-	datascience-notebook-container | [W 08:44:31.332 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not 	recommended.
-	datascience-notebook-container | [I 08:44:31.370 NotebookApp] JupyterLab alpha preview extension loaded from /opt/conda/lib/python3.6/site-packages/jupyterlab
-	datascience-notebook-container | JupyterLab v0.27.0
-	datascience-notebook-container | Known labextensions:
-	datascience-notebook-container | [I 08:44:31.373 NotebookApp] Running the core application with no additional extensions or settings
-	datascience-notebook-container | [I 08:44:31.379 NotebookApp] Serving notebooks from local directory: /home/jovyan
-	datascience-notebook-container | [I 08:44:31.379 NotebookApp] 0 active kernels
-	datascience-notebook-container | [I 08:44:31.379 NotebookApp] The Jupyter Notebook is running at: http://[all ip addresses on your 	system]:8888/?token=dfb50de6c1da091fd62336ac52cdb88de5fe339eb0faf478
-	datascience-notebook-container | [I 08:44:31.379 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-	datascience-notebook-container | [C 08:44:31.380 NotebookApp]
-	datascience-notebook-container |
-	datascience-notebook-container |     Copy/paste this URL into your browser when you connect for the first time,
-	datascience-notebook-container |     to login with a token:
-	datascience-notebook-container |         http://localhost:8888/?token=dfb50de6c1da091fd62336ac52cdb88de5fe339eb0faf478
-
-The last line is a URL that we need to copy and paste into our browser to access our new Jupyter stack:
+The last line is a URL that we need to copy and paste into our browser to access our new Jupyter Notebook:
 
 .. code-block:: bash
 
@@ -703,64 +700,43 @@ The last line is a URL that we need to copy and paste into our browser to access
 
 .. warning::
 
-	Do not copy and paste the above URL in your browser as this URL is specific to my environment.
+	Do not copy and paste the above URL in your browser as this URL is specific to my environment and it doesn't work for you.
 
 Once you've done that you should be greeted by your very own containerised Jupyter service!
 
-|jn_login|
+.. image:: ../img/jn_login.png
+  :width: 700
+  :height: 450
+  :scale: 100%
+  :align: center
 
-To create your first notebook, drill into the work directory and then click on the "New" button on the right hand side and choose "Python 3" to create a new Python 3 based Notebook.
+To create your first notebook, drill into the `work` directory and then click on the "New" button on the right hand side and choose "Python 3" to create a new Python 3 based Notebook.
 
-|jn_login2|
+.. image:: ../img/jn_login2.png
+  :width: 800
+  :height: 300
+  :scale: 100%
+  :align: center
 
 Now you can write your python code. Here is an example
 
-|jn_login3|
+.. image:: ../img/jn_login3.png
+  :width: 800
+  :height: 300
+  :scale: 100%
+  :align: center
 
-|jn_login3.5|
+.. image:: ../img/jn_login3.5.png
+  :width: 800
+  :height: 300
+  :scale: 100%
+  :align: center
 
-To shut down the container once you're done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.
+Now if you check the contents of the `test` folder you will see both the `demo` notebook and `out.txt` file
 
-.. |docker| image:: ../img/docker.png
-  :width: 750
-  :height: 700
+.. code-block :: bash
 
-.. |volumes| image:: ../img/volumes.png
-  :width: 750
-  :height: 700
+	$ ls test/
+	demo.ipynb  out.txt
 
-.. |bind_mount| image:: ../img/bind_mount.png
-  :width: 750
-  :height: 700
-
-.. |tmpfs| image:: ../img/tmpfs.png
-  :width: 750
-  :height: 700
-
-.. |static_site_docker| image:: ../img/static_site_docker.png
-  :width: 750
-  :height: 700
-
-.. |static_site_docker1| image:: ../img/static_site_docker1.png
-  :width: 750
-  :height: 700
-
-.. |jn_ss| image:: ../img/jn_ss.png
-  :width: 750
-  :height: 700
-
-.. |jn_login| image:: ../img/jn_login.png
-  :width: 750
-  :height: 700
-
-.. |jn_login2| image:: ../img/jn_login2.png
-  :width: 750
-  :height: 700
-
-.. |jn_login3| image:: ../img/jn_login3.png
-  :width: 750
-  :height: 700
-
-.. |jn_login3.5| image:: ../img/jn_login3.5.png
-  :width: 750
-  :height: 700
+To shut down the container once you’re done working, simply hit ``Ctrl-C`` in the terminal/command prompt. Your work will all be saved on your actual machine in the path we set in our Docker compose file. And there you have it — a quick and easy way to start using Jupyter notebooks with the magic of Docker.

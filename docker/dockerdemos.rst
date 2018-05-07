@@ -29,7 +29,11 @@ Use the following Docker commands to deploy Portainer. Now the second line of co
 
 	The `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in mac/linux environments only.
 
-|portainer_demo|
+.. image:: ../img/portainer_demo.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
 2 Play-with-docker (PWD)
 ========================
@@ -45,12 +49,9 @@ You don't have to install anything to use PWD. Just open ``https://labs.play-wit
 
 	You can use your Dockerhub credentials to log-in to PWD
 
-|pwd|
+.. image:: ../img/pwd.png
+  :width: 550
+  :height: 500
+  :scale: 100%
+  :align: center
 
-.. |portainer_demo| image:: ../img/portainer_demo.png
-  :width: 750
-  :height: 700
-
-.. |pwd| image:: ../img/pwd.png
-  :width: 750
-  :height: 700

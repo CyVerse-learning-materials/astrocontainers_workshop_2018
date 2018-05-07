@@ -26,6 +26,11 @@ Please complete the minimum Setup Instructions to prepare for the CyVerse AstroC
     * - Github Account
       - Please ensure that you have a Github account
       - Register for your Github account at `https://github.com/ <https://github.com/>`_.
+    * - Docker
+      - Install Docker on your computer
+      - - `Docker for mac <https://docs.docker.com/docker-for-mac/install/>`_
+        - `Docker for windows <https://docs.docker.com/docker-for-windows/install/>`_
+        - `Docker for Linux <https://docs.docker.com/install/linux/docker-ce/ubuntu/>`_
     * - Dockerhub Account
       - Please ensure that you have a Dockerhub account
       - Register for your Dockerhub account at `https://hub.docker.com/ <https://hub.docker.com/>`_.
