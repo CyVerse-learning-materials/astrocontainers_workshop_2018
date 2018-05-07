@@ -15,11 +15,11 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
     * - 05/07/18 (Monday)
       - 09:00am-09:15am
       - Introduction to CyVerse and Data7 (Nirav Merchant)
-      - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
+      - `Intro slides <https://goo.gl/BzogBs>`_
     * -
       - 09:15am-10:00am
       - Container landscape and computation resources (Nirav Merchant)
-      - `Intro slides <https://docs.google.com/presentation/d/1shHJKmmLO8VfBfhhhm7cjFhD-5F1b-2fHWtRtaW-pIA/edit?usp=sharing>`_
+      - `Intro slides <https://goo.gl/BzogBs>`_
     * -
       - 10:00am-10:15am
       - Coffee and snack break with networking
