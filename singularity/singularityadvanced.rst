@@ -30,11 +30,12 @@ A few things to consider when using HPC systems:
 #. Using 'sudo' is not allowed on HPC systems, and building a Singularity container from scratch requires sudo.  That means you have to build your containers on a different development system.  You can pull a docker image on HPC systems.
 #. If you need to edit text files, command line text editors don't support using a mouse, so working efficiently has a learning curve.  There are text editors that support editing files over SSH.  This lets you use a local text editor and just save the changes to the HPC system.
 #. Singularity has changed image formats.  Depending on the version of Singularity running on the HPC system, new squashFS or .simg formats may not work. The images take a lot less space
+#. You can't run Docker containers - security stuff!
 
 Tutorial #1
 ~~~~~~~~~~~
 
-This is a review of knowledge already covered in this workshop.  
+This is a review of knowledge already covered in this workshop. This is optional.  If you create this container, it will have to be where you have root authority.  Or, at the point where this container is transferred to HPC, you can use one you have created previously. 
 
 .. Note::
 
@@ -64,7 +65,7 @@ This is a review of knowledge already covered in this workshop.
      # install tensorflow
     pip install --upgrade pip
     pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
-    pip install --upgrade numpy scipy scikit-learn matplotlib astropy
+    pip install --upgrade numpy scipy astropy
      # create bind points for storage.
      mkdir /extra
      mkdir /xdisk
@@ -95,7 +96,7 @@ Test with these commands
 
   $ module load singularity
   $ singularity exec astropy.img python --version
-  Python 3.6.4
+  Python 2.7.5
   
 On an HPC system, your job submission script would look something like:
 
@@ -105,7 +106,7 @@ On an HPC system, your job submission script would look something like:
   #!/bin/bash
   #PBS -N singularity-job
   #PBS -W group_list=GroupName
-  #PBS -q windfall
+  #PBS -q standard
   #PBS -l select=1:ncpus=1:mem=6gb
   #PBS -l walltime=01:00:00
   #PBS -l cput=12:00:00
@@ -116,6 +117,11 @@ On an HPC system, your job submission script would look something like:
   date
 
 This example uses PBS which is the schduler available on Ocelote.  ElGato uses LSF which has the same functions but different syntax.
+Run the job:
+
+.. code-block:: bash
+
+  qsub astropy.pbs
 
 It is usually possible to get an interactive session as well. For example:
 
@@ -205,7 +211,7 @@ This example is a case of running a simple container using an interactive sessio
   cp /unsupported/singularity/nvidia/nvidia-tensorflow.18.03-py3.simg .
   cp /unsupported/singularity/nvidia/tensorflow_example.py .
   # Work from a compute node. This step is likely to take more than a minute depending on how busy the scheduler is.
-  qsub -I -N jobname -m bea -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
+  qsub -I -N jobname -m bea -W group_list=YourGroup -q standard -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
   # Load the singularity module
   module load singularity
   cd /extra/netid/astro
@@ -222,13 +228,14 @@ For TensorFlow, you can directly pull their latest GPU image and utilize it as f
 .. code-block:: bash
 
   # Start an interactive session after you are on the login node.  Edit as needed:   
-  qsub -I -N jobname -W group_list=YourGroup -q windfall -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
+  qsub -I -N jobname -W group_list=YourGroup -q standard -l select=1:ncpus=28:mem=168gb:ngpus=1 -l cput=1:0:0 -l walltime=1:0:0
+  cd /extra/netid/astro
   # Get the software
   git clone https://github.com/tensorflow/models.git ~/models
   # Pull the image
   singularity pull docker://tensorflow/tensorflow:latest-gpu
   # Run the code
-  singularity exec --nv tensorflow-latest-gpu.img python $HOME/models/tutorials/image/mnist/convolutional.py
+  singularity exec --nv tensorflow-latest-gpu.simg python $HOME/models/tutorials/image/mnist/convolutional.py
 
 .. Note::
 
