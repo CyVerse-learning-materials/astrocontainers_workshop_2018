@@ -20,7 +20,7 @@ There are no specific skills needed for this tutorial beyond a basic comfort wit
 
       **Singularity**:
 
-      * Work on HPC
+      * Works on HPC systems
       * Same user inside and outside the container
       * User only has root privileges if elevated with `sudo`
       * Run (and modify!) existing Docker containers
