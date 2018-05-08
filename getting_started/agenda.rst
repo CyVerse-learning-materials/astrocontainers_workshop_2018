@@ -68,10 +68,10 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       -
     * -
       - 10:45am-12:00pm
-      - Introductory Singularity (Tyson Swetnam)
+      - Introductory Singularity cont.. (Tyson Swetnam)
       -
         - `University of Arizona High Performance Computing <https://docs.hpc.arizona.edu/>`_
-        - `Introduction to Singularity <../singularity/singularityintro.html>`_
+        - `Singularity-Hub <https://singularity-hub.org>`_
     * -
       - 12:00pm-01:00pm
       - Lunch break on your own
