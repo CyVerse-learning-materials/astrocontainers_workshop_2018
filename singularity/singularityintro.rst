@@ -807,6 +807,14 @@ Now, overlay your blank image file name with the container you just downloaded.
 
 *note: using the `sudo` command to make the container writable*
 
+6. Singularity-Hub
+==================
+
+You can host containers on Singularity's own container registry `Singularity-Hub <https://singularity-hub.org>`_ 
+
+Connect a GitHub repo to the Hub which contains a ``Singularity`` file. The image will be built automatically and be hosted on the Hub.
+
+You can pull your built images from the ``shub://`` followed by your Github user identity and repo name. 
 
 .. |singularity| image:: ../img/singularity.png
   :height: 200
