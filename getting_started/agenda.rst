@@ -53,8 +53,7 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
     * - 05/08/18 (Tuesday)
       - 09:00am-9:15am
       - General overview of Singularity (Tyson Swetnam)
-      -  `Singularity Overview Slides <https://docs.google.com/presentation/d/175QD_mm9aKbV-8WW7hKR04naR08UjTRcGc4CIhMMKKk/edit?usp=sharing>`_
-      - `Gitpitch slides <https://gitpitch.com/tyson-swetnam/cc-camp#/>`_
+      - `Singularity Overview Slides <https://docs.google.com/presentation/d/175QD_mm9aKbV-8WW7hKR04naR08UjTRcGc4CIhMMKKk/edit?usp=sharing>`_ `Gitpitch slides <https://gitpitch.com/tyson-swetnam/cc-camp#/>`_
     * -
       - 9:15am-10:00am
       - Singularity setup (Tyson Swetnam)
@@ -72,6 +71,7 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
       - Introductory Singularity (Tyson Swetnam)
         - `University of Arizona High Performance Computing <https://docs.hpc.arizona.edu/>`_
         - `Introduction to Singularity <../singularity/singularityintro.html>`_
+      -  
     * -
       - 12:00pm-01:00pm
       - Lunch break on your own
