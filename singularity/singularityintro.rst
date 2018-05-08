@@ -636,6 +636,9 @@ Example Singularity file bootstrapping a `Docker <https://hub.docker.com/_/ubunt
     %post
         apt-get -y update
         apt-get -y install fortune cowsay lolcat
+	
+	# create bind points for additional storage
+	mkdir /scratch 
 
     %environment
         export LC_ALL=C
