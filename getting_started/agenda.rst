@@ -57,6 +57,7 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
     * -
       - 9:15am-10:00am
       - Singularity setup (Tyson Swetnam)
+      - - `Gitpitch slides <https://gitpitch.com/tyson-swetnam/cc-camp#/>`_
       - `Singularity Introduction <../singularity/singularityintro.html>`_
     * -
       - 10:00am-10:15am
@@ -69,7 +70,6 @@ This workshop runs under a `Code of Conduct <../getting_started/main.html>`_. Pl
     * -
       - 10:45am-12:00pm
       - Introductory Singularity (Tyson Swetnam)
-      - - `Gitpitch slides <https://gitpitch.com/tyson-swetnam/cc-camp#/>`_
         - `University of Arizona High Performance Computing <https://docs.hpc.arizona.edu/>`_
         - `Introduction to Singularity <../singularity/singularityintro.html>`_
     * -
