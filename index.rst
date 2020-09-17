@@ -1,3 +1,4 @@
+.. include:: cyverse_rst_defined_substitutions.txt
 Table of Contents
 -----------------
 
